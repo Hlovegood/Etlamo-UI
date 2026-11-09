@@ -887,10 +887,53 @@ html[lang="ar"] .ww-tool-card h2 { font-family: var(--font-arabic-serif); }
    ============================================================================= */
 
 .planner-hero {
-  text-align: center;
-  max-width: 820px;
-  margin: 0 auto 36px;
-  padding: 40px 20px 10px;
+  max-width: 1200px;
+  margin: 0 auto 28px;
+  padding: 36px 20px 10px;
+}
+.planner-hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.planner-hero-text {
+  flex: 1 1 500px;
+  min-width: 0;
+}
+.planner-hero-actions {
+  flex: none;
+}
+.planner-create-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: var(--primary, #8c5e1c);
+  color: #ffffff !important;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(140, 94, 28, 0.28);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.planner-create-hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(140, 94, 28, 0.4);
+}
+.dark .planner-create-hero-btn,
+html.dark .planner-create-hero-btn {
+  background: #eed8a6;
+  color: #070d09 !important;
+  box-shadow: 0 4px 18px rgba(238, 216, 166, 0.25);
+}
+.dark .planner-create-hero-btn:hover,
+html.dark .planner-create-hero-btn:hover {
+  background: #faeacc;
+  box-shadow: 0 8px 26px rgba(238, 216, 166, 0.38);
 }
 .planner-kicker {
   display: inline-block;
@@ -908,17 +951,77 @@ html[dir="rtl"] .planner-kicker {
 }
 .planner-hero h1 {
   font-family: var(--font-serif);
-  font-size: clamp(34px, 4.5vw, 48px);
+  font-size: clamp(32px, 4vw, 46px);
   font-weight: 400;
   line-height: 1.15;
   color: var(--text-main);
-  margin: 0 0 14px;
+  margin: 0 0 12px;
 }
 .planner-hero-intro {
-  font-size: clamp(15px, 1.8vw, 17px);
+  font-size: clamp(14.5px, 1.8vw, 16.5px);
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
+}
+
+/* Sovereign Events Section */
+.planner-events-section {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.planner-events-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--card-border, #e6dacb);
+}
+.dark .planner-events-head,
+html.dark .planner-events-head {
+  border-bottom-color: rgba(238, 216, 166, 0.18);
+}
+.planner-events-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.planner-events-head h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-main);
+}
+.planner-events-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 9999px;
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-gold-burnished, #8c5e1c);
+  font-family: var(--font-mono, monospace);
+}
+.dark .planner-events-count-badge,
+html.dark .planner-events-count-badge {
+  color: #eed8a6;
+  background: rgba(238, 216, 166, 0.12);
+  border-color: rgba(238, 216, 166, 0.25);
+}
+.planner-create-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
 }
 
 /* Event Cards List */
@@ -1038,7 +1141,311 @@ html[dir="rtl"] .planner-kicker {
   border-radius: 20px;
 }
 
-/* New Event Card */
+/* =============================================================================
+   ETLAMO (اتلموا) — STUCK-TO-PAGE EVENT CREATOR FAB & ACCESSIBLE MODAL
+   ============================================================================= */
+
+/* Floating Action Button (Stuck to bottom corner of the viewport) */
+.planner-create-fab {
+  position: fixed !important;
+  bottom: calc(32px + env(safe-area-inset-bottom, 0px)) !important;
+  inset-inline-end: 32px !important;
+  z-index: 95 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 14px 24px !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(238, 216, 166, 0.45) !important;
+  background: var(--text-main, #19140b) !important;
+  color: #f7eee3 !important;
+  font-family: inherit !important;
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 32px rgba(25, 20, 11, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.planner-create-fab:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 16px 36px rgba(25, 20, 11, 0.45), 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  background: var(--primary, #8c5e1c) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.planner-create-fab:active {
+  transform: translateY(0) scale(0.97) !important;
+}
+
+.planner-create-fab-icon {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  font-weight: 400 !important;
+  border-radius: 50% !important;
+  background: rgba(238, 216, 166, 0.2) !important;
+  color: #eed8a6 !important;
+}
+
+.planner-create-fab:hover .planner-create-fab-icon {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.dark .planner-create-fab,
+html.dark .planner-create-fab {
+  background: #eed8a6 !important;
+  color: #070d09 !important;
+  border-color: #f7eee3 !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), 0 0 24px rgba(238, 216, 166, 0.3) !important;
+}
+
+.dark .planner-create-fab .planner-create-fab-icon,
+html.dark .planner-create-fab .planner-create-fab-icon {
+  background: #070d09 !important;
+  color: #eed8a6 !important;
+}
+
+.dark .planner-create-fab:hover,
+html.dark .planner-create-fab:hover {
+  background: #faeacc !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 32px rgba(238, 216, 166, 0.45) !important;
+}
+
+/* Modal Dialog Layer */
+.planner-create-modal-layer {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 250 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
+}
+
+.planner-create-modal-layer[hidden] {
+  display: none !important;
+}
+
+.planner-create-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(14, 13, 12, 0.65) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  animation: plannerFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dark .planner-create-backdrop,
+html.dark .planner-create-backdrop {
+  background: rgba(4, 8, 6, 0.82) !important;
+}
+
+.planner-create-dialog {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  max-width: 580px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  background: var(--card-bg, #ffffff) !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  border-radius: 24px !important;
+  padding: clamp(24px, 4vw, 36px) !important;
+  box-shadow: 0 24px 64px rgba(25, 20, 11, 0.2), 0 8px 24px rgba(25, 20, 11, 0.08) !important;
+  animation: plannerPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+
+.dark .planner-create-dialog,
+html.dark .planner-create-dialog {
+  background: #0d1510 !important;
+  border-color: rgba(238, 216, 166, 0.24) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 0 0 40px rgba(238, 216, 166, 0.1) !important;
+}
+
+.planner-create-close {
+  position: absolute !important;
+  top: 20px !important;
+  inset-inline-end: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  background: var(--surface-hover, #f7eee2) !important;
+  color: var(--text-main, #19140b) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
+}
+
+.planner-create-close:hover {
+  background: var(--text-main, #19140b) !important;
+  color: #ffffff !important;
+  border-color: var(--text-main, #19140b) !important;
+  transform: rotate(90deg) !important;
+}
+
+.dark .planner-create-close,
+html.dark .planner-create-close {
+  background: #142017 !important;
+  border-color: rgba(238, 216, 166, 0.22) !important;
+  color: #f7eee3 !important;
+}
+
+.dark .planner-create-close:hover,
+html.dark .planner-create-close:hover {
+  background: #eed8a6 !important;
+  color: #070d09 !important;
+  border-color: #eed8a6 !important;
+}
+
+.planner-create-modal-header {
+  margin-bottom: 22px !important;
+  padding-inline-end: 44px !important;
+}
+
+.planner-create-modal-header h2 {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif) !important;
+  font-size: clamp(24px, 3vw, 30px) !important;
+  font-weight: 600 !important;
+  margin: 0 0 8px 0 !important;
+  color: var(--text-main, #19140b) !important;
+}
+
+.dark .planner-create-modal-header h2,
+html.dark .planner-create-modal-header h2 {
+  color: #f7eee3 !important;
+}
+
+.planner-create-modal-desc {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: var(--text-muted, #595045) !important;
+  margin: 0 !important;
+}
+
+.dark .planner-create-modal-desc,
+html.dark .planner-create-modal-desc {
+  color: #b5c3b4 !important;
+}
+
+.planner-create-modal-form .form-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 16px !important;
+  margin-bottom: 18px !important;
+}
+
+.planner-create-modal-form .form-field.full-width {
+  grid-column: 1 / -1 !important;
+}
+
+.planner-create-modal-form label {
+  display: block !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: var(--text-main, #19140b) !important;
+  margin-bottom: 6px !important;
+}
+
+.dark .planner-create-modal-form label,
+html.dark .planner-create-modal-form label {
+  color: #f7eee3 !important;
+}
+
+.planner-create-modal-form input,
+.planner-create-modal-form select {
+  width: 100% !important;
+  padding: 12px 14px !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  background: var(--card-bg, #ffffff) !important;
+  color: var(--text-main, #19140b) !important;
+  font-size: 14px !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.dark .planner-create-modal-form input,
+.dark .planner-create-modal-form select,
+html.dark .planner-create-modal-form input,
+html.dark .planner-create-modal-form select {
+  background: #142017 !important;
+  border-color: rgba(238, 216, 166, 0.22) !important;
+  color: #f7eee3 !important;
+}
+
+.planner-create-modal-form input:focus,
+.planner-create-modal-form select:focus {
+  outline: none !important;
+  border-color: var(--primary, #8c5e1c) !important;
+  box-shadow: 0 0 0 3px rgba(140, 94, 28, 0.18) !important;
+}
+
+.dark .planner-create-modal-form input:focus,
+.dark .planner-create-modal-form select:focus,
+html.dark .planner-create-modal-form input:focus,
+html.dark .planner-create-modal-form select:focus {
+  border-color: #eed8a6 !important;
+  box-shadow: 0 0 0 3px rgba(238, 216, 166, 0.2) !important;
+}
+
+.planner-create-modal-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  padding-top: 18px !important;
+  border-top: 1px solid var(--border-soft, #e6dacb) !important;
+}
+
+.dark .planner-create-modal-actions,
+html.dark .planner-create-modal-actions {
+  border-top-color: rgba(238, 216, 166, 0.18) !important;
+}
+
+@keyframes plannerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes plannerPopIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 640px) {
+  .planner-hero-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .planner-create-modal-form .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .planner-create-fab {
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    inset-inline-end: 20px !important;
+    padding: 12px 18px !important;
+  }
+}
+
+/* Fallback New Event Card */
 .planner-new {
   max-width: 820px;
   margin: 0 auto 60px;

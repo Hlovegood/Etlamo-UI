@@ -120,7 +120,38 @@ function planOverview(plan,w,esc,lang,inquiries){
 
 export function originalRoomSection(lang) {
   const w=words[lang];
-  return `<section class="room-3d" data-original-room><h2>${w.originalRoom}</h2><p>${w.originalRoomHelp}</p><div class="room-3d-controls"><button class="button button-outline" type="button" data-scene-view="perspective">${w.perspective}</button><button class="button button-outline" type="button" data-scene-view="top">${w.top}</button><button class="button button-outline" type="button" data-scene-zoom="in">${w.zoomIn}</button><button class="button button-outline" type="button" data-scene-zoom="out">${w.zoomOut}</button><button class="button button-outline" type="button" data-scene-sound aria-pressed="false">${lang==='ar'?'الصوت':'Sound'}</button><button class="button button-outline" type="button" data-scene-fullscreen>${lang==='ar'?'ملء الشاشة':'Fullscreen'}</button>${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${w[mode]}</button>`).join('')}</div><div class="room-3d-canvas" role="group" aria-label="${w.originalRoom}"></div><p class="room-3d-status" role="status">${w.threeDLoading}</p><p class="fine-print">${w.modelCredit}: <a href="https://sketchfab.com/3d-models/rec-room-wedding-2983d1e21f3f4037a3c3354187a160c2" target="_blank" rel="noopener noreferrer">Rec Room - Wedding</a> by Lol_o9 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p></section>`;
+  const isAr = lang === 'ar';
+  return `<section class="room-3d room-3d-hero" data-original-room>
+    <div class="room-3d-viewport-stage">
+      <div class="room-3d-canvas" role="group" aria-label="${w.originalRoom}"></div>
+      <p class="room-3d-status" role="status">${w.threeDLoading}</p>
+    </div>
+    <aside class="room-3d-cockpit" aria-label="${isAr ? 'خيارات الجولة والتحكم' : 'Tour Options & Controls'}">
+      <div class="room-3d-cockpit-header">
+        <span class="room-3d-cockpit-kicker">${isAr ? 'المشهد الافتراضي النموذجي' : 'SPATIAL PROTOTYPE'}</span>
+        <h2>${w.originalRoom}</h2>
+        <p>${w.originalRoomHelp}</p>
+      </div>
+      <div class="room-3d-cockpit-section">
+        <span class="room-3d-cockpit-label">${isAr ? 'زاوية الكاميرا والتحكم' : 'Camera & Viewport'}</span>
+        <div class="room-3d-controls room-3d-view-controls">
+          <button class="button button-outline" type="button" data-scene-view="perspective">${w.perspective}</button>
+          <button class="button button-outline" type="button" data-scene-view="top">${w.top}</button>
+          <button class="button button-outline" type="button" data-scene-zoom="in">${w.zoomIn}</button>
+          <button class="button button-outline" type="button" data-scene-zoom="out">${w.zoomOut}</button>
+          <button class="button button-outline" type="button" data-scene-sound aria-pressed="false">${isAr?'الصوت':'Sound'}</button>
+          <button class="button button-outline" type="button" data-scene-fullscreen>${isAr?'ملء الشاشة':'Fullscreen'}</button>
+        </div>
+      </div>
+      <div class="room-3d-cockpit-section">
+        <span class="room-3d-cockpit-label">${isAr ? 'أجواء الإضاءة' : 'Atmosphere'}</span>
+        <div class="room-3d-controls room-3d-atmo-controls">
+          ${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${w[mode]}</button>`).join('')}
+        </div>
+      </div>
+      <p class="fine-print">${w.modelCredit}: <a href="https://sketchfab.com/3d-models/rec-room-wedding-2983d1e21f3f4037a3c3354187a160c2" target="_blank" rel="noopener noreferrer">Rec Room - Wedding</a> by Lol_o9 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+    </aside>
+  </section>`;
 }
 
 function presentationView(plan,w,esc,lang){
@@ -129,12 +160,95 @@ function presentationView(plan,w,esc,lang){
   return `<section class="plan-presentation"><div class="plan-presentation-heading"><div><h2>${w.presentation}</h2><p>${w.presentationHelp}</p></div><button class="button" type="button" data-action="planner-print">${w.presentationPrint}</button></div><div class="plan-presentation-facts"><span>${w.tables}: <strong>${plan.tables.length}</strong></span><span>${w.totalGuests}: <strong>${plan.guests.length}</strong></span><span>${w.assigned}: <strong>${assigned}</strong></span></div>${plan.tables.length?`<div class="planner-main">${planBoard(plan,esc,lang,true)}</div>`:`<p class="form-panel">${w.presentationEmpty}</p>`}<p class="fine-print">${w.presentationGuestsHelp}</p>${assigned?`<details class="plan-presentation-guests"><summary>${w.presentationGuests}</summary><div class="plan-presentation-guest-grid">${plan.tables.filter(table=>table.assignments.some(Boolean)).map(table=>`<section><h3>${esc(table.label)}</h3><ol>${table.assignments.map((id,index)=>id?`<li>${w.seatNumber} ${index+1}: ${esc(names.get(id)||'')}</li>`:'').join('')}</ol></section>`).join('')}</div></details>`:''}</section>`;
 }
 
-export function planningView({items,plan,loaded,error,account,lang,escape:esc,selectedSeat,scaleMode=false,scalePoints=[],view,members,inquiries,history,suggestion,suggestedLayout,picker=false,pickerCategory='rect',inspector='',zoom=1,gridVisible=true,ceremonyMode='block',ceremonySeat='',guestSelected='',guestForm=false,taskFilter='all'}) {
+export function planningView({items,plan,loaded,error,account,lang,escape:esc,selectedSeat,scaleMode=false,scalePoints=[],view,members,inquiries,history,suggestion,suggestedLayout,picker=false,pickerCategory='rect',inspector='',zoom=1,gridVisible=true,ceremonyMode='block',ceremonySeat='',guestSelected='',guestForm=false,taskFilter='all',createModal=false}) {
   const w=words[lang];
   if(!account)return `<section class="page-title"><h1>${w.title}</h1><p>${w.signin}</p><a class="button" href="#/account">${lang==='ar'?'سجّل دخول':'Sign in'}</a></section>`;
   if(!loaded)return `<p role="status">${lang==='ar'?'جاري التحميل…':'Loading plans…'}</p>`;
   if(error)return `<p role="alert">${w.error}</p>`;
-  if(!plan)return `<section class="page-title planner-hero"><span class="planner-kicker">${lang==='ar'?'المخطط المكاني والفعاليات الملكية':'SOVEREIGN SPATIAL & EVENT PLANNER'}</span><h1>${w.title}</h1><p class="planner-hero-intro">${w.intro}</p></section><div class="planner-list">${items.length?items.map(item=>`<a class="planner-event" href="#/plans/${item.id}?view=seating"><span class="planner-event-icon" aria-hidden="true">${item.type==='wedding'?'💍':item.type==='conference'?'🏛️':'✨'}</span><span class="planner-event-info"><strong>${esc(item.name)}</strong><small><span class="planner-event-tag">${w[item.type]}</span>${item.date?' · 📅 '+esc(item.date):''}${item.access!=='OWNER'?' · '+w.shared:''}</small></span><span class="planner-event-cta">${w.open} <span aria-hidden="true">›</span></span></a>`).join(''):`<div class="planner-empty"><p>${w.empty}</p></div>`}</div><section class="form-panel planner-new"><span class="planner-kicker">${lang==='ar'?'إنشاء خطة جديدة':'NEW EVENT PROTOCOL'}</span><h2>${w.new}</h2><p class="planner-new-intro">${lang==='ar'?'ابدأ بتنظيم مناسبتك الملكية، ورتب الضيوف والميزانية والتوزيع المكاني بدقة متناهية.':'Begin drafting your sovereign event, organize seating, budget, and ceremonial flow with precision.'}</p><form id="plan-create-form"><div class="form-grid"><div class="form-field"><label for="plan-name">${w.eventName}</label><input id="plan-name" name="name" maxlength="100" required></div><div class="form-field"><label for="plan-type">${w.kind}</label><select id="plan-type" name="type"><option value="wedding">${w.wedding}</option><option value="conference">${w.conference}</option><option value="other">${w.other}</option></select></div><div class="form-field"><label for="plan-date">${w.date}</label><input id="plan-date" type="date" name="date"></div></div><p class="form-error" role="alert" hidden></p><button class="button" type="submit">${w.create}</button></form></section>`;
+  if(!plan) {
+    const isAr = lang === 'ar';
+    const num = n => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en-EG').format(n);
+    return `<div class="planner-dashboard">
+      <section class="page-title planner-hero">
+        <div class="planner-hero-inner">
+          <div class="planner-hero-text">
+            <span class="planner-kicker">${isAr ? 'المخطط المكاني والفعاليات الملكية' : 'SOVEREIGN SPATIAL & EVENT PLANNER'}</span>
+            <h1>${w.title}</h1>
+            <p class="planner-hero-intro">${w.intro}</p>
+          </div>
+          <div class="planner-hero-actions">
+            <button class="button planner-create-hero-btn" type="button" data-action="planner-open-create">
+              <span aria-hidden="true">+</span>
+              <span>${isAr ? 'إنشاء مناسبة جديدة' : 'Create New Event'}</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="planner-events-section">
+        <div class="planner-events-head">
+          <div class="planner-events-title-wrap">
+            <h2>${isAr ? 'مناسباتي المسجلة' : 'My Sovereign Events'}</h2>
+            <span class="planner-events-count-badge">${num(items.length)} ${isAr ? (items.length === 1 ? 'مناسبة' : 'مناسبات') : (items.length === 1 ? 'event' : 'events')}</span>
+          </div>
+          <button class="button button-outline planner-create-inline-btn" type="button" data-action="planner-open-create">
+            <span aria-hidden="true">+</span>
+            <span>${w.new}</span>
+          </button>
+        </div>
+
+        <div class="planner-list">
+          ${items.length ? items.map(item=>`<a class="planner-event" href="#/plans/${item.id}?view=seating"><span class="planner-event-icon" aria-hidden="true">${item.type==='wedding'?'💍':item.type==='conference'?'🏛️':'✨'}</span><span class="planner-event-info"><strong>${esc(item.name)}</strong><small><span class="planner-event-tag">${w[item.type]}</span>${item.date?' · 📅 '+esc(item.date):''}${item.access!=='OWNER'?' · '+w.shared:''}</small></span><span class="planner-event-cta">${w.open} <span aria-hidden="true">›</span></span></a>`).join('') : `<div class="planner-empty"><span class="planner-empty-icon" aria-hidden="true">🏛️</span><h3>${isAr ? 'لا توجد مناسبات بعد' : 'No Events Created Yet'}</h3><p>${w.empty}</p><button class="button" type="button" data-action="planner-open-create">+ ${w.new}</button></div>`}
+        </div>
+      </div>
+
+      <!-- Stuck-to-page Floating Action Button (FAB) -->
+      <button class="planner-create-fab" type="button" data-action="planner-open-create" aria-label="${isAr ? 'إنشاء مناسبة جديدة' : 'Create new event'}">
+        <span class="planner-create-fab-icon" aria-hidden="true">+</span>
+        <span class="planner-create-fab-text">${isAr ? 'مناسبة جديدة' : 'New Event'}</span>
+      </button>
+
+      <!-- Event Creator Modal Dialog (Stuck to page, opens on click) -->
+      <div class="planner-create-modal-layer${createModal ? ' is-open' : ''}" ${createModal ? '' : 'hidden'}>
+        <div class="planner-create-backdrop" data-action="planner-close-create" tabindex="-1"></div>
+        <div class="planner-create-dialog" role="dialog" aria-modal="true" aria-labelledby="planner-modal-title">
+          <button class="planner-create-close" type="button" data-action="planner-close-create" aria-label="${isAr ? 'إغلاق' : 'Close'}">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+          <div class="planner-create-modal-header">
+            <span class="planner-kicker">${isAr ? 'إنشاء خطة جديدة' : 'NEW EVENT PROTOCOL'}</span>
+            <h2 id="planner-modal-title">${w.new}</h2>
+            <p class="planner-create-modal-desc">${isAr ? 'ابدأ بتنظيم مناسبتك الملكية، ورتب الضيوف والميزانية والتوزيع المكاني بدقة متناهية.' : 'Begin drafting your sovereign event, organize seating, budget, and ceremonial flow with precision.'}</p>
+          </div>
+          <form id="plan-create-form" class="planner-create-modal-form">
+            <div class="form-grid">
+              <div class="form-field full-width">
+                <label for="plan-name">${w.eventName}</label>
+                <input id="plan-name" name="name" maxlength="100" placeholder="${isAr ? 'مثال: حفل زفاف قصر عابدين' : 'e.g. Royal Abdeen Palace Gala'}" required autofocus>
+              </div>
+              <div class="form-field">
+                <label for="plan-type">${w.kind}</label>
+                <select id="plan-type" name="type">
+                  <option value="wedding">${w.wedding}</option>
+                  <option value="conference">${w.conference}</option>
+                  <option value="other">${w.other}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="plan-date">${w.date}</label>
+                <input id="plan-date" type="date" name="date">
+              </div>
+            </div>
+            <p class="form-error" role="alert" hidden></p>
+            <div class="planner-create-modal-actions">
+              <button class="button button-outline" type="button" data-action="planner-close-create">${isAr ? 'إلغاء' : 'Cancel'}</button>
+              <button class="button" type="submit">${w.create}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>`;
+  }
   view=view||'seating';
   if(view==='guests')return workspaceShell(plan,view,lang,esc,guestWorkspace(plan,lang,esc,guestSelected,guestForm));
   if(view==='ceremony'&&plan.type==='wedding')return workspaceShell(plan,view,lang,esc,ceremonyWorkspace(plan,lang,esc,ceremonyMode,ceremonySeat));

@@ -42,7 +42,7 @@ function getTheme() {
 function toggleTheme(event) {
   toggleSmoothTheme(event);
 }
-const state = { isMenuOpen: false, compare:[], providers:{public:[],owned:[],admin:[],inquiries:[],vendorInquiries:[],error:false}, plans:{items:[],loaded:false,error:false,seat:null,scaleMode:false,scalePoints:[],picker:false,pickerCategory:'rect',inspector:'',zoom:1,gridVisible:true,ceremonyMode:'block',ceremonySeat:'',guestSelected:'',guestForm:false,suggestion:{planId:'',kind:'saved'},history:{planId:'',undo:[],redo:[]},members:{planId:'',items:[]},inquiries:{planId:'',items:[],options:[],error:false}}, operations:{path:'',loaded:false,error:false,items:[],history:[]}, lang: getLanguage(), filters: defaultFilters(), saved: getSaved(), draft: null, stage: 'details', busy:false, connectionError:false, vendor:{venues:[],requests:[],loaded:false,error:false}, admin:{venues:[],loaded:false,error:false}, adminFilter:'PENDING',team:{venueId:'',members:[],loaded:false,error:false},inbox:{items:[],loaded:false,error:false},security:{mail:[],loaded:false,error:false,result:null} };
+const state = { isMenuOpen: false, compare:[], providers:{public:[],owned:[],admin:[],inquiries:[],vendorInquiries:[],error:false}, plans:{items:[],loaded:false,error:false,seat:null,scaleMode:false,scalePoints:[],picker:false,pickerCategory:'rect',inspector:'',zoom:1,gridVisible:true,ceremonyMode:'block',ceremonySeat:'',guestSelected:'',guestForm:false,createModal:false,suggestion:{planId:'',kind:'saved'},history:{planId:'',undo:[],redo:[]},members:{planId:'',items:[]},inquiries:{planId:'',items:[],options:[],error:false}}, operations:{path:'',loaded:false,error:false,items:[],history:[]}, lang: getLanguage(), filters: defaultFilters(), saved: getSaved(), draft: null, stage: 'details', busy:false, connectionError:false, vendor:{venues:[],requests:[],loaded:false,error:false}, admin:{venues:[],loaded:false,error:false}, adminFilter:'PENDING',team:{venueId:'',members:[],loaded:false,error:false},inbox:{items:[],loaded:false,error:false},security:{mail:[],loaded:false,error:false,result:null} };
 const t = key => copy[state.lang][key] || key;
 const local = value => value[state.lang];
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -435,16 +435,36 @@ function venue3dPage(venue){
         <a class="button venue-3d-cta" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a>
       </div>
     </header>
-    <p class="venue-3d-caveat">${t('venue3dCaveat')}</p>
-    <section class="room-3d">
-      <div class="room-3d-controls">
-        <button class="button button-outline" type="button" data-scene-view="perspective">${t('threeDPerspective')}</button>
-        <button class="button button-outline" type="button" data-scene-view="top">${t('threeDTop')}</button>
-        ${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${t(`threeD${mode[0].toUpperCase()+mode.slice(1)}`)}</button>`).join('')}
+    <section class="room-3d room-3d-hero">
+      <div class="room-3d-viewport-stage">
+        <div class="room-3d-canvas" role="img" aria-label="${t('view3dExample')}"></div>
+        <p class="room-3d-status" role="status">${t('threeDLoading')}</p>
       </div>
-      <div class="room-3d-canvas" role="img" aria-label="${t('view3dExample')}"></div>
-      <p class="room-3d-status" role="status">${t('threeDLoading')}</p>
-      <div class="room-3d-table-info" aria-live="polite"></div>
+      <aside class="room-3d-cockpit" aria-label="${isAr ? 'خيارات وأدوات التحكم' : 'Options & Controls'}">
+        <div class="room-3d-cockpit-header">
+          <span class="room-3d-cockpit-kicker">${isAr ? 'غرفة التحكم والاستكشاف' : 'STUDIO CONTROLS'}</span>
+          <h2>${isAr ? 'إعدادات المشهد' : 'Scene Options'}</h2>
+          <p class="venue-3d-caveat">${t('venue3dCaveat')}</p>
+        </div>
+        <div class="room-3d-cockpit-section">
+          <span class="room-3d-cockpit-label">${isAr ? 'زاوية الرؤية' : 'Camera Perspective'}</span>
+          <div class="room-3d-controls room-3d-view-controls">
+            <button class="button button-outline" type="button" data-scene-view="perspective">${t('threeDPerspective')}</button>
+            <button class="button button-outline" type="button" data-scene-view="top">${t('threeDTop')}</button>
+          </div>
+        </div>
+        <div class="room-3d-cockpit-section">
+          <span class="room-3d-cockpit-label">${isAr ? 'الإضاءة والأجواء' : 'Lighting & Atmosphere'}</span>
+          <div class="room-3d-controls room-3d-atmo-controls">
+            ${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${t(`threeD${mode[0].toUpperCase()+mode.slice(1)}`)}</button>`).join('')}
+          </div>
+        </div>
+        <div class="room-3d-cockpit-section room-3d-cockpit-reservation">
+          <span class="room-3d-cockpit-label">${isAr ? 'حجز وتأكيد الموعد' : 'Reservation'}</span>
+          <a class="button full-width" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a>
+        </div>
+        <div class="room-3d-table-info" aria-live="polite"></div>
+      </aside>
     </section>
   </div>`;
 }
@@ -741,7 +761,7 @@ function render(moveFocus = false) {
   else if(r.parts[0]==='services'){content=servicePage(r.path,r.params,{state,account:getAccount(),lang:state.lang,escape,local,option,areas,number});title=t('servicesNav');}
   else if(r.path==='/vendor/services'){content=vendorServicePage({state,account:getAccount(),lang:state.lang,escape,local,option,areas,number,editId:r.params.get('edit')});title=t('manageServices');}
   else if(r.path==='/admin/services'){content=adminServicePage({state,account:getAccount(),lang:state.lang,escape,local,number});title=t('reviewServices');}
-  else if(r.parts[0]==='plans' && (r.parts.length===1 || (r.parts.length===2 && /^[a-f0-9-]{36}$/.test(r.parts[1])))) {const suggestion=state.plans.suggestion.planId===r.parts[1]?state.plans.suggestion.kind:'saved';content=planningView({items:state.plans.items,plan:currentPlan(),loaded:state.plans.loaded,error:state.plans.error,account:getAccount(),lang:state.lang,escape,selectedSeat:state.plans.seat,scaleMode:state.plans.scaleMode,scalePoints:state.plans.scalePoints,view:r.params.get('view'),taskFilter:r.params.get('filter'),members:state.plans.members,inquiries:state.plans.inquiries,history:state.plans.history.planId===r.parts[1]?state.plans.history:null,suggestion,suggestedLayout:suggestion==='saved'?null:previewLayout(suggestion),picker:state.plans.picker,pickerCategory:state.plans.pickerCategory,inspector:state.plans.inspector,zoom:state.plans.zoom,gridVisible:state.plans.gridVisible,ceremonyMode:state.plans.ceremonyMode,ceremonySeat:state.plans.ceremonySeat,guestSelected:state.plans.guestSelected,guestForm:state.plans.guestForm});title=t('planEvent');}
+  else if(r.parts[0]==='plans' && (r.parts.length===1 || (r.parts.length===2 && /^[a-f0-9-]{36}$/.test(r.parts[1])))) {const suggestion=state.plans.suggestion.planId===r.parts[1]?state.plans.suggestion.kind:'saved';content=planningView({items:state.plans.items,plan:currentPlan(),loaded:state.plans.loaded,error:state.plans.error,account:getAccount(),lang:state.lang,escape,selectedSeat:state.plans.seat,scaleMode:state.plans.scaleMode,scalePoints:state.plans.scalePoints,view:r.params.get('view'),taskFilter:r.params.get('filter'),members:state.plans.members,inquiries:state.plans.inquiries,history:state.plans.history.planId===r.parts[1]?state.plans.history:null,suggestion,suggestedLayout:suggestion==='saved'?null:previewLayout(suggestion),picker:state.plans.picker,pickerCategory:state.plans.pickerCategory,inspector:state.plans.inspector,zoom:state.plans.zoom,gridVisible:state.plans.gridVisible,ceremonyMode:state.plans.ceremonyMode,ceremonySeat:state.plans.ceremonySeat,guestSelected:state.plans.guestSelected,guestForm:state.plans.guestForm,createModal:state.plans.createModal});title=t('planEvent');}
   else if(r.path==='/compare'){content=compareView(venues.filter(v=>state.compare.includes(v.id)),viewTools());title=t('compareTitle');}
   else if(r.path==='/support' || r.path==='/admin/support'){content=!getAccount() || (r.path==='/admin/support' && !getAccount().isAdmin)?supportView([],r.path==='/admin/support',viewTools()):operationContent(()=>supportView(state.operations.items,r.path==='/admin/support',viewTools()));title=t('support');}
   else if(r.parts[0]==='conversation' && /^[a-f0-9-]{36}$/.test(r.parts[1] || '')){content=operationContent(()=>conversationView(r.parts[1],state.operations.items,state.operations.history,viewTools()));title=t('conversation');}
@@ -1170,7 +1190,7 @@ app.addEventListener('submit', async event => {
   }
   if(event.target.id==='plan-create-form') {
     if(state.busy)return;const form=event.target,input=Object.fromEntries(new FormData(form));state.busy=true;
-    try {const plan=(await api('/api/plans',{...input,date:input.date || ''})).plan;state.plans.items.unshift(plan);state.plans.loaded=true;state.busy=false;location.hash=`#/plans/${plan.id}?view=seating`;}
+    try {const plan=(await api('/api/plans',{...input,date:input.date || ''})).plan;state.plans.items.unshift(plan);state.plans.loaded=true;state.plans.createModal=false;state.busy=false;location.hash=`#/plans/${plan.id}?view=seating`;}
     catch(error){state.busy=false;const warning=form.querySelector('[role="alert"]');warning.textContent=error.code==='PLAN_LIMIT'?(state.lang==='ar'?'تقدر تخطط حتى ٢٠ مناسبة.':'You can plan up to 20 events.'):t('connectionFailed');warning.hidden=false;}
     return;
   }
@@ -1394,6 +1414,8 @@ app.addEventListener('click', async event => {
     if(location.hash===next){state.filters.category=category;render();}else{location.hash=next;}
     return;
   }
+  if(action==='planner-open-create'){sound.pop();state.plans.createModal=true;render();document.getElementById('plan-name')?.focus();return;}
+  if(action==='planner-close-create'){sound.tap();state.plans.createModal=false;render();document.querySelector('[data-action="planner-open-create"]')?.focus();return;}
   if(action==='planner-open-picker'){sound.pop();state.plans.picker=true;state.plans.pickerCategory='rect';render();document.querySelector('.ww-picker-tabs button')?.focus();return;}
   if(action==='planner-close-picker'){state.plans.picker=false;render();document.querySelector('[data-action="planner-open-picker"]')?.focus();return;}
   if(action==='planner-picker-category'){state.plans.pickerCategory=button.dataset.category;render();return;}
@@ -1638,6 +1660,7 @@ app.addEventListener('keydown',async event=>{
   if(event.key==='Escape'){closeStaggeredMenu();}
   if(event.key==='Escape'&&state.isMenuOpen){state.isMenuOpen=false;closeDiscRevealNav();closeBubbleMenu();document.querySelector('[data-action="toggle-disc-nav"],[data-action="toggle-bubble-menu"]')?.focus();return;}
   if(event.key==='Escape'&&state.plans.picker){state.plans.picker=false;render();document.querySelector('[data-action="planner-open-picker"]')?.focus();return;}
+  if(event.key==='Escape'&&state.plans.createModal){state.plans.createModal=false;render();document.querySelector('[data-action="planner-open-create"]')?.focus();return;}
   if((event.key==='Enter' || event.key===' ') && event.target.matches?.('.planner-seat')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));return;}
   if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key) || !event.target.matches?.('.planner-table,.planner-feature'))return;
   const plan=currentPlan();if(!plan||plan.access==='VIEW')return;
