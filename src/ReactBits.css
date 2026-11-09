@@ -1,0 +1,113 @@
+/* ==========================================================================
+   WEDDO — ReactBits Experience Enhancement Layer
+   Spotlight Card • Magnet Motion • Shiny Text Shimmer • Blur Text Reveals
+   Seamlessly integrated with Monopo Saigon editorial monochrome discipline
+   ========================================================================== */
+
+/* 1. ReactBits Spotlight Card */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 0.35s ease;
+  z-index: 2;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 0, 0, 0.05) 0%,
+    transparent 80%
+  );
+}
+
+html.dark .spotlight-card::after,
+html[data-theme="dark"] .spotlight-card::after {
+  background: radial-gradient(
+    420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 80%
+  );
+}
+
+/* 2. ReactBits Magnet Motion */
+.magnet-target {
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* 3. ReactBits Shiny Text Shimmer */
+.shiny-text {
+  color: var(--text-muted);
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+  animation: shinyTextSweep 4s ease-in-out infinite;
+}
+
+html:not(.dark) .shiny-text {
+  background: linear-gradient(
+    120deg,
+    rgba(0, 0, 0, 0.3) 30%,
+    rgba(0, 0, 0, 0.95) 50%,
+    rgba(0, 0, 0, 0.3) 70%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes shinyTextSweep {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* 4. ReactBits Blur Text Reveals */
+.blur-text-reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(12px);
+  animation: blurTextIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes blurTextIn {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card::after {
+    display: none;
+  }
+  .magnet-target {
+    transform: none !important;
+    transition: none !important;
+  }
+  .shiny-text {
+    animation: none !important;
+    background: none !important;
+    color: inherit !important;
+  }
+  .blur-text-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}

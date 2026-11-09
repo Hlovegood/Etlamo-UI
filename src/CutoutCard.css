@@ -1,0 +1,263 @@
+/* ==========================================================================
+   CutoutCard - Cult UI Architectural Corner Cutout Engine
+   High-fashion inverted concave fillets, media framing, and inset metadata.
+   ========================================================================== */
+
+.cutout-card {
+  position: relative;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--text-main, #000000);
+  border-radius: var(--radius-cards, 0px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+  transition: transform var(--duration-glide, 0.8s) var(--ease-glide),
+              border-color 0.4s ease;
+  will-change: transform;
+}
+
+html.dark .cutout-card,
+html[data-theme="dark"] .cutout-card,
+.dark .cutout-card {
+  background: var(--card-bg, #211b16);
+  border-color: var(--card-border, #382e26);
+}
+
+.cutout-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--text-main);
+  box-shadow: none;
+}
+
+.cutout-card:active {
+  transform: translateY(0) scale(0.985);
+  transition: transform 100ms ease-out;
+}
+
+/* Media framing */
+.cutout-card-media {
+  position: relative;
+  height: 228px;
+  overflow: hidden;
+  background: var(--color-chalk, #ebebeb);
+  border-bottom: 1px solid var(--line, rgba(0, 0, 0, 0.12));
+}
+
+html.dark .cutout-card-media,
+html[data-theme="dark"] .cutout-card-media {
+  background: #111111;
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.cutout-card-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none !important;
+}
+
+.cutout-card-media img,
+.cutout-card-media .venue-photo,
+.cutout-card-media .venue-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-patient, 1.25s) var(--ease-glide);
+}
+
+.cutout-card:hover .cutout-card-media img,
+.cutout-card:hover .cutout-card-media .venue-photo,
+.cutout-card:hover .cutout-card-media .venue-art {
+  transform: scale(1.045);
+}
+
+/* Atmospheric subtle vignette overlay */
+.cutout-card-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.42) 100%);
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+.cutout-card:hover .cutout-card-overlay {
+  opacity: 0.9;
+}
+
+/* --------------------------------------------------------------------------
+   CutoutCard Inset Label & Concave Corner Fillets
+   -------------------------------------------------------------------------- */
+.cutout-card-inset-label {
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 0;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg, #ffffff);
+  color: var(--text-main, #000000);
+  padding: 7px 18px 7px 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-start-end-radius: 16px;
+  user-select: none;
+}
+
+html.dark .cutout-card-inset-label,
+html[data-theme="dark"] .cutout-card-inset-label,
+.dark .cutout-card-inset-label {
+  background: var(--card-bg, #211b16);
+  color: var(--text-main, #fdfbf7);
+}
+
+.cutout-card-inset-label .sample-label {
+  position: static !important;
+  background: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  display: inline !important;
+  box-shadow: none !important;
+}
+
+/* SVG Cutout Corner Placement */
+.cutout-corner {
+  position: absolute;
+  pointer-events: none;
+  color: var(--card-bg, #ffffff);
+  width: 20px;
+  height: 20px;
+  line-height: 0;
+  display: block;
+}
+
+.cutout-corner-fillet-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+html.dark .cutout-corner,
+html[data-theme="dark"] .cutout-corner,
+.dark .cutout-corner {
+  color: var(--card-bg, #211b16);
+}
+
+/* Top-Start Inverted Fillet (above the label against the left/start card edge) */
+.cutout-corner-top-edge {
+  inset-inline-start: 0;
+  bottom: 100%;
+}
+
+html[dir="rtl"] .cutout-corner-top-edge {
+  transform: scaleX(-1);
+}
+
+/* Bottom-End Inverted Fillet (to the right/end of the label against bottom media edge) */
+.cutout-corner-bottom-edge {
+  inset-inline-start: 100%;
+  bottom: 0;
+}
+
+html[dir="rtl"] .cutout-corner-bottom-edge {
+  transform: scaleX(-1);
+}
+
+/* --------------------------------------------------------------------------
+   CutoutCard Pin (Top-End Bookmark Action)
+   -------------------------------------------------------------------------- */
+.cutout-card-pin {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+  z-index: 4;
+}
+
+.cutout-card-pin .save-button {
+  position: static !important;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--card-border, #e6dacb);
+  border-radius: var(--radius-buttons, 3px);
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cutout-card-pin .save-button:hover {
+  transform: scale(1.08);
+}
+
+.cutout-card-pin .save-button:active {
+  transform: scale(0.92);
+}
+
+html.dark .cutout-card-pin .save-button,
+html[data-theme="dark"] .cutout-card-pin .save-button {
+  background: rgba(24, 24, 24, 0.9);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* --------------------------------------------------------------------------
+   CutoutCard Content Section
+   -------------------------------------------------------------------------- */
+.cutout-card-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cutout-card-title {
+  font-family: var(--font-roobert);
+  font-size: var(--text-body, 18px);
+  font-weight: var(--font-weight-regular, 400);
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+
+.cutout-card-title a {
+  text-decoration: none !important;
+  color: var(--text-main);
+  transition: opacity 0.15s ease;
+}
+
+.cutout-card-title a:hover {
+  opacity: 0.75;
+}
+
+html.dark .cutout-card-title a,
+html[data-theme="dark"] .cutout-card-title a,
+.dark .cutout-card-title a {
+  color: var(--text-main, #fdfbf7);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .cutout-card,
+  .cutout-card-media img,
+  .cutout-card-media .venue-photo,
+  .cutout-card-media .venue-art {
+    transition: none !important;
+    transform: none !important;
+  }
+}

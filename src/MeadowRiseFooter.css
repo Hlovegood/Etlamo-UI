@@ -1,0 +1,1051 @@
+/* =============================================================================
+   ETLAMO (اتلموا) — Meadow Rise Footer Styles
+   Scoped styles with .mrf-* prefix, supports LTR & RTL seamlessly
+   ============================================================================= */
+
+.mrf-root,
+footer.mrf-root,
+footer.mrf-root.site-footer {
+  position: relative;
+  isolation: isolate;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  height: auto;
+  overflow: hidden;
+  margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  outline: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--mrf-text, #f7f0e2);
+  font-family: var(--font-sans, "IBM Plex Sans Arabic", "Inter", sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) and (min-height: 600px) {
+  .mrf-root,
+  footer.mrf-root,
+  footer.mrf-root.site-footer {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+
+.mrf-root *, .mrf-root *::before, .mrf-root *::after {
+  box-sizing: border-box;
+}
+
+.mrf-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mrf-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.mrf-hero {
+  position: relative;
+  z-index: 2;
+  height: var(--mrf-hero, clamp(210px, 28vh, 320px));
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(20px, 3vh, 36px) 24px 0;
+  text-align: center;
+  transform: translate3d(0, calc((1 - var(--mrf-k, 1)) * 40px), 0);
+}
+
+.mrf-h {
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--font-display, "Cormorant Garamond", "Amiri", serif);
+  font-weight: 500;
+  font-size: clamp(24px, 3.2vw, 54px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--mrf-ink, #19140b);
+  text-wrap: balance;
+}
+
+.mrf-line {
+  display: block;
+  white-space: normal;
+}
+
+.mrf-w {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.04em 0.08em 0.16em;
+  margin: -0.04em -0.08em -0.16em;
+  vertical-align: top;
+}
+
+.mrf-wi {
+  display: inline-block;
+  transform: translate3d(0, 108%, 0) rotate(3deg);
+  transform-origin: 0 100%;
+  transition: transform 1150ms cubic-bezier(.16, 1, .3, 1);
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+
+.mrf-acc .mrf-wi {
+  font-family: "Amiri", "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.08em;
+  color: var(--accent-gold, #c5a880);
+  letter-spacing: -0.01em;
+  padding: 0 0.08em;
+  transform: translate3d(-0.06em, 0, 0) skewX(-6deg);
+  clip-path: inset(-20% 100% -30% -5%);
+  filter: blur(5px);
+  opacity: 0.2;
+  transition: clip-path 1400ms cubic-bezier(.65, 0, .25, 1), transform 1600ms cubic-bezier(.16, 1, .3, 1), filter 1100ms ease, opacity 900ms ease;
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+
+.mrf-in .mrf-wi {
+  transform: none;
+}
+
+.mrf-in .mrf-acc .mrf-wi {
+  clip-path: inset(-20% -10% -30% -5%);
+  filter: blur(0);
+  opacity: 1;
+}
+
+.mrf-sub {
+  margin: clamp(8px, 1.3vh, 16px) 0 0;
+  max-width: 48ch;
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--mrf-sub, #483b2a);
+}
+
+.mrf-r {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  filter: blur(4px);
+  transition: opacity 900ms ease, transform 1100ms cubic-bezier(.16, 1, .3, 1), filter 900ms ease;
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+
+.mrf-in .mrf-r {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+.mrf-cta-wrap {
+  margin-top: clamp(12px, 1.8vh, 20px);
+}
+
+.mrf-cta {
+  --mx: 0px;
+  --my: 0px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 10px 0 20px;
+  border-radius: 999px;
+  background: var(--mrf-pill, #fffaf2);
+  color: var(--mrf-pill-ink, #19140b);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 12px 32px -10px rgba(25, 20, 10, 0.45), 0 2px 6px -2px rgba(25, 20, 10, 0.25);
+  transform: translate3d(var(--mx), var(--my), 0);
+  transition: transform 500ms cubic-bezier(.2, .9, .3, 1.2), color 450ms ease, box-shadow 450ms ease;
+}
+
+[dir="rtl"] .mrf-cta {
+  padding: 0 20px 0 10px;
+}
+
+.mrf-cta::before {
+  content: "";
+  position: absolute;
+  left: var(--fx, 50%);
+  top: var(--fy, 50%);
+  width: 260px;
+  height: 260px;
+  margin: -130px 0 0 -130px;
+  border-radius: 50%;
+  background: var(--mrf-ground, #1b190d);
+  transform: scale(0);
+  transition: transform 650ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.mrf-cta > * {
+  position: relative;
+}
+
+.mrf-cta-arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--mrf-ground, #1b190d);
+  color: var(--mrf-pill, #fffaf2);
+  overflow: hidden;
+  transition: background 450ms ease, color 450ms ease;
+}
+
+.mrf-cta-arrow svg {
+  grid-area: 1 / 1;
+  transition: transform 520ms cubic-bezier(.65, 0, .25, 1);
+}
+
+.mrf-cta-arrow .mrf-a2 {
+  transform: translate(-150%, 150%);
+}
+
+.mrf-cta:hover, .mrf-cta:focus-visible {
+  color: var(--mrf-text, #f7f0e2);
+}
+
+.mrf-cta:hover::before, .mrf-cta:focus-visible::before {
+  transform: scale(1);
+}
+
+.mrf-cta:hover .mrf-cta-arrow, .mrf-cta:focus-visible .mrf-cta-arrow {
+  background: var(--mrf-pill, #fffaf2);
+  color: var(--mrf-ground, #1b190d);
+}
+
+.mrf-cta:hover .mrf-a1, .mrf-cta:focus-visible .mrf-a1 {
+  transform: translate(150%, -150%);
+}
+
+.mrf-cta:hover .mrf-a2, .mrf-cta:focus-visible .mrf-a2 {
+  transform: none;
+}
+
+.mrf-cta:focus-visible {
+  outline: 2px solid var(--accent-gold, #c5a880);
+  outline-offset: 3px;
+}
+
+.mrf-body {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+}
+
+.mrf-botany {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(100%, 1100px);
+  height: 92%;
+  transform: translateX(-50%);
+  max-width: none;
+  color: var(--mrf-text, #f7f0e2);
+  opacity: 0.09;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mrf-stem {
+  transform-box: view-box;
+  animation: mrf-sway 9s ease-in-out infinite alternate;
+  animation-delay: calc(var(--sd, 0) * -1s);
+}
+
+@keyframes mrf-sway {
+  from { transform: rotate(-0.9deg); }
+  to { transform: rotate(1.1deg); }
+}
+
+.mrf-draw {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2400ms cubic-bezier(.45, 0, .2, 1);
+  transition-delay: calc(var(--d, 0) * 1ms);
+}
+
+.mrf-botany .mrf-draw {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.15;
+}
+
+.mrf-in .mrf-draw {
+  stroke-dashoffset: 0;
+}
+
+.mrf-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: clamp(24px, 3vh, 44px) clamp(24px, 4.5vw, 64px) clamp(24px, 3vh, 36px);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* --- Top Tier: Centered Header, Descriptor & Concierge Strip --- */
+.mrf-header-tier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto clamp(20px, 2.5vh, 32px);
+  gap: 12px;
+}
+
+.mrf-master-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mrf-text, #f7f0e2);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: transform 350ms cubic-bezier(.16, 1, .3, 1), filter 350ms ease;
+}
+
+.mrf-master-logo:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 16px rgba(197, 168, 128, 0.45));
+}
+
+.mrf-master-desc {
+  margin: 0;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.6;
+  color: var(--mrf-muted, #c2b496);
+  max-width: 68ch;
+  text-wrap: balance;
+}
+
+.mrf-action-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 24px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Newsletter / Sovereign Registry Form */
+.mrf-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.mrf-form-icon {
+  flex: none;
+  color: var(--mrf-muted, #c2b496);
+}
+
+.mrf-form::before, .mrf-form::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+}
+
+.mrf-form::before {
+  background: var(--mrf-line, rgba(247, 240, 226, 0.18));
+}
+
+.mrf-form::after {
+  background: var(--accent-gold, #c5a880);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 700ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.mrf-form:focus-within::after {
+  transform: scaleX(1);
+}
+
+.mrf-form[data-state="error"]::after {
+  background: #e8a48f;
+  transform: scaleX(1);
+}
+
+.mrf-form[data-state="error"] {
+  animation: mrf-shake 420ms cubic-bezier(.36, .07, .19, .97);
+}
+
+@keyframes mrf-shake {
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.mrf-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0 4px;
+  background: transparent;
+  color: var(--mrf-text, #f7f0e2);
+  font: inherit;
+  font-size: 13.5px;
+  letter-spacing: -0.005em;
+}
+
+.mrf-input::placeholder {
+  color: var(--mrf-muted, #c2b496);
+  opacity: 0.75;
+}
+
+.mrf-send {
+  flex: none;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--mrf-text, #f7f0e2);
+  color: var(--mrf-ground, #1b190d);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 450ms cubic-bezier(.2, .9, .3, 1.3), background 300ms ease;
+}
+
+.mrf-send:hover {
+  transform: scale(1.1);
+  background: var(--accent-gold, #c5a880);
+}
+
+.mrf-send:focus-visible {
+  outline: 2px solid var(--accent-gold, #c5a880);
+  outline-offset: 3px;
+}
+
+.mrf-send > * {
+  grid-area: 1 / 1;
+  transition: transform 500ms cubic-bezier(.65, 0, .25, 1), opacity 300ms ease;
+}
+
+.mrf-send-text {
+  display: none;
+}
+
+.mrf-send .mrf-a2 {
+  transform: translate(-150%, 150%);
+}
+
+.mrf-send:hover .mrf-a1 {
+  transform: translate(150%, -150%);
+}
+
+.mrf-send:hover .mrf-a2 {
+  transform: none;
+}
+
+.mrf-spin, .mrf-check {
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.mrf-spin {
+  animation: mrf-rot 800ms linear infinite;
+}
+
+@keyframes mrf-rot {
+  to { rotate: 360deg; }
+}
+
+.mrf-form[data-state="sending"] .mrf-a1, .mrf-form[data-state="sending"] .mrf-a2,
+.mrf-form[data-state="done"] .mrf-a1, .mrf-form[data-state="done"] .mrf-a2 {
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.mrf-form[data-state="sending"] .mrf-spin {
+  opacity: 1;
+  transform: none;
+}
+
+.mrf-form[data-state="done"] .mrf-check {
+  opacity: 1;
+  transform: none;
+}
+
+.mrf-form[data-state="done"] .mrf-send {
+  cursor: default;
+  transform: none;
+}
+
+.mrf-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 500ms 150ms ease;
+}
+
+.mrf-form[data-state="done"] .mrf-check path {
+  stroke-dashoffset: 0;
+}
+
+.mrf-msg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--mrf-muted, #c2b496);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 400ms ease, transform 500ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.mrf-msg[data-show="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.mrf-form[data-state="error"] .mrf-msg {
+  color: #e8a48f;
+}
+
+/* VIP Hotline Pill */
+.mrf-hotline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(197, 168, 128, 0.08);
+  border: none !important;
+  color: var(--accent-gold, #c5a880);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  transition: background 300ms ease;
+}
+
+.mrf-hotline-pill:hover {
+  background: rgba(197, 168, 128, 0.16);
+  border: none !important;
+}
+
+.mrf-hotline-icon {
+  display: grid;
+  place-items: center;
+  color: var(--accent-gold, #c5a880);
+}
+
+.mrf-hotline-label {
+  color: var(--mrf-muted, #c2b496);
+  font-size: 12.5px;
+}
+
+.mrf-hotline-num {
+  color: var(--mrf-text, #f7f0e2);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(197, 168, 128, 0.2);
+  transition: background 250ms ease, color 250ms ease;
+}
+
+.mrf-hotline-num:hover {
+  background: var(--accent-gold, #c5a880);
+  color: var(--mrf-ground, #1b190d);
+}
+
+/* Center Horizontal Divider */
+.mrf-mid-rule {
+  display: none !important;
+}
+
+/* --- 5-Column Centered Directory Navigation --- */
+.mrf-cols-wide {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(18px, 2.2vw, 36px);
+  text-align: start;
+}
+
+[dir="rtl"] .mrf-cols-wide {
+  text-align: right;
+}
+
+@media (max-width: 1180px) {
+  .mrf-cols-wide {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .mrf-cols-wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .mrf-cols-wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mrf-col h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 clamp(8px, 1.2vh, 14px);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--mrf-text, #f7f0e2);
+  border-bottom: none !important;
+  padding-bottom: 0;
+}
+
+.mrf-col-badge {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.mrf-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(6px, 0.9vh, 10px);
+}
+
+.mrf-embassy-list {
+  display: grid;
+  gap: 12px !important;
+}
+
+.mrf-embassy-name {
+  display: block;
+  font-size: 12.5px;
+  color: var(--mrf-muted, #c2b496);
+  line-height: 1.35;
+  margin-bottom: 2px;
+}
+
+.mrf-sub-link {
+  font-size: 12px;
+  color: var(--accent-gold, #c5a880);
+  font-weight: 500;
+}
+
+.mrf-embassy-hours {
+  display: block;
+  font-size: 11.5px;
+  color: var(--mrf-muted, #c2b496);
+  opacity: 0.8;
+}
+
+/* Certification / Verification Block */
+.mrf-cert-block {
+  display: grid;
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.025);
+  border: none !important;
+  margin-bottom: 12px;
+}
+
+.mrf-cert-item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--mrf-muted, #c2b496);
+}
+
+.mrf-cert-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-gold, #c5a880);
+  flex-shrink: 0;
+}
+
+.mrf-cert-code {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: none !important;
+  font-size: 10.5px;
+  color: var(--mrf-muted, #c2b496);
+}
+
+.mrf-cert-code code {
+  font-family: monospace;
+  color: var(--accent-gold, #c5a880);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.mrf-social-section {
+  display: grid;
+  gap: 8px;
+}
+
+.mrf-social-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mrf-text, #f7f0e2);
+}
+
+/* --- Sovereign Trust & Accreditation Badges Ribbon --- */
+.mrf-trust-band {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  margin: clamp(24px, 3vh, 36px) auto 0;
+  padding: clamp(14px, 1.8vh, 20px) clamp(16px, 2.2vw, 28px);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(197, 168, 128, 0.06) 0%, rgba(27, 25, 13, 0.75) 100%);
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 960px) {
+  .mrf-trust-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 540px) {
+  .mrf-trust-band {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mrf-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: start;
+}
+
+[dir="rtl"] .mrf-trust-item {
+  text-align: right;
+}
+
+.mrf-trust-icon {
+  flex: none;
+  font-size: 22px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(197, 168, 128, 0.12);
+  border: none !important;
+}
+
+.mrf-trust-text strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-gold, #c5a880);
+  margin-bottom: 2px;
+}
+
+.mrf-trust-text small {
+  display: block;
+  font-size: 11.5px;
+  color: var(--mrf-muted, #c2b496);
+  line-height: 1.35;
+}
+
+/* --- Sovereign Seal & Monogram Crest Watermark --- */
+.mrf-seal-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: clamp(20px, 2.5vh, 32px) auto 0;
+}
+
+.mrf-seal-line {
+  display: none !important;
+}
+
+.mrf-seal-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+}
+
+.mrf-seal-emblem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(197, 168, 128, 0.12);
+  border: none !important;
+  color: var(--accent-gold, #c5a880);
+}
+
+.mrf-seal-title {
+  font-family: var(--font-display, "Cormorant Garamond", "Amiri", serif);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-gold, #c5a880);
+}
+
+.mrf-seal-sub {
+  font-size: 11.5px;
+  color: var(--mrf-muted, #c2b496);
+}
+
+/* Screen Reader Utility */
+.mrf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Interactive Links & Hover States */
+.mrf-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--mrf-muted, #c2b496);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: color 350ms ease, transform 500ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.mrf-link::before {
+  content: "";
+  position: absolute;
+  left: -13px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 6px 0;
+  background: var(--accent-gold, #c5a880);
+  opacity: 0;
+  transform: scale(0.2) rotate(-45deg);
+  transition: opacity 300ms ease, transform 500ms cubic-bezier(.16, 1, .3, 1);
+}
+
+[dir="rtl"] .mrf-link::before {
+  left: auto;
+  right: -13px;
+}
+
+.mrf-link:hover, .mrf-link:focus-visible {
+  color: var(--accent-gold, #c5a880);
+  transform: translateX(6px);
+}
+
+[dir="rtl"] .mrf-link:hover, [dir="rtl"] .mrf-link:focus-visible {
+  transform: translateX(-6px);
+}
+
+.mrf-link:hover::before, .mrf-link:focus-visible::before {
+  opacity: 1;
+  transform: none;
+}
+
+.mrf-link:focus-visible {
+  outline: 2px solid var(--accent-gold, #c5a880);
+  outline-offset: 3px;
+}
+
+/* Social Icon Badges */
+.mrf-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mrf-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--mrf-muted, #c2b496);
+  background: rgba(255, 255, 255, 0.04);
+  border: none !important;
+  transition: color 300ms ease, background 300ms ease, transform 450ms cubic-bezier(.2, .9, .3, 1.4);
+}
+
+.mrf-icon:hover, .mrf-icon:focus-visible {
+  color: var(--mrf-ground, #1b190d);
+  background: var(--accent-gold, #c5a880);
+  border: none !important;
+  transform: translateY(-3px);
+}
+
+.mrf-icon:focus-visible {
+  outline: 2px solid var(--accent-gold, #c5a880);
+  outline-offset: 2px;
+}
+
+/* Bottom Bar */
+.mrf-bottom {
+  position: relative;
+  width: 100%;
+  margin-top: clamp(16px, 2vh, 26px);
+  padding-top: clamp(14px, 1.8vh, 22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.mrf-rule {
+  display: none !important;
+}
+
+.mrf-in .mrf-rule {
+  display: none !important;
+}
+
+.mrf-bottom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.mrf-copyright {
+  font-size: 12px;
+  color: var(--mrf-muted, #c2b496);
+  margin: 0;
+}
+
+.mrf-legal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 22px;
+}
+
+.mrf-legal .mrf-link {
+  font-size: 12px;
+}
+
+.mrf-ministry-badge {
+  font-size: 11px;
+  color: rgba(197, 168, 128, 0.7);
+  letter-spacing: 0.03em;
+  padding: 3px 12px;
+  border-radius: 4px;
+  background: rgba(197, 168, 128, 0.06);
+  border: none !important;
+}
+
+.mrf-spacer {
+  flex: 0 1 clamp(8px, 1.4vh, 22px);
+  min-height: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mrf-hero { transform: none; }
+  .mrf-wi, .mrf-acc .mrf-wi, .mrf-r, .mrf-draw, .mrf-rule, .mrf-cta, .mrf-link {
+    transition: none !important;
+  }
+  .mrf-stem, .mrf-form[data-state="error"] { animation: none; }
+}

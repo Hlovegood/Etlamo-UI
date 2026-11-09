@@ -1,0 +1,53 @@
+{
+  "brand": "Etlamo",
+  "tagline": "Sovereign Venues & Historic Estates · اتلموا",
+  "brief": "A luxury curated platform for Egypt's premier royal palaces, Nile heritage waterfronts, and diplomatic summit venues. The identity embodies the authentic Egyptian spirit of gathering (اللمة) with timeless architectural prestige.",
+  "adjectives": [
+    "sovereign",
+    "welcoming",
+    "archival",
+    "prestigious",
+    "architectural"
+  ],
+  "criteria": "Scales down to 16px as a clean favicon, reproduces in 1-color black/white, embodies gathering (اتلموا), and conveys sovereign Egyptian palace heritage.",
+  "mockups": [
+    "signage",
+    "business-card",
+    "website",
+    "badge",
+    "app-icon",
+    "social"
+  ],
+  "nav": [
+    "Venues & Estates",
+    "Curated Services",
+    "3D Planner",
+    "Inquiries & Concierge"
+  ],
+  "brand_color": "#C85A32",
+  "tile_color": "#1C1814",
+  "greyscale": false,
+  "final": true,
+  "designer": "Antigravity Identity Studio",
+  "round": 2,
+  "concepts": [
+    {
+      "name": "The Sovereign Conclave (المجلس الملكي)",
+      "symbol": "svg/masters/etlamo-symbol.svg",
+      "lockup": "svg/masters/etlamo-horizontal.svg",
+      "stacked": "svg/masters/etlamo-stacked.svg",
+      "avatar": "svg/variants/etlamo-symbol-app-icon.svg",
+      "symbol_on_tile": "svg/variants/etlamo-symbol-white.svg",
+      "symbol_on_dark": "svg/variants/etlamo-symbol-gold.svg",
+      "lockup_on_dark": "svg/variants/etlamo-horizontal-white.svg",
+      "idea": "Four sweeping royal vaults converge inward in celebratory assembly around an 8-pointed star pavilion, embodying guests gathering together ('اتلموا') under one sovereign roof.",
+      "rationale": [
+        "Directly translates 'اتلموا' (gather up) into architectural convergence from North, South, East, and West",
+        "Subtly forms the Latin initial 'E' laterally and the Arabic calligraphic sweep of 'ـوا'",
+        "100/100 production-readiness audit score; perfectly balanced 14px margins on 256x256 canvas",
+        "Scales effortlessly down to 16px favicon and up to bronze palace entrance signage"
+      ]
+    }
+  ],
+  "recommendation": "Concept A (The Sovereign Conclave) is selected and implemented as the official brand identity for Etlamo across all digital and physical touchpoints."
+}

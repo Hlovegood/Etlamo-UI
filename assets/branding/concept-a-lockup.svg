@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 256" width="720" height="256" role="img" aria-labelledby="title-lockup-a">
+  <title id="title-lockup-a">Etlamo (اتلموا) — The Sovereign Conclave Lockup</title>
+  <!-- Symbol scaled and positioned at x=20..200, y=38..218 -->
+  <g transform="translate(18, 38) scale(0.703)">
+    <path fill="currentColor" fill-rule="evenodd" d="title-a"/>
+  </g>
+  <!-- Wordmark -->
+  <path fill="currentColor" fill-rule="evenodd" d="
+    M224,74 L268,74 L268,86 L238,86
+    L238,100 L262,100 L262,112 L238,112
+    L238,126 L268,126 L268,138 L224,138 Z
+     
+    M276,74 L324,74 L324,86 L307,86
+    L307,138 L293,138 L293,86 L276,86 Z
+     
+    M332,74 L346,74 L346,126 L374,126
+    L374,138 L332,138 Z
+     
+    M399,74 L415,74 L432,138 L417,138
+    L411,118 L403,118 L397,138 L382,138 Z
+    M405,106 L409,106 L413,92 L401,92 Z
+     
+    M440,74 L454,74 L467,114 L480,74
+    L494,74 L494,138 L480,138 L480,98
+    L469,132 L465,132 L454,98 L454,138
+    L440,138 Z
+     
+    M528,74 A26,32 0 1,1 527.9,74 Z
+    M528,86 A14,20 0 1,0 528.1,86 Z
+    "/>
+  
+    <g fill="currentColor" opacity="0.85">
+      <!-- Tagline: SOVEREIGN ESTATES & PALACES · اتلموا -->
+      <text x="226" y="172" font-family="'Cinzel', 'Trajan Pro', 'Cinzel Decorative', 'Times New Roman', serif" font-size="13" font-weight="600" letter-spacing="3" fill="currentColor">SOVEREIGN ESTATES &amp; VENUES</text>
+      <!-- Arabic brand script: اتلموا -->
+      <text x="560" y="140" font-family="'Amiri', 'Traditional Arabic', 'Scheherazade New', serif" font-size="34" font-weight="700" fill="currentColor">اتلموا</text>
+      <text x="560" y="170" font-family="'Amiri', 'Traditional Arabic', 'Scheherazade New', serif" font-size="12" opacity="0.75" fill="currentColor">قصور وقاعات مصر</text>
+    </g>
+    
+</svg>

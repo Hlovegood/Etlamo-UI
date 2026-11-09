@@ -1,0 +1,304 @@
+/* ==========================================================================
+   WEDDO — @cult-ui/organic-button Styles
+   Architectural CTA button with SVG end caps, diagonal seam,
+   micro-hover interactions, active press scale (0.96), and zero box-shadow.
+   ========================================================================== */
+
+.organic-btn-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 100%;
+  user-select: none;
+  --organic-duration: 400ms;
+  --organic-ease: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Base Theme Variables */
+.organic-btn-wrap--primary {
+  --organic-surface: var(--color-paper, #ffffff);
+  --organic-fg: var(--color-obsidian, #000000);
+}
+
+.organic-btn-wrap--ghost {
+  --organic-surface: rgba(255, 255, 255, 0.12);
+  --organic-fg: var(--color-paper, #ffffff);
+}
+
+.organic-btn-wrap--wedding {
+  --organic-surface: var(--color-paper, #ffffff);
+  --organic-fg: var(--color-obsidian, #000000);
+}
+
+.organic-btn-wrap--conference {
+  --organic-surface: var(--color-paper, #ffffff);
+  --organic-fg: var(--color-obsidian, #000000);
+}
+
+/* Size Variants */
+.organic-btn-wrap--sm {
+  height: 36px;
+  min-height: 36px;
+  --organic-h: 36px;
+  --organic-font-size: 13px;
+  --organic-icon-size: 14px;
+  min-width: 9rem;
+}
+
+.organic-btn-wrap--md {
+  height: 44px;
+  min-height: 44px;
+  --organic-h: 44px;
+  --organic-font-size: 14.5px;
+  --organic-icon-size: 16px;
+  min-width: 11rem;
+}
+
+.organic-btn-wrap--lg {
+  height: 52px;
+  min-height: 52px;
+  --organic-h: 52px;
+  --organic-font-size: 16px;
+  --organic-icon-size: 18px;
+  min-width: 13.5rem;
+}
+
+/* Speed Variants */
+.organic-btn-wrap--slow { --organic-duration: 500ms; }
+.organic-btn-wrap--normal { --organic-duration: 400ms; }
+.organic-btn-wrap--fast { --organic-duration: 250ms; }
+
+/* The Interactive Root Element (button or a) */
+.organic-btn {
+  display: inline-flex;
+  align-items: stretch;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: var(--organic-fg);
+  text-decoration: none !important;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  box-shadow: none;
+  transition: transform 0.15s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Apple Design / Better-UI press feedback */
+.organic-btn:active {
+  transform: scale(0.96);
+  transition: transform 100ms ease-out;
+}
+
+.organic-btn:focus-visible {
+  outline: 2px solid var(--organic-surface);
+  outline-offset: 3px;
+}
+
+.organic-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Capsule Layout Inner Container */
+.organic-btn-inner {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  flex-direction: row;
+  align-items: stretch;
+  transition: transform var(--organic-duration) var(--organic-ease);
+}
+
+/* Shared SVG Fill Rule */
+.organic-btn svg path {
+  fill: var(--organic-surface);
+  transition: fill var(--organic-duration) var(--organic-ease);
+}
+
+/* Left Section: Label Capsule */
+.organic-btn-label-part {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  align-items: stretch;
+}
+
+.organic-svg-end {
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+.organic-svg-cap-left {
+  margin-right: -1px;
+}
+
+.organic-svg-wall-descending {
+  margin-left: -1px;
+}
+
+.organic-btn-label-body {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: visible;
+  white-space: nowrap;
+  background-color: var(--organic-surface);
+  color: var(--organic-fg);
+  padding-right: 4px;
+  transition: background-color var(--organic-duration) var(--organic-ease),
+              color var(--organic-duration) var(--organic-ease);
+}
+
+.organic-btn-label-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 8px;
+  transition: padding var(--organic-duration) var(--organic-ease);
+}
+
+.organic-btn-label {
+  flex-shrink: 0;
+  font-family: var(--font-heading, 'Raleway', 'IBM Plex Sans Arabic', sans-serif);
+  font-size: var(--organic-font-size);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* Right Section: Action Icon Capsule */
+.organic-btn-icon-part {
+  margin-left: -1px;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  width: max-content;
+  flex-shrink: 0;
+  align-items: stretch;
+}
+
+.organic-svg-wall-ascending {
+  margin-right: -1px;
+}
+
+.organic-svg-cap-right {
+  margin-left: -1px;
+}
+
+.organic-btn-icon-body {
+  display: flex;
+  height: 100%;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  white-space: nowrap;
+  background-color: var(--organic-surface);
+  color: var(--organic-fg);
+  transition: background-color var(--organic-duration) var(--organic-ease),
+              color var(--organic-duration) var(--organic-ease);
+}
+
+.organic-btn-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  transition: padding var(--organic-duration) var(--organic-ease);
+}
+
+.organic-btn-icon {
+  width: var(--organic-icon-size);
+  height: var(--organic-icon-size);
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.24s var(--organic-ease);
+}
+
+/* Hover Dynamics */
+.organic-btn:hover .organic-btn-icon-wrap,
+.organic-btn:focus-visible .organic-btn-icon-wrap {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.organic-btn:hover .organic-btn-icon,
+.organic-btn:focus-visible .organic-btn-icon {
+  transform: rotate(45deg) scale(1.12);
+}
+
+/* Monopo Saigon Hover Enhancements */
+.organic-btn-wrap--ghost:hover,
+.organic-btn-wrap--ghost:focus-within {
+  --organic-surface: var(--color-paper, #ffffff);
+  --organic-fg: var(--color-obsidian, #000000);
+}
+
+/* RTL Symmetric Geometry */
+html[lang="ar"] .organic-btn-wrap,
+.organic-btn-wrap--rtl {
+  direction: ltr; /* keep inner SVG geometry coordinates mathematically synced */
+}
+
+html[lang="ar"] .organic-btn-inner,
+.organic-btn-wrap--rtl .organic-btn-inner {
+  transform: scaleX(-1);
+}
+
+html[lang="ar"] .organic-btn-label,
+.organic-btn-wrap--rtl .organic-btn-label {
+  transform: scaleX(-1);
+  direction: rtl;
+  font-family: var(--font-arabic, 'IBM Plex Sans Arabic', sans-serif);
+  letter-spacing: 0;
+}
+
+html[lang="ar"] .organic-btn-icon,
+.organic-btn-wrap--rtl .organic-btn-icon {
+  /* Counter-flip icon but keep diagonal pointing towards forward left in Arabic */
+  transform: scaleX(1);
+}
+
+html[lang="ar"] .organic-btn:hover .organic-btn-icon,
+html[lang="ar"] .organic-btn:focus-visible .organic-btn-icon,
+.organic-btn-wrap--rtl .organic-btn:hover .organic-btn-icon,
+.organic-btn-wrap--rtl .organic-btn:focus-visible .organic-btn-icon {
+  transform: rotate(-45deg) scale(1.12);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .organic-btn,
+  .organic-btn-icon-wrap,
+  .organic-btn-icon,
+  .organic-btn-label-wrap {
+    transition: none !important;
+  }
+  .organic-btn:hover .organic-btn-icon {
+    transform: none !important;
+  }
+}

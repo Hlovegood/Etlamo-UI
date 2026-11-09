@@ -1,0 +1,775 @@
+/* =============================================================================
+   SlitTypeFaq - Egyptian Luxury Edition
+   Inspired by Royal Cairo Palaces & Blended Footer Aesthetics
+   ============================================================================= */
+
+.stf {
+  --stf-flood-in: 400ms;
+  --stf-flood-out: 280ms;
+  --stf-rule: 1px;
+  --stf-ease-flood: cubic-bezier(0.76, 0, 0.24, 1);
+  --stf-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --stf-gutter: clamp(16px, 4cqi, 64px);
+  --stf-paper-l: #fcf8f2;
+  --stf-ink-l: #12100b;
+  --stf-on-l: #ffffff;
+  --stf-paper-d: #070d09;
+  --stf-ink-d: #f5d77f;
+  --stf-on-d: #070d09;
+  --p: var(--stf-paper-l);
+  --k: var(--stf-ink-l);
+  --o: var(--stf-on-l);
+  --stf-display-font: 'Cormorant Garamond', 'Amiri', 'Playfair Display', Georgia, serif;
+  --stf-text-font: 'IBM Plex Sans Arabic', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --stf-cut: calc(0.352em + 0.05em);
+  position: relative;
+  container-type: inline-size;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--k);
+  font-family: var(--stf-text-font);
+  -webkit-font-smoothing: antialiased;
+  padding: clamp(56px, 8cqi, 120px) 0 clamp(48px, 6cqi, 96px);
+  border: none;
+  transition: color 0.4s ease;
+}
+
+:where(.dark) .stf[data-theme="auto"],
+.stf[data-theme="dark"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  --p: var(--stf-paper-d);
+  --k: var(--stf-ink-d);
+  --o: var(--stf-on-d);
+}
+
+.stf *,
+.stf *::before,
+.stf *::after {
+  box-sizing: border-box;
+}
+
+.stf ::selection {
+  background: var(--k);
+  color: var(--o);
+}
+
+.stf-wrap {
+  padding: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Outer gutters for FAQ intro, title, chips, empty state, and contact */
+.stf-title,
+.stf-meta,
+.stf-chips,
+.stf-empty,
+.stf-contact {
+  padding-inline: clamp(20px, 4vw, 64px);
+}
+
+/* --- Display Headline & Slit Effect --- */
+.stf-title {
+  margin: 0;
+  font-family: var(--stf-display-font);
+  font-weight: 700;
+  font-size: clamp(34px, 7.5cqi, 88px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--k);
+  transition: color 0.3s ease;
+}
+
+.stf-line {
+  display: block;
+  overflow: hidden;
+  padding-top: 0.12em;
+  margin-top: -0.06em;
+}
+
+.stf-title[data-slit="true"] {
+  cursor: default;
+}
+
+.stf-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.stf-ch {
+  display: inline-block;
+  transform: translateY(0);
+  transition: transform 700ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 28ms);
+  will-change: transform;
+}
+
+.stf[data-intro="pending"] .stf-ch {
+  transform: translateY(var(--stf-cut));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .stf-title[data-slit="true"]:hover .stf-ch {
+    transform: translateY(0) !important;
+  }
+}
+
+/* --- Ticker Marquee --- */
+.stf-ticker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: clamp(24px, 4cqi, 40px);
+  border-top: var(--stf-rule) solid var(--k);
+  border-bottom: var(--stf-rule) solid var(--k);
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.stf-ticker-mask {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  mask-image: linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent);
+}
+
+[dir="rtl"] .stf-ticker-mask {
+  mask-image: linear-gradient(to left, transparent, black 40px, black calc(100% - 40px), transparent);
+  -webkit-mask-image: linear-gradient(to left, transparent, black 40px, black calc(100% - 40px), transparent);
+}
+
+.stf-ticker-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-left: var(--stf-rule) solid var(--k);
+  color: var(--k);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+[dir="rtl"] .stf-ticker-toggle {
+  border-left: none;
+  border-right: var(--stf-rule) solid var(--k);
+}
+
+.stf-ticker-toggle:hover {
+  background: var(--k);
+  color: var(--o);
+}
+
+.stf-ticker-toggle:focus-visible {
+  outline: 2px solid var(--k);
+  outline-offset: -2px;
+}
+
+.stf-ticker-track {
+  display: inline-flex;
+  animation: stf-ticker 32s linear infinite;
+  will-change: transform;
+}
+
+.stf-ticker:hover .stf-ticker-track,
+.stf-ticker:focus-within .stf-ticker-track,
+.stf-ticker[data-paused="true"] .stf-ticker-track {
+  animation-play-state: paused;
+}
+
+.stf-ticker-run {
+  display: inline-flex;
+  flex: none;
+}
+
+.stf-ticker-run span {
+  padding: 12px 1.2em;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stf-ticker-run span::after {
+  content: "✦";
+  display: inline-block;
+  margin-inline-start: 1.2em;
+  opacity: 0.5;
+}
+
+@keyframes stf-ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+[dir="rtl"] .stf-ticker-track {
+  animation: stf-ticker-rtl 32s linear infinite;
+}
+
+@keyframes stf-ticker-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* --- Meta: Intro & Search --- */
+.stf-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: clamp(28px, 4cqi, 48px);
+  align-items: start;
+}
+
+@media (min-width: 820px) {
+  .stf-meta {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+  }
+}
+
+.stf-intro {
+  margin: 0;
+  font-size: clamp(16px, 1.8cqi, 20px);
+  line-height: 1.65;
+  color: var(--k);
+  opacity: 0.85;
+  text-wrap: pretty;
+}
+
+.stf-search {
+  position: relative;
+}
+
+.stf-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--k);
+  padding: 4px 0 8px;
+  transition: box-shadow 0.2s;
+}
+
+.stf-field svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-inline-end: 12px;
+  color: var(--k);
+  opacity: 0.7;
+}
+
+.stf-field input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: clamp(15px, 1.6cqi, 18px);
+  color: var(--k);
+}
+
+.stf-field input::placeholder {
+  color: var(--k);
+  opacity: 0.45;
+}
+
+.stf-field input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.stf-field:focus-within {
+  box-shadow: 0 2px 0 var(--k);
+}
+
+.stf-clear {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: var(--k);
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.stf-clear:hover {
+  opacity: 1;
+  background: rgba(125, 125, 125, 0.15);
+}
+
+.stf-count {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--k);
+  opacity: 0.65;
+}
+
+/* --- Category Chips --- */
+.stf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(24px, 3.5cqi, 40px);
+  padding-bottom: 20px;
+}
+
+.stf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--k);
+  border-radius: 9999px;
+  color: var(--k);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s, transform 0.15s, border-color 0.25s;
+}
+
+.stf-chip small {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.stf-chip[aria-pressed="true"] {
+  background: var(--k);
+  color: var(--o);
+}
+
+.stf-chip:hover:not([aria-pressed="true"]) {
+  background: rgba(125, 125, 125, 0.1);
+}
+
+.stf-chip:active {
+  transform: scale(0.97);
+}
+
+.stf-chip:focus-visible {
+  outline: 2px solid var(--k);
+  outline-offset: 2px;
+}
+
+/* --- FAQ List & Ruled Items --- */
+.stf-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-bottom: var(--stf-rule) solid var(--k);
+}
+
+.stf-item {
+  position: relative;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-top: var(--stf-rule) solid var(--k);
+}
+
+/* The Signature Ink Flood Layer */
+.stf-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--k);
+  pointer-events: none;
+  will-change: clip-path;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--stf-flood-in) var(--stf-ease-flood);
+}
+
+[dir="rtl"] .stf-fill {
+  clip-path: inset(0 0 0 100%);
+}
+
+.stf-item[data-state="open"] .stf-fill {
+  clip-path: inset(0 0 0 0);
+}
+
+.stf-item[data-state="closing"] .stf-fill {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path var(--stf-flood-out) var(--stf-ease-out);
+}
+
+[dir="rtl"] .stf-item[data-state="closing"] .stf-fill {
+  clip-path: inset(0 100% 0 0);
+}
+
+.stf-h {
+  margin: 0;
+  font: inherit;
+}
+
+.stf-btn {
+  position: relative;
+  width: 100%;
+  display: block;
+  text-align: start;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.stf-btn:focus-visible {
+  outline: 2px solid var(--k);
+  outline-offset: -2px;
+}
+
+.stf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 2.8cqi, 36px);
+  padding: clamp(22px, 3.2cqi, 40px) clamp(20px, 4vw, 64px);
+  color: var(--k);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stf-label {
+  flex: 1;
+}
+
+/* Paper-coloured copy clipped in exact step with the ink */
+.stf-row--inv {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--o);
+  will-change: clip-path;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--stf-flood-in) var(--stf-ease-flood);
+  padding: clamp(22px, 3.2cqi, 40px) clamp(20px, 4vw, 64px);
+  box-sizing: border-box;
+}
+
+[dir="rtl"] .stf-row--inv {
+  clip-path: inset(0 0 0 100%);
+}
+
+.stf-item[data-state="open"] .stf-row--inv {
+  clip-path: inset(0 0 0 0);
+}
+
+.stf-item[data-state="closing"] .stf-row--inv {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path var(--stf-flood-out) var(--stf-ease-out);
+}
+
+[dir="rtl"] .stf-item[data-state="closing"] .stf-row--inv {
+  clip-path: inset(0 100% 0 0);
+}
+
+.stf-row--inv .stf-mark {
+  background: var(--o);
+  color: var(--k);
+}
+
+.stf-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.stf-idx {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: clamp(14px, 1.4cqi, 18px);
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.stf-q {
+  font-family: inherit;
+  font-size: clamp(18px, 2.4cqi, 28px);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.stf-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: transform 320ms var(--stf-ease-out);
+}
+
+.stf-plus svg {
+  width: 18px;
+  height: 18px;
+}
+
+.stf-item[data-state="open"] .stf-plus {
+  transform: rotate(135deg);
+}
+
+/* Search Highlights */
+.stf-mark {
+  background: var(--k);
+  color: var(--o);
+  border-radius: 2px;
+  padding: 0 3px;
+}
+
+/* --- Answer Panel with Animated Height --- */
+.stf-panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 380ms var(--stf-ease-flood);
+  color: var(--o);
+}
+
+.stf-item[data-state="open"] .stf-panel {
+  grid-template-rows: 1fr;
+}
+
+.stf-panel-in {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.stf-item[data-state="closed"] .stf-panel-in {
+  visibility: hidden;
+}
+
+.stf-answer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 0 clamp(20px, 4vw, 64px) clamp(28px, 3.5cqi, 44px) clamp(20px, 4vw, 64px);
+  margin-inline-start: 0;
+  box-sizing: border-box;
+}
+
+@media (min-width: 820px) {
+  .stf-answer {
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+}
+
+.stf-text {
+  font-size: clamp(16px, 1.65cqi, 19px);
+  line-height: 1.7;
+  max-width: 78ch;
+  text-wrap: pretty;
+  opacity: 0.95;
+}
+
+.stf-text p {
+  margin: 0;
+}
+
+/* =============================================================================
+   Active Question Inverted High Contrast Palette
+   Ensures text, plus glyph, tags, and copy link stay strongly contrasting
+   against the full-width flooded background in both light and dark modes
+   ============================================================================= */
+.stf-item[data-state="open"] {
+  color: var(--o) !important;
+}
+
+.stf-item[data-state="open"] .stf-q,
+.stf-item[data-state="open"] .stf-row .stf-q,
+.stf-item[data-state="open"] .stf-row--inv .stf-q,
+.stf-item[data-state="open"] .stf-plus,
+.stf-item[data-state="open"] .stf-plus svg,
+.stf-item[data-state="open"] .stf-panel,
+.stf-item[data-state="open"] .stf-panel-in,
+.stf-item[data-state="open"] .stf-answer,
+.stf-item[data-state="open"] .stf-text,
+.stf-item[data-state="open"] .stf-text p,
+.stf-item[data-state="open"] .stf-tag,
+.stf-item[data-state="open"] .stf-copy {
+  color: var(--o) !important;
+}
+
+.stf-item[data-state="open"] .stf-plus path {
+  stroke: var(--o) !important;
+}
+
+.stf-item[data-state="open"] .stf-tag {
+  border-color: var(--o) !important;
+}
+
+.stf-item[data-state="open"] .stf-copy {
+  border-color: var(--o) !important;
+  color: var(--o) !important;
+}
+
+.stf-item[data-state="open"] .stf-copy:hover {
+  background: var(--o) !important;
+  color: var(--k) !important;
+}
+
+.stf-item[data-state="open"] .stf-copy:hover svg path,
+.stf-item[data-state="open"] .stf-copy:hover svg rect {
+  stroke: var(--k) !important;
+}
+
+.stf-item[data-state="open"] .stf-mark {
+  background: var(--o) !important;
+  color: var(--k) !important;
+}
+
+.stf-tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.stf-tag {
+  padding: 4px 12px;
+  border: 1px solid var(--o);
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+.stf-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--o);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  color: var(--o);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.stf-copy:hover {
+  background: var(--o);
+  color: var(--k);
+}
+
+.stf-copy:focus-visible {
+  outline: 2px solid var(--o);
+  outline-offset: 2px;
+}
+
+/* --- Empty Search State --- */
+.stf-empty {
+  padding: clamp(32px, 5cqi, 64px) 0;
+  text-align: center;
+}
+
+.stf-empty p {
+  margin: 0 0 16px;
+  font-size: clamp(18px, 2cqi, 22px);
+  color: var(--k);
+}
+
+/* --- Contact & Concierge Row --- */
+.stf-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: clamp(40px, 6cqi, 72px);
+  align-items: start;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .stf-contact {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.stf-contact p {
+  margin: 0;
+  font-size: clamp(18px, 2.2cqi, 24px);
+  font-weight: 600;
+  color: var(--k);
+}
+
+.stf-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--k);
+  color: var(--o);
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.stf-cta:hover {
+  opacity: 0.92;
+  transform: translateY(-2px);
+}
+
+.stf-cta:active {
+  transform: translateY(0);
+}
+
+.stf-cta:focus-visible {
+  outline: 2px solid var(--k);
+  outline-offset: 2px;
+}
+
+.stf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stf-ch,
+  .stf-fill,
+  .stf-row--inv,
+  .stf-panel,
+  .stf-plus,
+  .stf-ticker-track {
+    transition: none !important;
+    animation: none !important;
+  }
+}

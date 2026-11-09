@@ -1,0 +1,679 @@
+/* ==========================================================================
+   PosterPageCurl — OriginKit Full-Width 3D Paper Curl & Fold Hero Component
+   Apollo Style: Warm brick atelier at golden hour • Warm Linen Canvas • Espresso Bark
+   Supports Full Page Folding (0% to 100% full reveal) with pointer drag & click
+   ========================================================================== */
+
+.poster-page-curl-hero {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  margin-top: calc(-1 * clamp(96px, 10vw, 122px) + 8px);
+  margin-bottom: clamp(36px, 5vw, 56px);
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+  --fold-progress: 0.06;
+  --curl-size: 85px;
+  --crease-x: 94%;
+}
+
+.poster-curl-container {
+  position: relative;
+  width: 100%;
+  min-height: clamp(540px, 72vh, 760px);
+  overflow: hidden;
+  background-color: var(--text-main, #19140b);
+  color: var(--canvas-bg, #fcf8f2);
+  border-top: 1px solid var(--border-soft, #e6dacb);
+  border-bottom: 1px solid var(--border-soft, #e6dacb);
+}
+
+/* ==========================================================================
+   Back Layer — Revealed Sovereign Archive (Uncovered when paper is folded)
+   ========================================================================== */
+
+.poster-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.poster-layer-back {
+  z-index: 1;
+  background-color: #1f1610;
+}
+
+.poster-layer-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.poster-layer-back .poster-layer-img {
+  filter: brightness(0.85) contrast(1.1);
+  transform: scale(1.02);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.poster-page-curl-hero:hover .poster-layer-back .poster-layer-img,
+.poster-page-curl-hero.is-fully-folded .poster-layer-back .poster-layer-img {
+  transform: scale(1.04);
+}
+
+.poster-back-scrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30, 20, 15, 0.4) 0%, rgba(30, 20, 15, 0.88) 100%),
+              linear-gradient(to top, rgba(30, 20, 15, 0.95) 0%, transparent 60%);
+}
+
+.poster-back-card {
+  position: absolute;
+  bottom: clamp(24px, 4vw, 48px);
+  z-index: 5;
+  max-width: clamp(300px, 36vw, 440px);
+  padding: clamp(24px, 3vw, 36px);
+  background: rgba(45, 30, 22, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-gold, #c5a880);
+  border-radius: var(--radius-cards, 3px);
+  color: var(--canvas-bg, #fcf8f2);
+  box-shadow: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+[dir="ltr"] .poster-back-card {
+  right: clamp(24px, 4vw, 48px);
+  text-align: left;
+}
+
+[dir="rtl"] .poster-back-card {
+  left: clamp(24px, 4vw, 48px);
+  text-align: right;
+}
+
+.poster-back-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  background: rgba(197, 168, 128, 0.2);
+  border: 1px solid var(--color-gold, #c5a880);
+  border-radius: var(--radius-tags, 3px);
+  color: var(--color-sandstone-glow, #fde3b8);
+  margin-bottom: 12px;
+}
+
+.poster-back-title {
+  font-family: var(--font-paradigm-pro, 'Cormorant Garamond', serif);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  margin: 0 0 10px;
+  color: var(--color-warm-linen, #f9f8f0);
+}
+
+[dir="rtl"] .poster-back-title {
+  font-family: var(--font-arabic-serif, 'Amiri', serif);
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.poster-back-desc {
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: clamp(13px, 1.1vw, 14.5px);
+  line-height: 1.6;
+  color: rgba(249, 248, 240, 0.85);
+  margin: 0 0 16px;
+}
+
+.poster-back-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 12px;
+  color: var(--color-honey-parchment, #f7efc5);
+  padding-top: 14px;
+  border-top: 1px solid rgba(221, 222, 223, 0.2);
+  margin-bottom: 16px;
+}
+
+.poster-back-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.poster-back-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.poster-unfold-btn {
+  background: var(--color-gold, #c5a880) !important;
+  color: #19140b !important;
+  border: 1px solid var(--color-gold, #c5a880) !important;
+  border-radius: var(--radius-buttons, 3px) !important;
+  padding: 8px 18px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+  cursor: pointer;
+}
+
+.poster-unfold-btn:hover {
+  background: var(--primary, #b38234) !important;
+  border-color: var(--primary, #b38234) !important;
+  color: #ffffff !important;
+}
+
+.poster-revealed-plan-btn {
+  border: 1px solid rgba(249, 248, 240, 0.4) !important;
+  color: var(--color-warm-linen, #f9f8f0) !important;
+  border-radius: var(--radius-buttons, 3px) !important;
+  padding: 8px 18px !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+}
+
+.poster-revealed-plan-btn:hover {
+  background: rgba(249, 248, 240, 0.15) !important;
+}
+
+/* ==========================================================================
+   Front Layer — Primary Editorial Sheet (Clipped dynamically as paper folds)
+   ========================================================================== */
+
+.poster-layer-front {
+  z-index: 2;
+  transition: clip-path 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  will-change: clip-path, opacity;
+}
+
+/* Default / Partial Corner Fold Clip-Path */
+[dir="ltr"] .poster-layer-front {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--curl-size, 85px)),
+    calc(100% - var(--curl-size, 85px)) 100%,
+    0 100%
+  );
+}
+
+[dir="rtl"] .poster-layer-front {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    var(--curl-size, 85px) 100%,
+    0 calc(100% - var(--curl-size, 85px))
+  );
+}
+
+/* Fully Folded Sheet — Folds all the way across to 0 width */
+.poster-page-curl-hero.is-fully-folded [dir="ltr"] .poster-layer-front,
+[dir="ltr"] .poster-page-curl-hero.is-fully-folded .poster-layer-front {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.poster-page-curl-hero.is-fully-folded [dir="rtl"] .poster-layer-front,
+[dir="rtl"] .poster-page-curl-hero.is-fully-folded .poster-layer-front {
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.poster-layer-front .poster-layer-img {
+  filter: brightness(0.92) contrast(1.05);
+}
+
+.poster-front-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(30, 20, 15, 0.35) 0%,
+    rgba(30, 20, 15, 0.52) 40%,
+    rgba(30, 20, 15, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+.poster-front-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(30, 20, 15, 0.65) 100%);
+  pointer-events: none;
+}
+
+/* Editorial Content Layout (Apollo Style) */
+.poster-front-content {
+  position: relative;
+  z-index: 6;
+  max-width: var(--page-max-width, 1200px);
+  margin-inline: auto;
+  min-height: clamp(540px, 72vh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(60px, 8vw, 110px) clamp(24px, 4vw, 44px) clamp(44px, 6vw, 72px);
+  box-sizing: border-box;
+}
+
+.poster-category-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin-bottom: clamp(14px, 2vw, 22px);
+  padding: 6px 16px;
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-warm-linen, #f9f8f0);
+  background: rgba(60, 38, 28, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-soft, #e6dacb);
+  border-radius: var(--radius-tags, 3px);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.poster-category-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold, #c5a880);
+  box-shadow: 0 0 8px var(--color-gold, #c5a880);
+}
+
+.poster-main-title {
+  font-family: var(--font-paradigm-pro, 'Cormorant Garamond', serif);
+  font-size: clamp(34px, 5.6vw, 72px);
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: 0.03em;
+  color: var(--color-warm-linen, #f9f8f0);
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  max-width: 900px;
+  text-wrap: balance;
+}
+
+[dir="rtl"] .poster-main-title {
+  font-family: var(--font-arabic-serif, 'Amiri', serif);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.poster-main-intro {
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: clamp(14px, 1.35vw, 18px);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(249, 248, 240, 0.9);
+  margin: 0 0 clamp(24px, 3.5vw, 36px);
+  max-width: 720px;
+}
+
+[dir="rtl"] .poster-main-intro {
+  font-family: var(--font-arabic-sans, 'IBM Plex Sans Arabic', sans-serif);
+  line-height: 1.75;
+}
+
+/* Action Buttons & Tag Strip (Apollo Style) */
+.poster-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: clamp(20px, 3vw, 28px);
+}
+
+.poster-action-group .button,
+.poster-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 28px;
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border-radius: var(--radius-buttons, 3px) !important;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none !important;
+}
+
+/* Primary Action CTA — Gold Sandstone */
+.poster-action-group .button-primary,
+.poster-action-group .button:not(.button-outline) {
+  background: var(--color-gold, #c5a880) !important;
+  color: #19140b !important;
+  border: 1px solid var(--color-gold, #c5a880) !important;
+}
+
+.poster-action-group .button-primary:hover,
+.poster-action-group .button:not(.button-outline):hover {
+  background: var(--primary, #b38234) !important;
+  border-color: var(--primary, #b38234) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* Ghost Button on Dark Hero */
+.poster-action-group .button-outline,
+.poster-cta-btn.button-outline {
+  background: transparent !important;
+  border: 1px solid rgba(252, 248, 242, 0.45) !important;
+  color: var(--canvas-bg, #fcf8f2) !important;
+}
+
+.poster-action-group .button-outline:hover,
+.poster-cta-btn.button-outline:hover {
+  background: rgba(252, 248, 242, 0.15) !important;
+  border-color: var(--canvas-bg, #fcf8f2) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.poster-fold-toggle-btn {
+  border-color: var(--color-gold, #c5a880) !important;
+  color: var(--color-sandstone-glow, #fde3b8) !important;
+}
+
+.poster-fold-toggle-btn:hover {
+  background: rgba(197, 168, 128, 0.2) !important;
+}
+
+/* Editorial Tags */
+.poster-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.poster-tag-item {
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(252, 248, 242, 0.8);
+  padding: 5px 14px;
+  border: 1px solid var(--border-soft, #e6dacb);
+  border-radius: var(--radius-tags, 3px);
+  background: rgba(25, 20, 11, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.poster-tag-item:hover {
+  border-color: var(--color-gold, #c5a880);
+  color: var(--canvas-bg, #fcf8f2);
+}
+
+/* ==========================================================================
+   3D Paper Curl & Full Fold Spine (OriginKit Core)
+   Can fold fully across 100% of the screen
+   ========================================================================== */
+
+.poster-curl-fold {
+  position: absolute;
+  z-index: 10;
+  cursor: grab;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: width, height, transform;
+  width: var(--curl-size, 85px);
+  height: var(--curl-size, 85px);
+}
+
+.poster-curl-fold:active {
+  cursor: grabbing;
+}
+
+[dir="ltr"] .poster-curl-fold {
+  bottom: 0;
+  right: 0;
+}
+
+[dir="rtl"] .poster-curl-fold {
+  bottom: 0;
+  left: 0;
+}
+
+/* Ambient Crease Drop Shadow */
+.poster-curl-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[dir="ltr"] .poster-curl-shadow {
+  filter: drop-shadow(-10px -10px 18px rgba(0, 0, 0, 0.65));
+}
+
+[dir="rtl"] .poster-curl-shadow {
+  filter: drop-shadow(10px -10px 18px rgba(0, 0, 0, 0.65));
+}
+
+/* The folded triangular / full paper sheet face (Warm Linen / Ivory Parchment) */
+.poster-curl-paper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[dir="ltr"] .poster-curl-paper {
+  clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    var(--color-warm-linen, #f9f8f0) 35%,
+    #e5dfd2 65%,
+    #b2a792 100%
+  );
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+[dir="rtl"] .poster-curl-paper {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+  background: linear-gradient(
+    225deg,
+    #ffffff 0%,
+    var(--color-warm-linen, #f9f8f0) 35%,
+    #e5dfd2 65%,
+    #b2a792 100%
+  );
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-right: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Specular Light Sheen along paper cylinder */
+.poster-curl-sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 65%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Dark Mode Palette for Paper Curled Backside */
+html.dark .poster-curl-paper[dir="ltr"],
+html[data-theme="dark"] [dir="ltr"] .poster-curl-paper {
+  background: linear-gradient(
+    135deg,
+    #4a372c 0%,
+    #3c261c 40%,
+    #271810 70%,
+    #140c08 100%
+  );
+  border-color: rgba(233, 116, 81, 0.4);
+}
+
+html.dark .poster-curl-paper[dir="rtl"],
+html[data-theme="dark"] [dir="rtl"] .poster-curl-paper {
+  background: linear-gradient(
+    225deg,
+    #4a372c 0%,
+    #3c261c 40%,
+    #271810 70%,
+    #140c08 100%
+  );
+  border-color: rgba(233, 116, 81, 0.4);
+}
+
+/* Pull Hint Pill */
+.poster-curl-hint {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: rgba(25, 20, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--canvas-bg, #fcf8f2);
+  border: 1px solid var(--color-gold, #c5a880);
+  border-radius: var(--radius-tags, 3px);
+  font-family: var(--font-monasans, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.poster-curl-hint svg {
+  width: 12px;
+  height: 12px;
+}
+
+[dir="ltr"] .poster-curl-hint {
+  top: 12px;
+  left: 12px;
+}
+
+[dir="rtl"] .poster-curl-hint {
+  top: 12px;
+  right: 12px;
+}
+
+.poster-page-curl-hero:hover .poster-curl-hint,
+.poster-curl-fold:focus-visible .poster-curl-hint,
+.poster-page-curl-hero.is-fully-folded .poster-curl-hint {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.poster-curl-fold:focus-visible {
+  outline: 2px solid var(--color-gold, #c5a880);
+  outline-offset: 4px;
+}
+
+/* ==========================================================================
+   Fully Folded State — Allows folding the entire paper across the screen
+   ========================================================================== */
+
+.poster-page-curl-hero.is-fully-folded {
+  --fold-progress: 1.0 !important;
+}
+
+.poster-page-curl-hero.is-fully-folded [dir="ltr"] .poster-curl-fold,
+[dir="ltr"] .poster-page-curl-hero.is-fully-folded .poster-curl-fold {
+  width: clamp(80px, 12vw, 120px) !important;
+  height: 100% !important;
+  right: auto !important;
+  left: 0 !important;
+  border-right: 2px solid var(--color-gold, #c5a880);
+  box-shadow: 12px 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.poster-page-curl-hero.is-fully-folded [dir="rtl"] .poster-curl-fold,
+[dir="rtl"] .poster-page-curl-hero.is-fully-folded .poster-curl-fold {
+  width: clamp(80px, 12vw, 120px) !important;
+  height: 100% !important;
+  left: auto !important;
+  right: 0 !important;
+  border-left: 2px solid var(--color-gold, #c5a880);
+  box-shadow: -12px 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.poster-page-curl-hero.is-fully-folded .poster-curl-paper {
+  clip-path: none !important;
+  background: linear-gradient(
+    90deg,
+    #2a1c14 0%,
+    #3c261c 60%,
+    #4e3324 100%
+  ) !important;
+}
+
+@media (max-width: 768px) {
+  .poster-page-curl-hero {
+    margin-top: calc(-1 * clamp(96px, 10vw, 122px) + 4px);
+    margin-bottom: 28px;
+    --curl-size: 65px;
+  }
+  .poster-curl-container {
+    min-height: 520px;
+  }
+  .poster-back-card {
+    max-width: 90%;
+    bottom: 16px;
+    padding: 18px;
+  }
+  .poster-front-content {
+    min-height: 520px;
+    padding: 60px 20px 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster-layer-front,
+  .poster-curl-fold,
+  .poster-layer-back .poster-layer-img {
+    transition: none !important;
+  }
+}

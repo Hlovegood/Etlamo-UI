@@ -1,0 +1,48 @@
+/* ==========================================================================
+   @smoothui/blur-out-up - SmoothUI Text Blur Entrance Engine
+   Words lift out of a soft blur and drift upward into place with a subtle stagger.
+   ========================================================================== */
+
+@keyframes smoothuiBlurOutUp {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(22px);
+  }
+  60% {
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.blur-out-up-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.28em;
+  line-height: inherit;
+}
+
+.blur-out-up-word {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  animation: smoothuiBlurOutUp 0.56s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--blur-delay, 0s);
+  line-height: inherit;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .blur-out-up-word {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,138 @@
+/* ==========================================================================
+   SunMoonThemeToggle & View Transitions Engine
+   Celestial Arc Trajectory, Day/Night Sky Domes & Smooth Page Color Fade
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   View Transitions API (Circular Ripple Wave)
+   -------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   SunMoonThemeToggle Component
+   -------------------------------------------------------------------------- */
+.sun-moon-toggle {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: 1px solid var(--border-soft, rgba(200, 180, 150, 0.3));
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.sun-moon-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.sun-moon-toggle:active {
+  transform: scale(0.92);
+  transition: transform 100ms ease-out;
+}
+
+.sun-moon-toggle:focus-visible {
+  outline: 2px solid var(--primary, #c5a880);
+  outline-offset: 2px;
+}
+
+/* Day & Night Sky Backgrounds */
+.sun-moon-sky {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  border-radius: 9999px;
+  will-change: opacity;
+}
+
+.sun-moon-sky--night {
+  background: linear-gradient(180deg, #090f2a 0%, #16204b 60%, #2a2f66 100%);
+}
+
+.sun-moon-sky--day {
+  background: linear-gradient(180deg, #4ea8ff 0%, #9fd3ff 60%, #e3f3ff 100%);
+}
+
+/* Twinkling Stars in Night Sky */
+.sun-moon-star {
+  position: absolute;
+  border-radius: 9999px;
+  background: #ffffff;
+  opacity: 0.6;
+  animation: sun-moon-star-twinkle ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sun-moon-star-twinkle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* Celestial Bodies (Moon & Sun) */
+.sun-moon-body {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  will-change: transform, opacity;
+}
+
+.sun-moon-body--moon {
+  color: #fde68a;
+  filter: drop-shadow(0 0 8px rgba(252, 211, 77, 0.65));
+}
+
+.sun-moon-body--sun {
+  color: #fb923c;
+  filter: drop-shadow(0 0 10px rgba(251, 146, 60, 0.75));
+}
+
+.sun-moon-svg {
+  width: 50%;
+  height: 50%;
+  display: block;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .sun-moon-toggle,
+  .sun-moon-body,
+  .sun-moon-sky,
+  .sun-moon-star {
+    transition: none !important;
+    animation: none !important;
+  }
+}

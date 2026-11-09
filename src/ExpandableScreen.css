@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Expandable Screen Component (Cult UI / shadcn/ui)
+   Morphing full-screen animated overlay with shared layout transitions,
+   backdrop blur, spring-feel physics, and accessible keyboard dismissal.
+   ========================================================================== */
+
+.expandable-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2.5vw, 24px);
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.expandable-screen-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.expandable-screen-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 16, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  z-index: 1;
+}
+
+html[data-theme="dark"] .expandable-screen-backdrop,
+html.dark .expandable-screen-backdrop {
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.expandable-screen-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 920px;
+  max-height: calc(100vh - 40px);
+  background: var(--card-bg, #ffffff);
+  color: var(--text-main, #000000);
+  border: 1px solid var(--text-main, #000000);
+  border-radius: var(--radius-cards, 0px);
+  box-shadow: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  will-change: transform, opacity;
+  transform: scale(0.96) translateY(12px);
+  opacity: 0;
+  transition: transform var(--duration-glide, 0.8s) var(--ease-glide, cubic-bezier(0.19, 1, 0.22, 1)),
+              opacity 0.4s ease;
+  box-sizing: border-box;
+}
+
+.expandable-screen-overlay.is-active .expandable-screen-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.expandable-screen-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--card-bg, #ffffff);
+  border-bottom: 1px solid var(--text-main, #000000);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.expandable-screen-title {
+  margin: 0;
+  font-family: var(--font-roobert, 'Roobert', sans-serif);
+  font-size: 20px;
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+html[lang="ar"] .expandable-screen-title {
+  font-family: var(--font-arabic-sans, 'IBM Plex Sans Arabic', sans-serif);
+  letter-spacing: normal;
+}
+
+.expandable-screen-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-buttons, 75px);
+  border: 1px solid var(--text-main, #000000);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform var(--duration-glide, 0.8s) var(--ease-glide, cubic-bezier(0.19, 1, 0.22, 1)),
+              background-color 0.4s ease,
+              color 0.4s ease;
+  padding: 0;
+  margin-inline-start: auto;
+}
+
+.expandable-screen-close:hover {
+  background: var(--text-main);
+  color: var(--canvas-bg, #ffffff);
+  transform: scale(1.04);
+}
+
+.expandable-screen-close:active {
+  transform: scale(0.96);
+}
+
+.expandable-screen-content {
+  padding: 28px 32px 36px;
+  box-sizing: border-box;
+}
+
+/* Standalone / embedded full screen form wrapper */
+.expandable-screen-wrap {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.expandable-screen-wrap .form-panel {
+  border-radius: var(--radius-cards, 0px);
+  box-shadow: none;
+  border: 1px solid var(--text-main);
+  animation: expandable-enter var(--duration-glide, 0.8s) var(--ease-glide, cubic-bezier(0.19, 1, 0.22, 1)) forwards;
+}
+
+@keyframes expandable-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile full-bleed presentation */
+@media (max-width: 640px) {
+  .expandable-screen-overlay {
+    padding: 0;
+  }
+  .expandable-screen-card {
+    max-height: 100vh;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+  .expandable-screen-header {
+    padding: 14px 18px;
+  }
+  .expandable-screen-content {
+    padding: 20px 18px 32px;
+  }
+}

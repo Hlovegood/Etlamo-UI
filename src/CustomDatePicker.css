@@ -1,0 +1,701 @@
+/* ==========================================================================
+   WEDDO — Bespoke Royal Calendar & Custom DatePicker Popup
+   Matches Apollo Design System: Terracotta Ember, Warm Linen & Frosted Glass
+   ========================================================================== */
+
+/* Container wrapper for trigger and popover */
+.custom-datepicker-wrap {
+  position: relative;
+  width: 100%;
+  font-family: var(--font-body, 'IBM Plex Sans Arabic', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
+/* Hidden native input ensuring form submission, FormData, and setCustomValidity work */
+.custom-datepicker-native-input {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Trigger Pill
+   -------------------------------------------------------------------------- */
+.custom-datepicker-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.65rem 1rem;
+  background: var(--canvas-bg, #fcf8f2);
+  color: var(--text-main, #19140b);
+  border: 1px solid var(--card-border, #e6dacb);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(25, 20, 11, 0.04);
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.custom-datepicker-trigger:hover {
+  border-color: var(--primary, #b38234);
+  background: rgba(197, 168, 128, 0.06);
+  box-shadow: 0 3px 12px rgba(179, 130, 52, 0.1);
+}
+
+.custom-datepicker-trigger:focus-visible,
+.custom-datepicker-trigger.is-open {
+  outline: none;
+  border-color: var(--primary, #b38234);
+  box-shadow: 0 0 0 3px rgba(179, 130, 52, 0.2), 0 4px 16px rgba(25, 20, 11, 0.08);
+}
+
+.custom-datepicker-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold, #c5a880);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.custom-datepicker-trigger:hover .custom-datepicker-icon {
+  transform: scale(1.08);
+}
+
+.custom-datepicker-label {
+  flex: 1 1 auto;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+
+.custom-datepicker-placeholder {
+  color: var(--text-muted, #7c685f);
+  font-weight: 400;
+  font-size: 0.92rem;
+}
+
+.custom-datepicker-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #7c685f);
+  flex-shrink: 0;
+  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-datepicker-trigger.is-open .custom-datepicker-chevron {
+  transform: rotate(180deg);
+  color: var(--primary, #b38234);
+}
+
+/* --------------------------------------------------------------------------
+   Calendar Popover Window
+   -------------------------------------------------------------------------- */
+.custom-calendar-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-start: 0;
+  z-index: 250;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  background: var(--canvas-bg, #fdfbf7);
+  border: 1px solid rgba(60, 38, 28, 0.12);
+  border-radius: 6px;
+  box-shadow:
+    0 24px 48px -12px rgba(45, 25, 18, 0.22),
+    0 8px 24px -4px rgba(45, 25, 18, 0.1),
+    0 0 0 1px rgba(233, 116, 81, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: customCalAppear 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@keyframes customCalAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.custom-cal-container {
+  position: relative;
+  padding: 1.25rem 1.15rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Ambient glow accent */
+.custom-cal-ambient {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  height: 80px;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(233, 116, 81, 0.12), transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Header: Kicker, Month Title & Prev/Next Navigation
+   -------------------------------------------------------------------------- */
+.custom-cal-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(60, 38, 28, 0.08);
+}
+
+.custom-cal-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.custom-cal-kicker {
+  font-family: var(--font-display, 'Cormorant Garamond', 'Amiri', serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary, #b38234);
+  font-weight: 700;
+}
+
+.custom-cal-month-title {
+  margin: 0;
+  font-family: var(--font-display, 'Cormorant Garamond', 'Amiri', serif);
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--text-main, #19140b);
+  line-height: 1.2;
+}
+
+.custom-cal-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.custom-cal-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(25, 20, 11, 0.1);
+  background: transparent;
+  color: var(--text-main, #19140b);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  padding: 0;
+}
+
+.custom-cal-nav-btn:hover:not([disabled]) {
+  background: rgba(197, 168, 128, 0.14);
+  border-color: var(--color-gold, #c5a880);
+  color: var(--primary, #b38234);
+  transform: translateY(-1px);
+}
+
+.custom-cal-nav-btn:active:not([disabled]) {
+  transform: translateY(0);
+}
+
+.custom-cal-nav-btn[disabled] {
+  opacity: 0.28;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Weekday Headers
+   -------------------------------------------------------------------------- */
+.custom-cal-weekdays {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.custom-cal-weekday {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted, #7c685f);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Days Grid
+   -------------------------------------------------------------------------- */
+.custom-cal-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+.custom-cal-day {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  min-height: 38px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-main, #3c261c);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  user-select: none;
+}
+
+.custom-cal-day-num {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover state */
+.custom-cal-day:hover:not([disabled]):not(.is-outside) {
+  background: rgba(197, 168, 128, 0.14);
+  border-color: rgba(197, 168, 128, 0.4);
+  color: var(--primary, #b38234);
+  transform: scale(1.04);
+}
+
+/* Focus state */
+.custom-cal-day:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-gold, #c5a880);
+  z-index: 3;
+}
+
+/* Outside month leading/trailing days */
+.custom-cal-day.is-outside {
+  color: rgba(124, 104, 95, 0.32);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Today state */
+.custom-cal-day.is-today:not(.is-selected) {
+  border-color: var(--color-gold, #c5a880);
+  font-weight: 700;
+  color: var(--primary, #b38234);
+}
+
+.custom-cal-today-dot {
+  position: absolute;
+  bottom: 4px;
+  inset-inline-start: 50%;
+  transform: translateX(calc(-50% * var(--dir-sign, 1)));
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-gold, #c5a880);
+  pointer-events: none;
+}
+
+[dir="rtl"] .custom-cal-today-dot {
+  transform: translateX(50%);
+}
+
+/* Selected state: Royal Gold Sandstone gradient */
+.custom-cal-day.is-selected {
+  background: linear-gradient(135deg, #a8782a 0%, #c5a880 100%) !important;
+  border-color: #93671e !important;
+  color: #19140b !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(197, 168, 128, 0.45) !important;
+  transform: scale(1.03);
+}
+
+.custom-cal-day.is-selected .custom-cal-today-dot {
+  background-color: #ffffff;
+}
+
+/* Blocked / Reserved day */
+.custom-cal-day.is-blocked:not(.is-selected) {
+  background-color: rgba(200, 60, 40, 0.05);
+  border-color: rgba(200, 60, 40, 0.2);
+  color: #b33927;
+}
+
+.custom-cal-blocked-badge {
+  position: absolute;
+  top: 3px;
+  inset-inline-end: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #d9432e;
+  box-shadow: 0 0 4px rgba(217, 67, 46, 0.6);
+}
+
+/* Disabled past days */
+.custom-cal-day.is-disabled,
+.custom-cal-day[disabled] {
+  opacity: 0.26;
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: line-through;
+  text-decoration-color: rgba(124, 104, 95, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Footer Bar
+   -------------------------------------------------------------------------- */
+.custom-cal-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(60, 38, 28, 0.08);
+}
+
+.custom-cal-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--text-muted, #7c685f);
+  font-weight: 500;
+}
+
+.custom-cal-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  animation: pulseEmerald 2s infinite;
+}
+
+@keyframes pulseEmerald {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.custom-cal-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-cal-today-action,
+.custom-cal-close-action,
+.custom-cal-clear-action {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.custom-cal-clear-action {
+  border: 1px solid rgba(190, 60, 45, 0.28);
+  background: rgba(190, 60, 45, 0.06);
+  color: #c84130;
+}
+
+.custom-cal-clear-action:hover {
+  background: rgba(190, 60, 45, 0.14);
+  border-color: #c84130;
+}
+
+.custom-cal-today-action {
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  background: rgba(197, 168, 128, 0.1);
+  color: var(--primary, #b38234);
+}
+
+.custom-cal-today-action:hover {
+  background: rgba(197, 168, 128, 0.2);
+  border-color: var(--color-gold, #c5a880);
+}
+
+.custom-cal-close-action {
+  border: 1px solid rgba(25, 20, 11, 0.1);
+  background: transparent;
+  color: var(--text-muted, #736148);
+}
+
+.custom-cal-close-action:hover {
+  background: rgba(25, 20, 11, 0.06);
+  color: var(--text-main, #19140b);
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Accommodations
+   -------------------------------------------------------------------------- */
+html.dark .custom-datepicker-trigger,
+[data-theme="dark"] .custom-datepicker-trigger {
+  background: #0d1510;
+  border-color: rgba(238, 216, 166, 0.16);
+  color: #f7eee3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+html.dark .custom-datepicker-trigger:hover,
+[data-theme="dark"] .custom-datepicker-trigger:hover {
+  border-color: #eed8a6;
+  background: rgba(238, 216, 166, 0.08);
+}
+
+html.dark .custom-datepicker-placeholder,
+[data-theme="dark"] .custom-datepicker-placeholder {
+  color: #adb9ab;
+}
+
+html.dark .custom-calendar-popup,
+[data-theme="dark"] .custom-calendar-popup {
+  background: #0f1812;
+  border-color: rgba(238, 216, 166, 0.2);
+  box-shadow:
+    0 24px 50px -10px rgba(0, 0, 0, 0.8),
+    0 10px 25px -5px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(238, 216, 166, 0.2);
+}
+
+html.dark .custom-cal-header,
+html.dark .custom-cal-footer,
+[data-theme="dark"] .custom-cal-header,
+[data-theme="dark"] .custom-cal-footer {
+  border-color: rgba(245, 237, 228, 0.09);
+}
+
+html.dark .custom-cal-month-title,
+[data-theme="dark"] .custom-cal-month-title {
+  color: #f5ede4;
+}
+
+html.dark .custom-cal-nav-btn,
+[data-theme="dark"] .custom-cal-nav-btn {
+  border-color: rgba(245, 237, 228, 0.12);
+  color: #e6dacd;
+}
+
+html.dark .custom-cal-weekday,
+[data-theme="dark"] .custom-cal-weekday {
+  color: #9d8b82;
+}
+
+html.dark .custom-cal-day,
+[data-theme="dark"] .custom-cal-day {
+  color: #f5ede4;
+}
+
+html.dark .custom-cal-day:hover:not([disabled]):not(.is-outside),
+[data-theme="dark"] .custom-cal-day:hover:not([disabled]):not(.is-outside) {
+  background: rgba(238, 216, 166, 0.16);
+  border-color: rgba(238, 216, 166, 0.35);
+  color: #eed8a6;
+}
+
+html.dark .custom-cal-day.is-outside,
+[data-theme="dark"] .custom-cal-day.is-outside {
+  color: rgba(173, 185, 171, 0.25);
+}
+
+html.dark .custom-cal-day.is-today:not(.is-selected),
+[data-theme="dark"] .custom-cal-day.is-today:not(.is-selected) {
+  color: #eed8a6;
+  border-color: #eed8a6;
+}
+
+html.dark .custom-cal-day.is-disabled,
+html.dark .custom-cal-day[disabled],
+[data-theme="dark"] .custom-cal-day.is-disabled,
+[data-theme="dark"] .custom-cal-day[disabled] {
+  color: #5a4b44;
+  text-decoration-color: #5a4b44;
+}
+
+html.dark .custom-cal-close-action,
+[data-theme="dark"] .custom-cal-close-action {
+  border-color: rgba(238, 216, 166, 0.16);
+  color: #adb9ab;
+}
+
+html.dark .custom-cal-close-action:hover,
+[data-theme="dark"] .custom-cal-close-action:hover {
+  background: rgba(238, 216, 166, 0.1);
+  color: #f7eee3;
+}
+
+html.dark .custom-cal-clear-action,
+[data-theme="dark"] .custom-cal-clear-action {
+  border-color: rgba(238, 216, 166, 0.3);
+  background: rgba(238, 216, 166, 0.08);
+  color: #eed8a6;
+}
+
+html.dark .custom-cal-clear-action:hover,
+[data-theme="dark"] .custom-cal-clear-action:hover {
+  background: rgba(238, 216, 166, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   Search Cockpit Integration (Homepage & Discover Bar)
+   -------------------------------------------------------------------------- */
+.search-field .custom-datepicker-wrap {
+  width: 100%;
+}
+
+.search-field .custom-datepicker-trigger {
+  min-height: 38px;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px;
+}
+
+.search-field .custom-datepicker-trigger:hover,
+.search-field .custom-datepicker-trigger:focus-visible,
+.search-field .custom-datepicker-trigger.is-open {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.search-field .custom-datepicker-icon {
+  display: none !important; /* Label already displays calendar icon */
+}
+
+.search-field .custom-datepicker-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.search-field .custom-datepicker-placeholder {
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+.search-field .custom-datepicker-chevron {
+  color: var(--primary, #b38234);
+  width: 15px;
+  height: 15px;
+}
+
+html.dark .search-field .custom-datepicker-chevron,
+[data-theme="dark"] .search-field .custom-datepicker-chevron {
+  color: #eed8a6 !important;
+}
+
+.search-field .custom-calendar-popup {
+  top: calc(100% + 14px);
+  z-index: 500;
+  box-shadow:
+    0 26px 64px -12px rgba(25, 20, 11, 0.28),
+    0 8px 24px -4px rgba(25, 20, 11, 0.12),
+    0 0 0 1px rgba(197, 168, 128, 0.25);
+}
+
+html.dark .search-field .custom-calendar-popup,
+[data-theme="dark"] .search-field .custom-calendar-popup {
+  box-shadow:
+    0 30px 70px -10px rgba(0, 0, 0, 0.85),
+    0 12px 28px -4px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(238, 216, 166, 0.25) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Calendar Icon Contrast Across Light & Dark Themes
+   -------------------------------------------------------------------------- */
+.custom-datepicker-icon {
+  color: var(--primary, #b38234);
+}
+
+.custom-datepicker-icon svg {
+  color: var(--primary, #b38234);
+  stroke-width: 2px;
+  filter: drop-shadow(0 1px 2px rgba(179, 130, 52, 0.2));
+}
+
+html.dark .custom-datepicker-icon,
+html.dark .custom-datepicker-icon svg,
+[data-theme="dark"] .custom-datepicker-icon,
+[data-theme="dark"] .custom-datepicker-icon svg {
+  color: #eed8a6 !important;
+  stroke: #eed8a6 !important;
+  filter: drop-shadow(0 0 6px rgba(238, 216, 166, 0.5)) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Viewport Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .custom-calendar-popup {
+    width: calc(100vw - 2rem);
+    inset-inline-start: 50%;
+    transform: translateX(calc(-50% * var(--dir-sign, 1)));
+  }
+
+  [dir="rtl"] .custom-calendar-popup {
+    transform: translateX(50%);
+  }
+
+  .custom-cal-container {
+    padding: 1rem 0.85rem 0.85rem;
+  }
+
+  .custom-cal-day {
+    min-height: 34px;
+    font-size: 0.85rem;
+  }
+}
