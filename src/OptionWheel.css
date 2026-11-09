@@ -1,6 +1,6 @@
 .option-wheel {
-  --ow-text-color: var(--color-felt-gray, #6d6d6d);
-  --ow-active-color: var(--color-paper, #ffffff);
+  --ow-text-color: var(--text-muted, #595045);
+  --ow-active-color: var(--text-main, #19140b);
   --ow-font-size: 3rem;
   --ow-inset: 80px;
 
@@ -12,6 +12,13 @@
   user-select: none;
   touch-action: none;
   outline: none;
+}
+
+html.dark .option-wheel,
+html[data-theme="dark"] .option-wheel,
+.dark .option-wheel {
+  --ow-text-color: var(--text-muted, #adb9ab);
+  --ow-active-color: var(--text-main, #f7eee3);
 }
 
 .option-wheel--dragging {

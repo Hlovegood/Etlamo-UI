@@ -415,7 +415,38 @@ function detailPage(venue) {
     <aside class="request-aside"><h2>${t('availabilityTitle')}</h2><p>${t('calendarCaveat')}</p>${(venue.availability || []).some(slot=>slot.blocked)?`<ul class="public-blocks">${venue.availability.filter(slot=>slot.blocked).slice(0,6).map(slot=>`<li>${escape(formatDate(slot.date))} · ${escape(local(venue.spaces.find(s=>s.id===slot.spaceId)?.name || {en:slot.spaceId,ar:slot.spaceId}))} · ${t(slot.session)}<br><strong>${t('dateBlocked')}</strong><small>${t('updatedAt')}: ${escape(formatTimestamp(slot.updatedAt))}</small></li>`).join('')}</ul>`:''}<span class="aside-price">${t('from')}<strong>${money(startingPrice(venue))}</strong></span><a class="button full-width" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a><small>${t('guidePrice')}</small></aside></div>`;
 }
 function venue3dPage(venue){
-  return `<a class="back-link" href="#/venues/${venue.id}">${t('back')}</a><section class="page-title"><h1>${escape(local(venue.name))} · ${t('view3dExample')}</h1><p>${t('venue3dCaveat')}</p></section><section class="room-3d"><div class="room-3d-controls"><button class="button button-outline" type="button" data-scene-view="perspective">${t('threeDPerspective')}</button><button class="button button-outline" type="button" data-scene-view="top">${t('threeDTop')}</button>${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${t(`threeD${mode[0].toUpperCase()+mode.slice(1)}`)}</button>`).join('')}</div><div class="room-3d-canvas" role="img" aria-label="${t('view3dExample')}"></div><p class="room-3d-status" role="status">${t('threeDLoading')}</p></section><p><a class="button" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a></p>`;
+  const venueTitle = escape(local(venue.name));
+  const isAr = state.lang === 'ar';
+  const backLabel = isAr ? 'العودة لتفاصيل القاعة' : 'Back to Venue Details';
+  const badgeLabel = isAr ? 'استكشاف مكاني ثلاثي الأبعاد' : 'Interactive 3D Spatial Walkthrough';
+  return `<div class="venue-3d-theater">
+    <header class="venue-3d-topbar">
+      <div class="venue-3d-topbar-start">
+        <a class="venue-3d-back" href="#/venues/${venue.id}">
+          <span aria-hidden="true">${isAr ? '→' : '←'}</span>
+          <span>${backLabel}</span>
+        </a>
+        <div class="venue-3d-title-group">
+          <h1 class="venue-3d-title">${venueTitle}</h1>
+          <span class="venue-3d-badge">${badgeLabel}</span>
+        </div>
+      </div>
+      <div class="venue-3d-topbar-end">
+        <a class="button venue-3d-cta" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a>
+      </div>
+    </header>
+    <p class="venue-3d-caveat">${t('venue3dCaveat')}</p>
+    <section class="room-3d">
+      <div class="room-3d-controls">
+        <button class="button button-outline" type="button" data-scene-view="perspective">${t('threeDPerspective')}</button>
+        <button class="button button-outline" type="button" data-scene-view="top">${t('threeDTop')}</button>
+        ${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${t(`threeD${mode[0].toUpperCase()+mode.slice(1)}`)}</button>`).join('')}
+      </div>
+      <div class="room-3d-canvas" role="img" aria-label="${t('view3dExample')}"></div>
+      <p class="room-3d-status" role="status">${t('threeDLoading')}</p>
+      <div class="room-3d-table-info" aria-live="polite"></div>
+    </section>
+  </div>`;
 }
 function ensureDraft(venue, params) {
   if (state.draft?.venueId === venue.id && venue.spaces.some(space=>space.id===state.draft.spaceId && space.enabled!==false) && venue.packages.some(pkg=>pkg.id===state.draft.packageId) && (!params.get('space') || params.get('space')===state.draft.spaceId) && (!params.get('package') || params.get('package')===state.draft.packageId)) return;
@@ -682,7 +713,31 @@ function render(moveFocus = false) {
   let content, title = t('discover');
   if (r.path === '/') { content = landing(); title=state.lang==='ar'?'ابدأ هنا':'Start here'; }
   else if (r.path === '/discover') { state.filters = parseFilters(r.params); content = home(); }
-  else if(r.path==='/walkthrough'){content=`<section class="page-title"><h1>${state.lang==='ar'?'جولة ويدو ثلاثية الأبعاد':'Weddo 3D walkthrough'}</h1><p>${state.lang==='ar'?'تجربة لمشهد فرح نموذجي؛ لا يمثل قاعة حقيقية.':'Explore a sample wedding scene. It does not represent a real venue.'}</p></section>${originalRoomSection(state.lang)}`;title=state.lang==='ar'?'الجولة ثلاثية الأبعاد':'3D walkthrough';}
+  else if(r.path==='/walkthrough'){
+    const isAr = state.lang === 'ar';
+    const walkthroughTitle = isAr ? 'جولة ويدو ثلاثية الأبعاد' : 'Weddo 3D Spatial Walkthrough';
+    const walkthroughCaveat = isAr ? 'تجربة تفاعلية لمشهد فرح نموذجي؛ لا يمثل قاعة حقيقية.' : 'Explore an interactive sample wedding scene. It does not represent a real venue.';
+    content = `<div class="venue-3d-theater">
+      <header class="venue-3d-topbar">
+        <div class="venue-3d-topbar-start">
+          <a class="venue-3d-back" href="#/discover">
+            <span aria-hidden="true">${isAr ? '→' : '←'}</span>
+            <span>${isAr ? 'تصفح القاعات' : 'Explore Venues'}</span>
+          </a>
+          <div class="venue-3d-title-group">
+            <h1 class="venue-3d-title">${walkthroughTitle}</h1>
+            <span class="venue-3d-badge">${isAr ? 'مشهد نموذجي تفاعلي' : 'Interactive Sample Scene'}</span>
+          </div>
+        </div>
+        <div class="venue-3d-topbar-end">
+          <a class="button venue-3d-cta" href="#/plans">${isAr ? 'مخطط المناسبات' : 'Event Planner'}</a>
+        </div>
+      </header>
+      <p class="venue-3d-caveat">${walkthroughCaveat}</p>
+      ${originalRoomSection(state.lang)}
+    </div>`;
+    title = isAr ? 'الجولة ثلاثية الأبعاد' : '3D walkthrough';
+  }
   else if(r.parts[0]==='services'){content=servicePage(r.path,r.params,{state,account:getAccount(),lang:state.lang,escape,local,option,areas,number});title=t('servicesNav');}
   else if(r.path==='/vendor/services'){content=vendorServicePage({state,account:getAccount(),lang:state.lang,escape,local,option,areas,number,editId:r.params.get('edit')});title=t('manageServices');}
   else if(r.path==='/admin/services'){content=adminServicePage({state,account:getAccount(),lang:state.lang,escape,local,number});title=t('reviewServices');}
@@ -709,7 +764,8 @@ function render(moveFocus = false) {
   document.body.classList.toggle('planner-mode',content.includes('weddo-workspace'));
   const isLanding = r.path === '' || r.path === '/';
   const isDiscover = r.path === '/discover';
-  app.innerHTML = `${header(r.path)}<main id="main" class="container${isLanding ? ' container-landing' : ''}${isDiscover ? ' container-full-hero' : ''}" tabindex="-1">${state.connectionError?`<div class="connection-banner" role="alert">${t('connectionFailed')} <button class="button button-outline" data-action="retry">${t('retry')}</button></div>`:''}${content}</main>${state.compare.length?`
+  const isVenue3d = (r.parts[0] === 'venues' && r.parts[2] === '3d') || r.path === '/walkthrough';
+  app.innerHTML = `${header(r.path)}<main id="main" class="container${isLanding ? ' container-landing' : ''}${isDiscover ? ' container-full-hero' : ''}${isVenue3d ? ' container-3d-viewer' : ''}" tabindex="-1">${state.connectionError?`<div class="connection-banner" role="alert">${t('connectionFailed')} <button class="button button-outline" data-action="retry">${t('retry')}</button></div>`:''}${content}</main>${state.compare.length?`
   <aside class="compare-dock" role="region" aria-label="${t('compareTitle')}">
     <span class="compare-dock-count"><bdi>${number(state.compare.length)}/3</bdi> ${t('compareTitle')}</span>
     <a class="compare-dock-cta" href="#/compare">${state.lang==='ar'?'عرض المقارنة':'View Comparison'}</a>

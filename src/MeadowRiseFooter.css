@@ -360,6 +360,97 @@ footer.mrf-root.site-footer {
   filter: drop-shadow(0 0 16px rgba(197, 168, 128, 0.45));
 }
 
+/* =============================================================================
+   Footer Brand & Logo Contrast Overrides
+   Ensures radiant visibility on the dark footer ground in all themes
+   ============================================================================= */
+
+.mrf-root .weddo-brand-lockup,
+.mrf-root .etlamo-brand-lockup {
+  color: var(--mrf-text, #f7f0e2) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.mrf-root .weddo-brand-icon,
+.mrf-root .etlamo-brand-icon,
+.mrf-root .weddo-mark-svg,
+.mrf-root .etlamo-mark-svg,
+.mrf-root .weddo-logo-mark,
+.mrf-root .etlamo-logo-mark {
+  color: var(--accent-gold, #eed8a6) !important;
+  fill: currentColor !important;
+  filter: drop-shadow(0 0 10px rgba(238, 216, 166, 0.45)) !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease, color 0.35s ease !important;
+}
+
+.mrf-root .weddo-brand-text,
+.mrf-root .etlamo-brand-text {
+  display: flex !important;
+  flex-direction: column !important;
+  text-align: start !important;
+}
+
+.mrf-root .weddo-brand-name,
+.mrf-root .etlamo-brand-name {
+  color: var(--mrf-text, #f7f0e2) !important;
+  font-family: var(--font-cormorant, 'Cormorant Garamond', 'Trajan Pro', serif) !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.15 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+  transition: color 0.3s ease !important;
+}
+
+html[lang="ar"] .mrf-root .weddo-brand-name,
+html[lang="ar"] .mrf-root .etlamo-brand-name {
+  font-family: var(--font-arabic-serif, 'Amiri', 'Traditional Arabic', serif) !important;
+  font-size: 26px !important;
+  letter-spacing: 0 !important;
+}
+
+.mrf-root .weddo-brand-tag,
+.mrf-root .etlamo-brand-tag {
+  color: var(--mrf-muted, #c2b496) !important;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.16em !important;
+  margin-top: 3px !important;
+  opacity: 0.95 !important;
+  transition: color 0.3s ease !important;
+}
+
+html[lang="ar"] .mrf-root .weddo-brand-tag,
+html[lang="ar"] .mrf-root .etlamo-brand-tag {
+  font-family: var(--font-arabic-sans, 'IBM Plex Sans Arabic', sans-serif) !important;
+  letter-spacing: 0 !important;
+  font-size: 11px !important;
+}
+
+.mrf-master-logo:hover .weddo-brand-icon,
+.mrf-master-logo:hover .etlamo-brand-icon,
+.mrf-master-logo:hover .weddo-mark-svg,
+.mrf-master-logo:hover .etlamo-mark-svg {
+  color: #fff2d1 !important;
+  filter: drop-shadow(0 0 18px rgba(255, 230, 166, 0.75)) !important;
+  transform: scale(1.08) rotate(-2deg) !important;
+}
+
+.mrf-master-logo:hover .weddo-brand-name,
+.mrf-master-logo:hover .etlamo-brand-name {
+  color: #ffffff !important;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4) !important;
+}
+
+.mrf-master-logo:hover .weddo-brand-tag,
+.mrf-master-logo:hover .etlamo-brand-tag {
+  color: #eed8a6 !important;
+}
+
 .mrf-master-desc {
   margin: 0;
   font-size: clamp(13px, 1.05vw, 15px);

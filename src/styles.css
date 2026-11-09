@@ -34,7 +34,7 @@
   --color-warm-ground: #1b190d;
   --color-sandstone-border: #e6dacb;
   --color-gold-accent: #c5a880;
-  --color-gold-burnished: #b38234;
+  --color-gold-burnished: #8c5e1c;
   --color-gold-rich: #9c7328;
   --color-gold-subtle: #f7efc5;
   --color-parchment-white: #ffffff;
@@ -102,6 +102,8 @@
   --icon-color: var(--text-main, #19140b);
   --color-paper: #ffffff;
   --color-inkstone: #19140b;
+  --color-obsidian: #19140b;
+  --color-felt-gray: #6b5f54;
 
   /* Typography Stacks (MonaSans / Inter primary, paradigm-pro / Cormorant Garamond display, IBM Plex Sans Arabic) */
   --font-monasans: 'MonaSans', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -234,6 +236,8 @@ html.dark, html[data-theme="dark"], .dark {
   --color-gold-light: #ffe7b8;
   --color-paper: #f7eee3;
   --color-inkstone: #111a14;
+  --color-obsidian: #050906;
+  --color-felt-gray: #b5c3b4;
 
   --ink: #f7eee3;
   --teal: #eed8a6;
@@ -3215,83 +3219,509 @@ html[data-theme="dark"] .planner-spotlight-art,
   border: 1px solid var(--color-paper);
 }
 
-/* 8. 3D Architectural Walkthrough Scene */
-.room-3d {
-  background: var(--color-obsidian);
-  color: var(--color-paper);
-  border: 1px solid var(--color-obsidian);
-  border-radius: var(--radius-cards, 0px);
-  padding: 24px;
-  margin: 24px 0;
-  box-shadow: none;
+/* =============================================================================
+   8. 3D Architectural Walkthrough Scene & Spatial Theater
+   Immediate viewport visibility & WCAG AAA contrast in both light and dark themes
+   ============================================================================= */
+
+.container.container-3d-viewer {
+  max-width: 1440px !important;
+  width: 100% !important;
+  padding-top: clamp(68px, 8.5vh, 82px) !important;
+  padding-bottom: 48px !important;
+  padding-inline: clamp(16px, 3vw, 36px) !important;
+  min-height: auto !important;
 }
-.room-3d h2 { color: var(--color-paper); margin: 0 0 6px; font-weight: var(--font-weight-light, 300); }
-.room-3d p { color: var(--color-ash-mist); }
-.room-3d-controls { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
-.room-3d-controls .button {
-  color: #ffffff;
-  background: transparent;
-  border-color: rgba(255, 255, 255, 0.35);
-  border-radius: var(--radius-buttons, 75px);
-}
-.room-3d-controls .button:hover, .room-3d-controls .button[aria-pressed="true"] {
-  color: #000000;
-  background: #ffffff;
-  border-color: #ffffff;
-}
-.room-3d-canvas {
+
+.venue-3d-theater {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: clamp(380px, 62vw, 600px);
-  overflow: hidden;
-  border-radius: 0;
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  touch-action: none;
-  position: relative;
+  margin: 0 auto;
 }
-.room-tour-panel {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  z-index: 2;
-  display: grid;
-  gap: 8px;
-  max-width: min(280px, 65%);
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-cards, 0px);
-  background: rgba(0, 0, 0, 0.9);
-  box-shadow: none;
-  backdrop-filter: blur(12px);
-  color: #ffffff;
-}
-.room-tour-dock {
+
+.venue-3d-topbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-block: 8px 12px;
+  border-bottom: 1px solid var(--border-soft, #e6dacb);
+  margin-bottom: 8px;
+}
+
+.venue-3d-topbar-start {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.venue-3d-back {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  margin: 14px 0;
-  padding: 8px 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main, #19140b);
+  background: var(--surface-hover, #f7eee2);
+  border: 1px solid var(--border-soft, #e6dacb);
   border-radius: var(--radius-buttons, 75px);
-  background: transparent;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
 }
-.room-tour-dock button {
-  flex: none;
-  padding: 7px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-buttons, 75px);
-  background: transparent;
+
+.venue-3d-back:hover {
+  background: var(--text-main, #19140b);
   color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: 12px;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  border-color: var(--text-main, #19140b);
+  transform: translateX(-2px);
 }
-.room-tour-dock button:hover, .room-tour-dock button[aria-current="step"] {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
+
+html[lang="ar"] .venue-3d-back:hover {
+  transform: translateX(2px);
+}
+
+.dark .venue-3d-back {
+  background: #142017;
+  color: #f7eee3;
+  border-color: rgba(238, 216, 166, 0.2);
+}
+
+.dark .venue-3d-back:hover {
+  background: #eed8a6;
+  color: #070d09;
+  border-color: #eed8a6;
+}
+
+.venue-3d-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.venue-3d-title {
+  margin: 0 !important;
+  font-family: var(--font-cormorant, 'Cormorant Garamond', 'Trajan Pro', serif);
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  color: var(--text-main, #19140b) !important;
+  letter-spacing: -0.01em;
+}
+
+html[lang="ar"] .venue-3d-title {
+  font-family: var(--font-arabic-serif, 'Amiri', serif);
+  font-size: clamp(22px, 2.5vw, 32px) !important;
+}
+
+.dark .venue-3d-title {
+  color: #f7eee3 !important;
+}
+
+.venue-3d-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-warm-cedar, #483b2a);
+  background: rgba(179, 130, 52, 0.12);
+  border: 1px solid rgba(179, 130, 52, 0.35);
+  border-radius: 9999px;
+}
+
+.dark .venue-3d-badge {
+  color: #eed8a6;
+  background: rgba(238, 216, 166, 0.12);
+  border-color: rgba(238, 216, 166, 0.3);
+}
+
+.venue-3d-topbar-end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-inline-start: auto;
+}
+
+.venue-3d-cta {
+  padding: 8px 22px !important;
+  font-size: 13.5px !important;
+  min-height: 38px !important;
+}
+
+.venue-3d-caveat {
+  margin: 0 0 12px 0 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: var(--text-muted, #595045) !important;
+}
+
+.dark .venue-3d-caveat {
+  color: #adb9ab !important;
+}
+
+.room-3d {
+  background: #ffffff !important;
+  color: var(--text-main, #19140b) !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  border-radius: var(--radius-cards, 12px) !important;
+  padding: clamp(14px, 2vw, 24px) !important;
+  margin: 8px 0 24px 0 !important;
+  box-shadow: 0 4px 20px rgba(25, 20, 11, 0.04) !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.dark .room-3d {
+  background: #0d1510 !important;
+  color: #f7eee3 !important;
+  border-color: rgba(238, 216, 166, 0.18) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+.room-3d h2 {
+  color: var(--text-main, #19140b) !important;
+  margin: 0 0 6px !important;
+  font-family: var(--font-cormorant, 'Cormorant Garamond', 'Trajan Pro', serif) !important;
+  font-size: clamp(20px, 2vw, 26px) !important;
+  font-weight: 600 !important;
+}
+
+html[lang="ar"] .room-3d h2 {
+  font-family: var(--font-arabic-serif, 'Amiri', serif) !important;
+}
+
+.dark .room-3d h2 {
+  color: #f7eee3 !important;
+}
+
+.room-3d p {
+  color: var(--text-muted, #595045) !important;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.dark .room-3d p {
+  color: #b5c3b4 !important;
+}
+
+.room-3d-controls {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  margin: 8px 0 14px 0 !important;
+}
+
+.room-3d-controls .button {
+  color: var(--text-main, #19140b) !important;
+  background: var(--surface-hover, #f7eee2) !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  border-radius: var(--radius-buttons, 75px) !important;
+  font-size: 12.5px !important;
+  padding: 6px 16px !important;
+  min-height: 36px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.25s ease !important;
+}
+
+.room-3d-controls .button:hover {
+  color: #ffffff !important;
+  background: var(--text-main, #19140b) !important;
+  border-color: var(--text-main, #19140b) !important;
+  transform: translateY(-1px) !important;
+}
+
+.room-3d-controls .button[aria-pressed="true"] {
+  color: #ffffff !important;
+  background: var(--text-main, #19140b) !important;
+  border-color: var(--text-main, #19140b) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .room-3d-controls .button {
+  color: #f7eee3 !important;
+  background: #142017 !important;
+  border-color: rgba(238, 216, 166, 0.22) !important;
+}
+
+.dark .room-3d-controls .button:hover {
+  color: #070d09 !important;
+  background: #eed8a6 !important;
+  border-color: #eed8a6 !important;
+}
+
+.dark .room-3d-controls .button[aria-pressed="true"] {
+  color: #070d09 !important;
+  background: #eed8a6 !important;
+  border-color: #eed8a6 !important;
+  box-shadow: 0 0 12px rgba(238, 216, 166, 0.35) !important;
+}
+
+.room-3d-canvas {
+  width: 100% !important;
+  height: clamp(480px, 66vh, 760px) !important;
+  min-height: 480px !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: #0e0d0c !important;
+  border: 1px solid rgba(25, 20, 11, 0.15) !important;
+  touch-action: none !important;
+  position: relative !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark .room-3d-canvas {
+  border-color: rgba(238, 216, 166, 0.2) !important;
+}
+
+.room-3d-status {
+  margin: 10px 0 0 0 !important;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 12px !important;
+  color: var(--text-muted, #595045) !important;
+}
+
+.dark .room-3d-status {
+  color: #adb9ab !important;
+}
+
+.room-3d .fine-print {
+  margin-top: 12px !important;
+  font-size: 12px !important;
+  color: var(--text-muted, #595045) !important;
+}
+
+.room-3d .fine-print a {
+  color: var(--text-main, #19140b) !important;
+  text-decoration: underline !important;
+}
+
+.dark .room-3d .fine-print {
+  color: #adb9ab !important;
+}
+
+.dark .room-3d .fine-print a {
+  color: #eed8a6 !important;
+}
+
+/* 3D Walkthrough Tour Dock and HUD */
+.room-tour-dock {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 12px 0 !important;
+  padding: 8px 14px !important;
+  overflow-x: auto !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  border-radius: var(--radius-buttons, 75px) !important;
+  background: var(--surface-hover, #f7eee2) !important;
+}
+
+.dark .room-tour-dock {
+  background: #142017 !important;
+  border-color: rgba(238, 216, 166, 0.22) !important;
+}
+
+.room-tour-dock button {
+  flex: none !important;
+  padding: 6px 14px !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  border-radius: var(--radius-buttons, 75px) !important;
+  background: #ffffff !important;
+  color: var(--text-main, #19140b) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  transition: all 0.25s ease !important;
+}
+
+.room-tour-dock button:hover,
+.room-tour-dock button[aria-current="step"],
+.room-tour-dock button[aria-pressed="true"] {
+  background: var(--text-main, #19140b) !important;
+  color: #ffffff !important;
+  border-color: var(--text-main, #19140b) !important;
+}
+
+.dark .room-tour-dock button {
+  background: #0d1510 !important;
+  color: #f7eee3 !important;
+  border-color: rgba(238, 216, 166, 0.2) !important;
+}
+
+.dark .room-tour-dock button:hover,
+.dark .room-tour-dock button[aria-current="step"],
+.dark .room-tour-dock button[aria-pressed="true"] {
+  background: #eed8a6 !important;
+  color: #070d09 !important;
+  border-color: #eed8a6 !important;
+}
+
+.room-tour-steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.room-tour-roles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-inline-start: auto;
+}
+
+/* Floating Tour HUD overlay on top of 3D canvas */
+.room-tour-panel {
+  position: absolute !important;
+  top: 16px !important;
+  inset-inline-start: 16px !important;
+  z-index: 10 !important;
+  display: grid !important;
+  gap: 8px !important;
+  max-width: min(320px, 80%) !important;
+  padding: 16px !important;
+  border: 1px solid rgba(238, 216, 166, 0.3) !important;
+  border-radius: 12px !important;
+  background: rgba(14, 13, 12, 0.92) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  color: #ffffff !important;
+}
+
+.room-tour-panel strong {
+  color: #ffffff !important;
+  font-size: 15px;
+}
+
+.room-tour-panel p {
+  color: #d6ccbf !important;
+  font-size: 13px !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.room-tour-panel .room-tour-count {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  color: #eed8a6 !important;
+  letter-spacing: 0.1em;
+}
+
+.room-tour-panel .button {
+  background: #eed8a6 !important;
+  color: #070d09 !important;
+  border: 1px solid #eed8a6 !important;
+  font-size: 12px !important;
+  padding: 6px 14px !important;
+  min-height: 32px !important;
+  font-weight: 600 !important;
+}
+
+.room-tour-collapse {
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 12px;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* 3D Pin Buttons on Canvas */
+.room-tour-pins button {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0e0d0c;
+  color: #eed8a6;
+  border: 2px solid #eed8a6;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  z-index: 5;
+}
+
+.room-tour-pins button:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  background: #eed8a6;
+  color: #0e0d0c;
+}
+
+/* 3D Table Inspection Panel */
+.room-3d-table-info {
+  background: var(--surface-hover, #f7eee2);
+  border: 1px solid var(--border-soft, #e6dacb);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 14px;
+  color: var(--text-main, #19140b);
+}
+
+.room-3d-table-info:empty {
+  display: none;
+}
+
+.room-3d-table-info h3 {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main, #19140b);
+}
+
+.room-3d-table-info p {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: var(--text-muted, #595045);
+}
+
+.room-3d-table-info ol {
+  margin: 6px 0 0 0;
+  padding-inline-start: 20px;
+  font-size: 13px;
+  color: var(--text-main, #19140b);
+}
+
+.dark .room-3d-table-info {
+  background: #142017;
+  border-color: rgba(238, 216, 166, 0.2);
+  color: #f7eee3;
+}
+
+.dark .room-3d-table-info h3 {
+  color: #f7eee3;
+}
+
+.dark .room-3d-table-info p {
+  color: #b5c3b4;
+}
+
+.dark .room-3d-table-info ol {
+  color: #f7eee3;
 }
 
 /* 9. Services & Vendor Operations */

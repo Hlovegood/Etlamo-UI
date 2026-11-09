@@ -96,16 +96,12 @@ html[data-theme="dark"] .circular-gallery-caption,
   font-size: 0.98rem;
   font-weight: 500;
   color: var(--text-main, #19140b);
-  opacity: 0.92;
+  opacity: 0.95;
 }
 
 html.dark .circular-gallery-caption-text,
 html[data-theme="dark"] .circular-gallery-caption-text,
-.dark .circular-gallery-caption[data-visible] {
-  pointer-events: auto;
-}
-
-.circular-gallery-caption-text {
+.dark .circular-gallery-caption-text {
   color: var(--text-main, #f7eee3);
 }
 
