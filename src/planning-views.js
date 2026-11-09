@@ -252,7 +252,78 @@ export function planningView({items,plan,loaded,error,account,lang,escape:esc,se
   if(view==='presentation')return `${header}${presentationView(plan,w,esc,lang)}`;
   if(view==='3d'){
     const idea=suggestion||'saved',layout=idea==='saved'?plan:suggestedLayout;
-    return `${header}<section class="room-3d" data-plan-preview><h2>${w.clientPreview}</h2><p>${w.clientPreviewHelp}</p><div class="room-suggestions"><h3>${w.suggestions}</h3><p>${w.suggestionsHelp}</p><div class="room-client-stops" role="group" aria-label="${w.suggestions}">${[['saved','savedLayout'],['wedding','weddingLayout'],['conference','conferenceLayout'],['mixed','mixedLayout']].map(([kind,label])=>`<button class="button button-outline" type="button" data-action="planner-suggestion" data-suggestion="${kind}" aria-pressed="${idea===kind}">${w[label]}</button>`).join('')}</div>${idea!=='saved'&&plan.access!=='VIEW'&&!plan.tables.length&&!plan.features.length?`<button class="button" type="button" data-action="planner-template" data-template="${idea}">${w.useSuggestion}</button>`:`<a class="button button-outline" href="#/plans/${plan.id}?view=seating">${w.editSeating}</a>`}</div><div class="room-client-stops" role="group" aria-label="${w.clientPreview}"><button class="button button-outline" type="button" data-scene-stop="overview" aria-pressed="true">${w.overviewStop}</button>${(layout.features||[]).some(item=>item.kind==='entrance')?`<button class="button button-outline" type="button" data-scene-stop="entrance" aria-pressed="false">${w.entranceStop}</button>`:''}${(layout.features||[]).some(item=>item.kind==='stage')?`<button class="button button-outline" type="button" data-scene-stop="stage" aria-pressed="false">${w.stageStop}</button>`:''}<button class="button button-outline" type="button" data-scene-stop="walk" aria-pressed="false">${w.walkStop}</button></div><div class="room-3d-controls">${layout.tables.length?`<label class="room-client-table-label">${w.chooseTable}<select data-scene-table><option value="">${w.chooseTableHint}</option>${layout.tables.map((table,index)=>`<option value="${index}">${esc(table.label)}</option>`).join('')}</select></label>`:''}${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${w[mode]}</button>`).join('')}</div><div class="room-3d-canvas" role="img" aria-label="${w.clientPreview}"></div><aside class="room-3d-table-info" hidden aria-live="polite"></aside><p class="room-3d-status" role="status">${w.threeDLoading}</p></section>`;
+    const isAr = lang === 'ar';
+    return `${header}<section class="room-3d room-3d-hero room-3d-plan-hero" data-plan-preview>
+      <div class="room-3d-viewport-stage">
+        <div class="room-3d-canvas" role="img" aria-label="${w.clientPreview}"></div>
+
+        <!-- Floating Top-Start: Badge & Layout Suggestions -->
+        <div class="room-3d-floating-overlay room-3d-floating-top-start">
+          <div class="room-3d-floating-badge-group">
+            <span class="room-3d-floating-badge">✨ ${w.clientPreview}</span>
+            <span class="room-3d-floating-subbadge">${layout.tables.length} ${w.tables} · ${assigned} ${w.assigned}</span>
+          </div>
+          <div class="room-3d-floating-suggestions" role="group" aria-label="${w.suggestions}">
+            <span class="room-3d-floating-label">${w.suggestions}:</span>
+            <div class="room-3d-floating-pills">
+              ${[['saved','savedLayout'],['wedding','weddingLayout'],['conference','conferenceLayout'],['mixed','mixedLayout']].map(([kind,label])=>`<button class="room-3d-pill-btn" type="button" data-action="planner-suggestion" data-suggestion="${kind}" aria-pressed="${idea===kind}">${w[label]}</button>`).join('')}
+            </div>
+            ${idea!=='saved'&&plan.access!=='VIEW'&&!plan.tables.length&&!plan.features.length
+              ? `<button class="room-3d-pill-action" type="button" data-action="planner-template" data-template="${idea}">${w.useSuggestion}</button>`
+              : `<a class="room-3d-pill-action" href="#/plans/${plan.id}?view=seating">${w.editSeating} ↗</a>`}
+          </div>
+        </div>
+
+        <!-- Floating Top-End: Camera Stops, Atmosphere & Table Selector -->
+        <div class="room-3d-floating-overlay room-3d-floating-top-end">
+          <div class="room-3d-floating-control-group" role="group" aria-label="${w.clientPreview}">
+            <button class="room-3d-pill-btn" type="button" data-scene-stop="overview" aria-pressed="true">
+              <span aria-hidden="true">👁️</span>
+              <span>${w.overviewStop}</span>
+            </button>
+            ${(layout.features||[]).some(item=>item.kind==='entrance') ? `
+            <button class="room-3d-pill-btn" type="button" data-scene-stop="entrance" aria-pressed="false">
+              <span aria-hidden="true">🚪</span>
+              <span>${w.entranceStop}</span>
+            </button>` : ''}
+            ${(layout.features||[]).some(item=>item.kind==='stage') ? `
+            <button class="room-3d-pill-btn" type="button" data-scene-stop="stage" aria-pressed="false">
+              <span aria-hidden="true">🏛️</span>
+              <span>${w.stageStop}</span>
+            </button>` : ''}
+            <button class="room-3d-pill-btn" type="button" data-scene-stop="walk" aria-pressed="false">
+              <span aria-hidden="true">🚶</span>
+              <span>${w.walkStop}</span>
+            </button>
+          </div>
+
+          <div class="room-3d-floating-control-group" role="group" aria-label="${isAr ? 'الإضاءة والأجواء' : 'Lighting & Atmosphere'}">
+            ${['golden','sunrise','midnight'].map(mode=>`
+            <button class="room-3d-pill-btn" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">
+              <span aria-hidden="true">${mode==='golden'?'☀️':mode==='sunrise'?'🌅':'🌙'}</span>
+              <span>${w[mode]}</span>
+            </button>`).join('')}
+          </div>
+
+          ${layout.tables.length ? `
+          <div class="room-3d-floating-table-select">
+            <select data-scene-table aria-label="${w.chooseTable}">
+              <option value="">🔍 ${w.chooseTableHint}</option>
+              ${layout.tables.map((table,index)=>`<option value="${index}">${esc(table.label)} (${table.seats} ${w.seats})</option>`).join('')}
+            </select>
+          </div>` : ''}
+        </div>
+
+        <!-- Floating Table Inspection Card (Appears on click in 3D scene) -->
+        <aside class="room-3d-table-info room-3d-floating-table-card" hidden aria-live="polite"></aside>
+
+        <!-- Floating Status Pill & Hint -->
+        <div class="room-3d-floating-status-wrap">
+          <p class="room-3d-status" role="status">${w.threeDLoading}</p>
+          <span class="room-3d-floating-hint">${isAr ? 'اسحب للتدوير · مرر للتكبير · اضغط على أي طاولة لمعاينتها' : 'Drag to rotate · Scroll to zoom · Click any table to inspect'}</span>
+        </div>
+      </div>
+    </section>`;
   }
   if(view==='original'&&plan.type==='wedding')return `${header}${originalRoomSection(lang)}`;
   if(view!=='seating')return `${header}<fieldset class="plan-content" ${plan.access==='VIEW'?'disabled':''}>${planOverview(plan,w,esc,lang,inquiries)}</fieldset>${sharePanel(plan,members,w,esc)}`;

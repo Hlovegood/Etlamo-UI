@@ -3398,6 +3398,328 @@ html[lang="ar"] .venue-3d-title {
   box-shadow: 0 8px 36px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* 3D Plan Viewer Full-Bleed Hero & Floating Options */
+.room-3d.room-3d-plan-hero {
+  display: block !important;
+  width: 100% !important;
+  height: clamp(560px, calc(100dvh - 190px), 860px) !important;
+  padding: 0 !important;
+  position: relative !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  box-shadow: 0 12px 40px rgba(25, 20, 11, 0.08) !important;
+}
+
+.dark .room-3d.room-3d-plan-hero {
+  background: #0e0d0c !important;
+  border-color: rgba(238, 216, 166, 0.24) !important;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6) !important;
+}
+
+.room-3d-plan-hero .room-3d-viewport-stage {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  position: relative !important;
+}
+
+.room-3d-plan-hero .room-3d-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Floating Controls Overlays on the 3D Plan Viewer */
+.room-3d-floating-overlay {
+  position: absolute !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  pointer-events: none !important;
+}
+
+.room-3d-floating-overlay > * {
+  pointer-events: auto !important;
+}
+
+.room-3d-floating-top-start {
+  top: 16px !important;
+  inset-inline-start: 16px !important;
+  max-width: min(520px, calc(100% - 32px)) !important;
+}
+
+.room-3d-floating-top-end {
+  top: 16px !important;
+  inset-inline-end: 16px !important;
+  align-items: flex-end !important;
+  max-width: min(580px, calc(100% - 32px)) !important;
+}
+
+[dir="rtl"] .room-3d-floating-top-end {
+  align-items: flex-start !important;
+}
+
+/* Top-Start Floating Elements */
+.room-3d-floating-badge-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(238, 216, 166, 0.28) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.room-3d-floating-badge {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #eed8a6 !important;
+  letter-spacing: 0.02em !important;
+}
+
+html[lang="ar"] .room-3d-floating-badge {
+  font-family: var(--font-arabic-serif, 'Amiri', serif) !important;
+}
+
+.room-3d-floating-subbadge {
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11px !important;
+  color: #b5c3b4 !important;
+  padding-inline-start: 6px !important;
+  border-inline-start: 1px solid rgba(238, 216, 166, 0.2) !important;
+}
+
+.room-3d-floating-suggestions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  padding: 6px 12px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(238, 216, 166, 0.24) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+.room-3d-floating-label {
+  font-family: var(--font-monasans, sans-serif) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: #eed8a6 !important;
+}
+
+.room-3d-floating-pills {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  flex-wrap: wrap !important;
+}
+
+.room-3d-pill-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  color: #f7eee3 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(238, 216, 166, 0.22) !important;
+  border-radius: 9999px !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+}
+
+.room-3d-pill-btn:hover {
+  background: rgba(238, 216, 166, 0.22) !important;
+  color: #ffffff !important;
+  border-color: #eed8a6 !important;
+  transform: translateY(-1px) !important;
+}
+
+.room-3d-pill-btn[aria-pressed="true"] {
+  background: #eed8a6 !important;
+  color: #070d09 !important;
+  border-color: #eed8a6 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 12px rgba(238, 216, 166, 0.35) !important;
+}
+
+.room-3d-pill-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 5px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: #070d09 !important;
+  background: #eed8a6 !important;
+  border: 1px solid #eed8a6 !important;
+  border-radius: 9999px !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+}
+
+.room-3d-pill-action:hover {
+  background: #faeacc !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Top-End Floating Groups */
+.room-3d-floating-control-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  padding: 6px 10px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(238, 216, 166, 0.24) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+.room-3d-floating-table-select select {
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  background: rgba(14, 13, 12, 0.9) !important;
+  color: #eed8a6 !important;
+  border: 1px solid rgba(238, 216, 166, 0.32) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+/* Floating Table Inspection Card */
+.room-3d-floating-table-card {
+  position: absolute !important;
+  bottom: 24px !important;
+  inset-inline-end: 24px !important;
+  z-index: 12 !important;
+  max-width: 340px !important;
+  width: calc(100% - 48px) !important;
+  padding: 16px 18px !important;
+  border-radius: 14px !important;
+  background: rgba(14, 13, 12, 0.94) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(238, 216, 166, 0.32) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
+  color: #f7eee3 !important;
+  margin: 0 !important;
+  animation: plannerPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.room-3d-floating-table-card h3 {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #eed8a6 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+.room-3d-floating-table-card p {
+  font-size: 12.5px !important;
+  color: #d6ccbf !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.room-3d-floating-table-card ol {
+  font-size: 12px !important;
+  color: #f7eee3 !important;
+  margin: 0 !important;
+  padding-inline-start: 18px !important;
+  max-height: 160px !important;
+  overflow-y: auto !important;
+}
+
+/* Floating Status Pill & Hint in Bottom Center */
+.room-3d-floating-status-wrap {
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 8 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 6px !important;
+  pointer-events: none !important;
+  width: max-content !important;
+  max-width: 90% !important;
+}
+
+.room-3d-floating-status-wrap .room-3d-status {
+  position: static !important;
+  transform: none !important;
+  margin: 0 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11.5px !important;
+  color: #eed8a6 !important;
+  background: rgba(14, 13, 12, 0.88) !important;
+  padding: 5px 16px !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(238, 216, 166, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.room-3d-floating-hint {
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10.5px !important;
+  color: #b5c3b4 !important;
+  background: rgba(14, 13, 12, 0.72) !important;
+  padding: 3px 12px !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(238, 216, 166, 0.15) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  text-align: center !important;
+}
+
+/* Mobile & Tablet Adaptation for Floating Overlay */
+@media (max-width: 860px) {
+  .room-3d-plan-hero {
+    height: auto !important;
+  }
+  .room-3d-plan-hero .room-3d-viewport-stage {
+    height: clamp(380px, 60vh, 560px) !important;
+  }
+  .room-3d-floating-top-start,
+  .room-3d-floating-top-end {
+    position: static !important;
+    max-width: 100% !important;
+    align-items: stretch !important;
+  }
+  .room-3d-floating-overlay {
+    pointer-events: auto !important;
+    padding: 10px !important;
+    background: rgba(14, 13, 12, 0.95) !important;
+  }
+}
+
 /* 3D Viewport Hero Stage */
 .room-3d-viewport-stage {
   position: relative !important;

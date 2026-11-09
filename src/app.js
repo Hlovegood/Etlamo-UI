@@ -785,7 +785,7 @@ function render(moveFocus = false) {
   document.body.classList.toggle('planner-modal-active', !!state.plans.createModal);
   const isLanding = r.path === '' || r.path === '/';
   const isDiscover = r.path === '/discover';
-  const isVenue3d = (r.parts[0] === 'venues' && r.parts[2] === '3d') || r.path === '/walkthrough';
+  const isVenue3d = (r.parts[0] === 'venues' && r.parts[2] === '3d') || r.path === '/walkthrough' || (r.parts[0] === 'plans' && r.params.get('view') === '3d');
   app.innerHTML = `${header(r.path)}<main id="main" class="container${isLanding ? ' container-landing' : ''}${isDiscover ? ' container-full-hero' : ''}${isVenue3d ? ' container-3d-viewer' : ''}" tabindex="-1">${state.connectionError?`<div class="connection-banner" role="alert">${t('connectionFailed')} <button class="button button-outline" data-action="retry">${t('retry')}</button></div>`:''}${content}</main>${state.compare.length?`
   <aside class="compare-dock" role="region" aria-label="${t('compareTitle')}">
     <span class="compare-dock-count"><bdi>${number(state.compare.length)}/3</bdi> ${t('compareTitle')}</span>
