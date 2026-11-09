@@ -459,11 +459,12 @@ function venue3dPage(venue){
             ${['golden','sunrise','midnight'].map(mode=>`<button class="button button-outline" type="button" data-scene-atmosphere="${mode}" aria-pressed="${mode==='golden'}">${t(`threeD${mode[0].toUpperCase()+mode.slice(1)}`)}</button>`).join('')}
           </div>
         </div>
-        <div class="room-3d-cockpit-section room-3d-cockpit-reservation">
-          <span class="room-3d-cockpit-label">${isAr ? 'حجز وتأكيد الموعد' : 'Reservation'}</span>
-          <a class="button full-width" href="#/request/${venue.id}" data-expandable-trigger="request-screen-${venue.id}" style="--trigger-radius: 9999px;">${t('checkDate')}</a>
+        <div class="room-3d-table-info" aria-live="polite">
+          <div class="room-3d-table-placeholder">
+            <span class="room-3d-table-placeholder-icon" aria-hidden="true">🪑</span>
+            <p><strong>${isAr ? 'معاينة المقاعد وتوزيع الضيوف' : 'Table & Seating Inspector'}</strong><br><small>${isAr ? 'اضغط على أي طاولة في المشهد ثلاثي الأبعاد لمعاينة تفاصيلها.' : 'Click any table in the 3D scene to inspect seating and guest details.'}</small></p>
+          </div>
         </div>
-        <div class="room-3d-table-info" aria-live="polite"></div>
       </aside>
     </section>
   </div>`;
@@ -753,7 +754,6 @@ function render(moveFocus = false) {
           <a class="button venue-3d-cta" href="#/plans">${isAr ? 'مخطط المناسبات' : 'Event Planner'}</a>
         </div>
       </header>
-      <p class="venue-3d-caveat">${walkthroughCaveat}</p>
       ${originalRoomSection(state.lang)}
     </div>`;
     title = isAr ? 'الجولة ثلاثية الأبعاد' : '3D walkthrough';
@@ -782,6 +782,7 @@ function render(moveFocus = false) {
   } else { content = empty('notFound','notFoundHelp'); title = t('notFound'); }
   document.title = `${title} | Etlamo (اتلموا)`;
   document.body.classList.toggle('planner-mode',content.includes('weddo-workspace'));
+  document.body.classList.toggle('planner-modal-active', !!state.plans.createModal);
   const isLanding = r.path === '' || r.path === '/';
   const isDiscover = r.path === '/discover';
   const isVenue3d = (r.parts[0] === 'venues' && r.parts[2] === '3d') || r.path === '/walkthrough';

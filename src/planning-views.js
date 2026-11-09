@@ -191,22 +191,12 @@ export function planningView({items,plan,loaded,error,account,lang,escape:esc,se
             <h2>${isAr ? 'مناسباتي المسجلة' : 'My Sovereign Events'}</h2>
             <span class="planner-events-count-badge">${num(items.length)} ${isAr ? (items.length === 1 ? 'مناسبة' : 'مناسبات') : (items.length === 1 ? 'event' : 'events')}</span>
           </div>
-          <button class="button button-outline planner-create-inline-btn" type="button" data-action="planner-open-create">
-            <span aria-hidden="true">+</span>
-            <span>${w.new}</span>
-          </button>
         </div>
 
         <div class="planner-list">
           ${items.length ? items.map(item=>`<a class="planner-event" href="#/plans/${item.id}?view=seating"><span class="planner-event-icon" aria-hidden="true">${item.type==='wedding'?'💍':item.type==='conference'?'🏛️':'✨'}</span><span class="planner-event-info"><strong>${esc(item.name)}</strong><small><span class="planner-event-tag">${w[item.type]}</span>${item.date?' · 📅 '+esc(item.date):''}${item.access!=='OWNER'?' · '+w.shared:''}</small></span><span class="planner-event-cta">${w.open} <span aria-hidden="true">›</span></span></a>`).join('') : `<div class="planner-empty"><span class="planner-empty-icon" aria-hidden="true">🏛️</span><h3>${isAr ? 'لا توجد مناسبات بعد' : 'No Events Created Yet'}</h3><p>${w.empty}</p><button class="button" type="button" data-action="planner-open-create">+ ${w.new}</button></div>`}
         </div>
       </div>
-
-      <!-- Stuck-to-page Floating Action Button (FAB) -->
-      <button class="planner-create-fab" type="button" data-action="planner-open-create" aria-label="${isAr ? 'إنشاء مناسبة جديدة' : 'Create new event'}">
-        <span class="planner-create-fab-icon" aria-hidden="true">+</span>
-        <span class="planner-create-fab-text">${isAr ? 'مناسبة جديدة' : 'New Event'}</span>
-      </button>
 
       <!-- Event Creator Modal Dialog (Stuck to page, opens on click) -->
       <div class="planner-create-modal-layer${createModal ? ' is-open' : ''}" ${createModal ? '' : 'hidden'}>

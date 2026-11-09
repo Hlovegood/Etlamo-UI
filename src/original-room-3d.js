@@ -40,7 +40,7 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
   const pins=document.createElement('div'),panel=document.createElement('div'),dock=document.createElement('div'),loading=document.createElement('div');
   pins.className='room-tour-pins';panel.className='room-tour-panel';panel.setAttribute('aria-live','polite');dock.className='room-tour-dock';loading.className='room-tour-loading';
   loading.textContent=lang==='ar'?'جاري تحميل مشهد الفرح…':'Loading wedding scene…';
-  viewport.append(pins,panel,loading);host.querySelector('.room-3d-controls').after(dock);
+  viewport.append(pins,panel,dock,loading);
   pins.innerHTML=chapters.map((chapter,index)=>`<button type="button" data-tour-chapter="${index}" aria-label="${lang==='ar'?chapter[1]:chapter[0]}" title="${lang==='ar'?chapter[1]:chapter[0]}">${String(index+1).padStart(2,'0')}</button>`).join('');
   const renderUI=()=>{
     const ch=chapters[active],ar=lang==='ar';

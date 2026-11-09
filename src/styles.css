@@ -494,11 +494,11 @@ html[lang="ar"] .etlamo-brand-tag {
 @keyframes pageEnterGlide {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.995);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
@@ -3225,11 +3225,11 @@ html[data-theme="dark"] .planner-spotlight-art,
    ============================================================================= */
 
 .container.container-3d-viewer {
-  max-width: 1440px !important;
+  max-width: 1540px !important;
   width: 100% !important;
-  padding-top: clamp(68px, 8.5vh, 82px) !important;
-  padding-bottom: 48px !important;
-  padding-inline: clamp(16px, 3vw, 36px) !important;
+  padding-top: 20px !important;
+  padding-bottom: 32px !important;
+  padding-inline: clamp(16px, 2.5vw, 36px) !important;
   min-height: auto !important;
 }
 
@@ -3246,9 +3246,9 @@ html[data-theme="dark"] .planner-spotlight-art,
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  padding-block: 8px 12px;
+  padding-block: 4px 12px;
   border-bottom: 1px solid var(--border-soft, #e6dacb);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .venue-3d-topbar-start {
@@ -3358,9 +3358,9 @@ html[lang="ar"] .venue-3d-title {
 }
 
 .venue-3d-caveat {
-  margin: 0 0 12px 0 !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
+  margin: 0 0 10px 0 !important;
+  font-size: 12.5px !important;
+  line-height: 1.45 !important;
   color: var(--text-muted, #595045) !important;
 }
 
@@ -3368,25 +3368,27 @@ html[lang="ar"] .venue-3d-title {
   color: #adb9ab !important;
 }
 
-/* 3D Main Hero Viewport & Side Options Cockpit */
+/* 3D Main Hero Viewport & Studio Cockpit */
 .room-3d,
 .room-3d.room-3d-hero {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 350px !important;
-  gap: 24px !important;
+  grid-template-columns: minmax(0, 1fr) 340px !important;
+  gap: 20px !important;
   align-items: stretch !important;
-  padding: 16px !important;
+  padding: 12px !important;
   border-radius: 18px !important;
-  margin: 10px 0 32px 0 !important;
+  margin: 0 0 24px 0 !important;
+  height: clamp(520px, calc(100dvh - 150px), 820px) !important;
   background: var(--card-bg, #ffffff) !important;
   border: 1px solid var(--border-soft, #e6dacb) !important;
   box-shadow: 0 8px 32px rgba(25, 20, 11, 0.05) !important;
+  box-sizing: border-box !important;
   transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 [dir="rtl"] .room-3d,
 [dir="rtl"] .room-3d.room-3d-hero {
-  grid-template-columns: minmax(0, 1fr) 350px !important;
+  grid-template-columns: minmax(0, 1fr) 340px !important;
 }
 
 .dark .room-3d,
@@ -3404,7 +3406,6 @@ html[lang="ar"] .venue-3d-title {
   width: 100% !important;
   min-width: 0 !important;
   height: 100% !important;
-  min-height: clamp(520px, 75vh, 840px) !important;
   border-radius: 14px !important;
   overflow: hidden !important;
   background: #0e0d0c !important;
@@ -3419,7 +3420,6 @@ html[lang="ar"] .venue-3d-title {
 .room-3d-canvas {
   width: 100% !important;
   height: 100% !important;
-  min-height: clamp(520px, 75vh, 840px) !important;
   flex: 1 1 auto !important;
   border-radius: 0 !important;
   border: none !important;
@@ -3449,17 +3449,17 @@ html[lang="ar"] .venue-3d-title {
   white-space: nowrap !important;
 }
 
-/* Cockpit Options Rail Next To The 3D Hero */
+/* Studio Cockpit Next To Hero */
 .room-3d-cockpit {
   display: flex !important;
   flex-direction: column !important;
-  gap: 16px !important;
-  padding: 22px 20px !important;
+  gap: 14px !important;
+  padding: 18px 16px !important;
   background: var(--surface-hover, #f7eee2) !important;
   border: 1px solid var(--border-soft, #e6dacb) !important;
   border-radius: 14px !important;
   overflow-y: auto !important;
-  max-height: clamp(520px, 75vh, 840px) !important;
+  height: 100% !important;
   box-sizing: border-box !important;
 }
 
@@ -3470,7 +3470,7 @@ html[lang="ar"] .venue-3d-title {
 
 .room-3d-cockpit-header {
   border-bottom: 1px solid var(--border-soft, #e6dacb);
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
 .dark .room-3d-cockpit-header {
@@ -3480,12 +3480,12 @@ html[lang="ar"] .venue-3d-title {
 .room-3d-cockpit-kicker {
   display: block;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--primary, #8c5e1c);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .dark .room-3d-cockpit-kicker {
@@ -3494,9 +3494,9 @@ html[lang="ar"] .venue-3d-title {
 
 .room-3d-cockpit-header h2 {
   font-family: var(--font-cormorant, 'Cormorant Garamond', 'Trajan Pro', serif) !important;
-  font-size: 22px !important;
+  font-size: 20px !important;
   font-weight: 600 !important;
-  margin: 0 0 6px 0 !important;
+  margin: 0 0 4px 0 !important;
   color: var(--text-main, #19140b) !important;
   line-height: 1.2 !important;
 }
@@ -3510,10 +3510,10 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
 }
 
 .room-3d-cockpit-header p {
-  font-size: 13px !important;
+  font-size: 12.5px !important;
   color: var(--text-muted, #595045) !important;
   margin: 0 !important;
-  line-height: 1.45 !important;
+  line-height: 1.4 !important;
 }
 
 .dark .room-3d-cockpit-header p {
@@ -3524,7 +3524,7 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-soft, #e6dacb);
 }
 
@@ -3539,7 +3539,7 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
 
 .room-3d-cockpit-label {
   font-family: var(--font-monasans, 'Inter', sans-serif);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -3550,66 +3550,63 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   color: #adb9ab;
 }
 
-.room-3d-cockpit .room-3d-controls {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
+.room-3d-cockpit .room-3d-controls.room-3d-view-controls {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 6px !important;
+  margin: 0 !important;
+}
+
+.room-3d-cockpit .room-3d-controls.room-3d-atmo-controls {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 6px !important;
   margin: 0 !important;
 }
 
 .room-3d-cockpit .room-3d-controls .button {
-  flex: 1 1 calc(50% - 6px);
-  justify-content: center;
-  font-size: 12px !important;
-  padding: 7px 12px !important;
-  min-height: 36px !important;
-}
-
-.room-3d-cockpit .room-3d-atmo-controls .button {
-  flex: 1 1 calc(33.333% - 6px);
-}
-
-.room-3d-controls .button {
-  color: var(--text-main, #19140b) !important;
-  background: var(--surface-hover, #f7eee2) !important;
-  border: 1px solid var(--border-soft, #e6dacb) !important;
-  border-radius: var(--radius-buttons, 75px) !important;
-  font-size: 12px !important;
-  padding: 6px 14px !important;
-  min-height: 36px !important;
-  font-weight: 500 !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
-  transition: all 0.25s ease !important;
-}
-
-.room-3d-controls .button:hover {
-  color: #ffffff !important;
-  background: var(--text-main, #19140b) !important;
-  border-color: var(--text-main, #19140b) !important;
-  transform: translateY(-1px) !important;
-}
-
-.room-3d-controls .button[aria-pressed="true"] {
-  color: #ffffff !important;
-  background: var(--text-main, #19140b) !important;
-  border-color: var(--text-main, #19140b) !important;
+  width: 100% !important;
+  min-height: 34px !important;
+  padding: 6px 8px !important;
+  font-size: 11.5px !important;
   font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  text-align: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  color: var(--text-main, #19140b) !important;
+  background: var(--card-bg, #ffffff) !important;
+  border: 1px solid var(--border-soft, #e6dacb) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s ease !important;
 }
 
-.dark .room-3d-controls .button {
+.room-3d-cockpit .room-3d-controls .button:hover {
+  color: #ffffff !important;
+  background: var(--text-main, #19140b) !important;
+  border-color: var(--text-main, #19140b) !important;
+}
+
+.room-3d-cockpit .room-3d-controls .button[aria-pressed="true"] {
+  color: #ffffff !important;
+  background: var(--text-main, #19140b) !important;
+  border-color: var(--text-main, #19140b) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .room-3d-cockpit .room-3d-controls .button {
   color: #f7eee3 !important;
-  background: #142017 !important;
-  border-color: rgba(238, 216, 166, 0.22) !important;
+  background: #0d1510 !important;
+  border-color: rgba(238, 216, 166, 0.2) !important;
 }
 
-.dark .room-3d-controls .button:hover {
+.dark .room-3d-cockpit .room-3d-controls .button:hover {
   color: #070d09 !important;
   background: #eed8a6 !important;
   border-color: #eed8a6 !important;
 }
 
-.dark .room-3d-controls .button[aria-pressed="true"] {
+.dark .room-3d-cockpit .room-3d-controls .button[aria-pressed="true"] {
   color: #070d09 !important;
   background: #eed8a6 !important;
   border-color: #eed8a6 !important;
@@ -3617,10 +3614,10 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
 }
 
 .room-3d-cockpit .fine-print {
-  margin-top: 10px !important;
-  font-size: 11.5px !important;
+  margin-top: 8px !important;
+  font-size: 11px !important;
   color: var(--text-muted, #595045) !important;
-  line-height: 1.45 !important;
+  line-height: 1.4 !important;
 }
 
 .room-3d-cockpit .fine-print a {
@@ -3636,71 +3633,71 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   color: #eed8a6 !important;
 }
 
-/* 3D Walkthrough Tour Dock Inside Cockpit */
-.room-3d-cockpit .room-tour-dock {
+/* Floating Tour HUD Dock across Bottom of 3D Canvas Stage */
+.room-tour-dock {
+  position: absolute !important;
+  bottom: 14px !important;
+  left: 14px !important;
+  right: 14px !important;
+  z-index: 10 !important;
   display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  margin: 12px 0 0 0 !important;
-  padding: 12px !important;
-  background: var(--card-bg, #ffffff) !important;
-  border: 1px solid var(--border-soft, #e6dacb) !important;
-  border-radius: 12px !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 8px 14px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(238, 216, 166, 0.28) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55) !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
 }
 
-.dark .room-3d-cockpit .room-tour-dock {
-  background: #0d1510 !important;
-  border-color: rgba(238, 216, 166, 0.2) !important;
+.room-tour-dock::-webkit-scrollbar {
+  display: none !important;
 }
 
-.room-3d-cockpit .room-tour-dock button {
-  padding: 6px 12px !important;
-  border: 1px solid var(--border-soft, #e6dacb) !important;
+.room-tour-dock button {
+  flex: none !important;
+  padding: 5px 12px !important;
+  border: 1px solid rgba(238, 216, 166, 0.25) !important;
   border-radius: var(--radius-buttons, 75px) !important;
-  background: #ffffff !important;
-  color: var(--text-main, #19140b) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f7eee3 !important;
   cursor: pointer !important;
-  font-size: 12px !important;
+  font-size: 11.5px !important;
   font-weight: 500 !important;
   transition: all 0.2s ease !important;
 }
 
-.room-3d-cockpit .room-tour-dock button:hover,
-.room-3d-cockpit .room-tour-dock button[aria-current="step"],
-.room-3d-cockpit .room-tour-dock button[aria-pressed="true"] {
-  background: var(--text-main, #19140b) !important;
-  color: #ffffff !important;
-  border-color: var(--text-main, #19140b) !important;
-}
-
-.dark .room-3d-cockpit .room-tour-dock button {
-  background: #142017 !important;
-  color: #f7eee3 !important;
-  border-color: rgba(238, 216, 166, 0.2) !important;
-}
-
-.dark .room-3d-cockpit .room-tour-dock button:hover,
-.dark .room-3d-cockpit .room-tour-dock button[aria-current="step"],
-.dark .room-3d-cockpit .room-tour-dock button[aria-pressed="true"] {
+.room-tour-dock button:hover,
+.room-tour-dock button[aria-current="step"],
+.room-tour-dock button[aria-pressed="true"] {
   background: #eed8a6 !important;
   color: #070d09 !important;
   border-color: #eed8a6 !important;
 }
 
-.room-3d-cockpit .room-tour-steps {
+.room-tour-steps {
   display: flex !important;
-  flex-wrap: wrap !important;
+  align-items: center !important;
   gap: 6px !important;
 }
 
-.room-3d-cockpit .room-tour-roles {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 6px !important;
-  margin-top: 6px !important;
+.room-tour-steps button span {
+  margin-inline-start: 4px;
 }
 
-/* Floating Tour HUD overlay on top of 3D canvas */
+.room-tour-roles {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-inline-start: auto !important;
+}
+
+/* Floating Tour Chapter Panel on 3D Stage */
 .room-tour-panel {
   position: absolute !important;
   top: 16px !important;
@@ -3797,8 +3794,8 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   background: var(--card-bg, #ffffff);
   border: 1px solid var(--border-soft, #e6dacb);
   border-radius: 10px;
-  padding: 14px 16px;
-  margin-top: 10px;
+  padding: 12px 14px;
+  margin-top: auto;
   color: var(--text-main, #19140b);
 }
 
@@ -3806,28 +3803,60 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   display: none;
 }
 
+.room-3d-table-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.room-3d-table-placeholder-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.room-3d-table-placeholder p {
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  color: var(--text-muted, #595045) !important;
+}
+
+.dark .room-3d-table-placeholder p {
+  color: #adb9ab !important;
+}
+
+.room-3d-table-placeholder strong {
+  font-size: 12.5px;
+  color: var(--text-main, #19140b);
+}
+
+.dark .room-3d-table-placeholder strong {
+  color: #f7eee3;
+}
+
 .room-3d-table-info h3 {
-  margin: 0 0 6px 0;
-  font-size: 15px;
+  margin: 0 0 4px 0;
+  font-size: 14.5px;
   font-weight: 600;
   color: var(--text-main, #19140b);
 }
 
 .room-3d-table-info p {
   margin: 0 0 6px 0;
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--text-muted, #595045);
 }
 
 .room-3d-table-info ol {
-  margin: 6px 0 0 0;
-  padding-inline-start: 18px;
-  font-size: 12.5px;
+  margin: 4px 0 0 0;
+  padding-inline-start: 16px;
+  font-size: 12px;
   color: var(--text-main, #19140b);
 }
 
 .dark .room-3d-table-info {
-  background: #142017;
+  background: #0d1510;
   border-color: rgba(238, 216, 166, 0.2);
   color: #f7eee3;
 }
@@ -3850,12 +3879,15 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   [dir="rtl"] .room-3d,
   [dir="rtl"] .room-3d.room-3d-hero {
     grid-template-columns: 1fr !important;
+    height: auto !important;
   }
   .room-3d-viewport-stage,
   .room-3d-viewport-stage .room-3d-canvas {
-    min-height: clamp(420px, 60vh, 600px) !important;
+    height: clamp(380px, 55vh, 580px) !important;
+    min-height: 380px !important;
   }
   .room-3d-cockpit {
+    height: auto !important;
     max-height: none !important;
   }
 }

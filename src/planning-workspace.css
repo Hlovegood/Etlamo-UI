@@ -1142,93 +1142,40 @@ html.dark .planner-events-count-badge {
 }
 
 /* =============================================================================
-   ETLAMO (اتلموا) — STUCK-TO-PAGE EVENT CREATOR FAB & ACCESSIBLE MODAL
+   ETLAMO (اتلموا) — FULL-PAGE EVENT CREATOR MODAL & DIMMED BACKDROP
    ============================================================================= */
 
-/* Floating Action Button (Stuck to bottom corner of the viewport) */
-.planner-create-fab {
-  position: fixed !important;
-  bottom: calc(32px + env(safe-area-inset-bottom, 0px)) !important;
-  inset-inline-end: 32px !important;
-  z-index: 95 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 14px 24px !important;
-  border-radius: 9999px !important;
-  border: 1px solid rgba(238, 216, 166, 0.45) !important;
-  background: var(--text-main, #19140b) !important;
-  color: #f7eee3 !important;
-  font-family: inherit !important;
-  font-size: 14.5px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.02em !important;
-  cursor: pointer !important;
-  box-shadow: 0 10px 32px rgba(25, 20, 11, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+/* Page Lock when Planner Modal is open */
+body.planner-modal-active,
+html.planner-modal-active {
+  overflow: hidden !important;
 }
 
-.planner-create-fab:hover {
-  transform: translateY(-3px) scale(1.03) !important;
-  box-shadow: 0 16px 36px rgba(25, 20, 11, 0.45), 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-  background: var(--primary, #8c5e1c) !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+#main:has(.planner-create-modal-layer.is-open),
+.container:has(.planner-create-modal-layer.is-open) {
+  transform: none !important;
+  filter: none !important;
 }
 
-.planner-create-fab:active {
-  transform: translateY(0) scale(0.97) !important;
-}
-
-.planner-create-fab-icon {
-  display: inline-grid !important;
-  place-items: center !important;
-  width: 24px !important;
-  height: 24px !important;
-  font-size: 20px !important;
-  line-height: 1 !important;
-  font-weight: 400 !important;
-  border-radius: 50% !important;
-  background: rgba(238, 216, 166, 0.2) !important;
-  color: #eed8a6 !important;
-}
-
-.planner-create-fab:hover .planner-create-fab-icon {
-  background: rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
-}
-
-.dark .planner-create-fab,
-html.dark .planner-create-fab {
-  background: #eed8a6 !important;
-  color: #070d09 !important;
-  border-color: #f7eee3 !important;
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), 0 0 24px rgba(238, 216, 166, 0.3) !important;
-}
-
-.dark .planner-create-fab .planner-create-fab-icon,
-html.dark .planner-create-fab .planner-create-fab-icon {
-  background: #070d09 !important;
-  color: #eed8a6 !important;
-}
-
-.dark .planner-create-fab:hover,
-html.dark .planner-create-fab:hover {
-  background: #faeacc !important;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 32px rgba(238, 216, 166, 0.45) !important;
-}
-
-/* Modal Dialog Layer */
+/* Modal Dialog Layer (Covers 100% of entire page, above header and footer) */
 .planner-create-modal-layer {
   position: fixed !important;
-  inset: 0 !important;
-  z-index: 250 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  z-index: 999999 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 20px !important;
+  padding: clamp(16px, 3vw, 32px) !important;
+  margin: 0 !important;
   box-sizing: border-box !important;
 }
 
@@ -1236,18 +1183,30 @@ html.dark .planner-create-fab:hover {
   display: none !important;
 }
 
+/* Full-Screen Dimming Backdrop */
 .planner-create-backdrop {
-  position: absolute !important;
-  inset: 0 !important;
-  background: rgba(14, 13, 12, 0.65) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  background: rgba(10, 8, 6, 0.82) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
   animation: plannerFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
 }
 
 .dark .planner-create-backdrop,
 html.dark .planner-create-backdrop {
-  background: rgba(4, 8, 6, 0.82) !important;
+  background: rgba(3, 6, 4, 0.9) !important;
 }
 
 .planner-create-dialog {
