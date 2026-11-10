@@ -290,6 +290,13 @@ html[lang="ar"] .organic-btn:focus-visible .organic-btn-icon,
   transform: rotate(-45deg) scale(1.12);
 }
 
+@media (max-width: 380px) {
+  .organic-btn-wrap--md {
+    --organic-font-size: 13.5px;
+    --organic-icon-size: 15px;
+  }
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   .organic-btn,

@@ -126,8 +126,8 @@
 
 /* Full-Screen Edge-to-Edge Variant without mask cropping */
 .drift-wall--full {
-  width: 100vw !important;
-  height: 100vh !important;
+  width: 100% !important;
+  height: 100% !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
 }

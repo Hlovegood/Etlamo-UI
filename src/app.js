@@ -791,7 +791,7 @@ function render(moveFocus = false) {
     <span class="compare-dock-count"><bdi>${number(state.compare.length)}/3</bdi> ${t('compareTitle')}</span>
     <a class="compare-dock-cta" href="#/compare">${state.lang==='ar'?'عرض المقارنة':'View Comparison'}</a>
     <button class="compare-dock-clear" type="button" data-action="clear-compare">${state.lang==='ar'?'إفراغ':'Clear'}</button>
-  </aside>`:''}${isLanding ? '' : footer()}${cookieBanner()}${rotatingScrollBadge()}`;
+  </aside>`:''}${isLanding ? '' : footer()}${isLanding ? '' : cookieBanner()}${isLanding ? '' : rotatingScrollBadge()}`;
   const scene=app.querySelector('.room-3d');
   if(scene){const plan=r.parts[0]==='plans'?currentPlan():null,venue=r.parts[0]==='venues'?findVenue(r.parts[1]):null,suggestion=state.plans.suggestion.planId===plan?.id?state.plans.suggestion.kind:'saved';disposeRoom3D=mountRoom3D(scene,plan&&suggestion!=='saved'&&r.params.get('view')==='3d'?previewLayout(suggestion):plan||previewLayout(conferenceKinds.includes(venue?.kind)?'conference':['garden','courtyard'].includes(venue?.kind)?venue.kind:'wedding'),{lang:state.lang});}
   const hallwayHost=app.querySelector('.hallway-3d-host');
