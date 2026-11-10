@@ -488,7 +488,7 @@ html[lang="ar"] .etlamo-brand-tag {
 
 /* Seamless Destination Page Entrance from 3D Hallway Portals */
 .container:not(.container-landing) {
-  animation: pageEnterGlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pageEnterGlide 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes pageEnterGlide {
