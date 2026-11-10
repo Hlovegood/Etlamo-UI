@@ -576,105 +576,128 @@
 
 @media (max-width: 768px) {
   .zoom-parallax-pre-scroll {
-    top: 12vh;
-    padding: 1.25rem 1rem;
-    width: 95%;
+    top: clamp(80px, 12dvh, 112px);
+    padding: 1.15rem 1rem;
+    width: min(94%, 440px);
   }
   .zoom-parallax-post-scroll {
-    top: 8vh;
-    padding: 1.25rem 1rem;
-    width: 95%;
+    top: clamp(76px, 11dvh, 108px);
+    padding: 1.15rem 1rem;
+    width: min(94%, 440px);
   }
   .zoom-parallax-pre-scroll-backdrop,
   .zoom-parallax-post-scroll-backdrop {
-    inset: -0.75rem -1rem;
+    inset: -0.75rem -0.85rem;
     border-radius: 1.5rem;
   }
+  .zoom-parallax-scroll-cue {
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  }
+  .zoom-parallax-img-box {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
   .zoom-parallax-layer-0 .zoom-parallax-img-box {
-    width: 45vw;
-    height: 30vh;
+    width: clamp(190px, 56vw, 270px);
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
   .zoom-parallax-layer-1 .zoom-parallax-img-box {
-    width: 38vw;
-    height: 22vh;
-    top: -24vh;
-    left: 10vw;
+    width: clamp(132px, 38vw, 185px);
+    height: auto;
+    aspect-ratio: 16 / 10;
+    top: -21dvh;
+    left: 14vw;
   }
   .zoom-parallax-layer-2 .zoom-parallax-img-box {
-    width: 32vw;
-    height: 28vh;
-    top: -12vh;
-    left: -24vw;
+    width: clamp(120px, 34vw, 170px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: -13dvh;
+    left: -26vw;
   }
   .zoom-parallax-layer-3 .zoom-parallax-img-box {
-    width: 30vw;
-    height: 20vh;
-    left: 25vw;
+    width: clamp(118px, 33vw, 165px);
+    height: auto;
+    aspect-ratio: 3 / 2;
+    top: 1dvh;
+    left: 28vw;
   }
   .zoom-parallax-layer-4 .zoom-parallax-img-box {
-    width: 30vw;
-    height: 20vh;
-    top: 22vh;
-    left: 10vw;
+    width: clamp(122px, 35vw, 172px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: 18dvh;
+    left: 16vw;
   }
   .zoom-parallax-layer-5 .zoom-parallax-img-box {
-    width: 36vw;
-    height: 22vh;
-    top: 24vh;
-    left: -18vw;
+    width: clamp(130px, 37vw, 180px);
+    height: auto;
+    aspect-ratio: 3 / 2;
+    top: 19dvh;
+    left: -21vw;
   }
   .zoom-parallax-layer-6 .zoom-parallax-img-box {
-    width: 25vw;
-    height: 18vh;
-    top: 20vh;
-    left: 24vw;
+    width: clamp(106px, 30vw, 148px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: 15dvh;
+    left: 31vw;
   }
   .zoom-parallax-layer-7 .zoom-parallax-img-box {
-    width: 32vw;
-    height: 20vh;
-    top: -26vh;
-    left: -30vw;
+    width: clamp(116px, 33vw, 162px);
+    height: auto;
+    aspect-ratio: 16 / 10;
+    top: -24dvh;
+    left: -32vw;
   }
   .zoom-parallax-layer-8 .zoom-parallax-img-box {
-    width: 28vw;
-    height: 18vh;
-    top: -30vh;
+    width: clamp(114px, 32vw, 158px);
+    height: auto;
+    aspect-ratio: 16 / 10;
+    top: -29dvh;
     left: -8vw;
   }
   .zoom-parallax-layer-9 .zoom-parallax-img-box {
-    width: 30vw;
-    height: 22vh;
-    top: -26vh;
-    left: 30vw;
+    width: clamp(116px, 33vw, 164px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: -25dvh;
+    left: 33vw;
   }
   .zoom-parallax-layer-10 .zoom-parallax-img-box {
-    width: 28vw;
-    height: 22vh;
-    top: 8vh;
-    left: -32vw;
+    width: clamp(112px, 31vw, 156px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: 7dvh;
+    left: -34vw;
   }
   .zoom-parallax-layer-11 .zoom-parallax-img-box {
-    width: 25vw;
-    height: 18vh;
-    top: -14vh;
-    left: 32vw;
+    width: clamp(106px, 30vw, 148px);
+    height: auto;
+    aspect-ratio: 3 / 2;
+    top: -12dvh;
+    left: 35vw;
   }
   .zoom-parallax-layer-12 .zoom-parallax-img-box {
-    width: 32vw;
-    height: 18vh;
-    top: 28vh;
-    left: -4vw;
+    width: clamp(126px, 36vw, 176px);
+    height: auto;
+    aspect-ratio: 16 / 10;
+    top: 28dvh;
+    left: -3vw;
   }
   .zoom-parallax-layer-13 .zoom-parallax-img-box {
-    width: 28vw;
-    height: 20vh;
-    top: 28vh;
-    left: -30vw;
+    width: clamp(112px, 32vw, 158px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: 27dvh;
+    left: -32vw;
   }
   .zoom-parallax-layer-14 .zoom-parallax-img-box {
-    width: 28vw;
-    height: 18vh;
-    top: 28vh;
-    left: 30vw;
+    width: clamp(112px, 32vw, 158px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    top: 27dvh;
+    left: 32vw;
   }
 }

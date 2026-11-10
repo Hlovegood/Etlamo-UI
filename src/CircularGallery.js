@@ -881,11 +881,13 @@ export function createCircularGallery(container, options = {}) {
 
       const s = settings;
 
-      const height = 0.6 * view.height * s.itemSize;
+      const isCompact = view.width < 600;
+
+      const height = (isCompact ? 0.46 : 0.6) * view.height * s.itemSize;
 
       const width = height * s.itemAspect;
 
-      const scale = Math.min(1, (view.width * 0.82) / width);
+      const scale = Math.min(1, (view.width * (isCompact ? 0.62 : 0.82)) / width);
 
       return { w: width * scale, h: height * scale, spacing: width * scale * (1 + s.gap) };
 
@@ -969,16 +971,17 @@ export function createCircularGallery(container, options = {}) {
 
       const openFrame = item => {
         const aspect = textureFor(item.image).aspect || w / h;
-        const titleSpace = item.text && s.showTitles ? captionSize() * 2.2 : 0;
-        const captionSpace = titleSpace + (item.description ? 140 : 60);
-        const maxCardH = view.height * 0.50;
+        const isCompact = view.width < 560;
+        const titleSpace = item.text && s.showTitles ? captionSize() * (isCompact ? 1.85 : 2.2) : 0;
+        const captionSpace = titleSpace + (item.description ? (isCompact ? 156 : 140) : 60);
+        const maxCardH = view.height * (isCompact ? 0.39 : 0.50);
         const width = Math.min(
           view.width - margin * 2,
           (view.height - margin * 2 - captionSpace) * aspect,
           maxCardH * aspect
         );
         const height = width / aspect;
-        return { width, height, y: captionSpace * 0.44, titleSpace };
+        return { width, height, y: captionSpace * (isCompact ? 0.5 : 0.44), titleSpace };
       };
 
       const activeFrame = openFrame(list[wrap(state.active, count)]);
@@ -1275,7 +1278,11 @@ export function createCircularGallery(container, options = {}) {
 
       });
 
-      const top = view.height / 2 - (metrics.openY - metrics.openH / 2) + metrics.titleSpace + 8;
+      const rawTop = view.height / 2 - (metrics.openY - metrics.openH / 2) + metrics.titleSpace + 8;
+
+      const captionH = caption.offsetHeight || 0;
+
+      const top = captionH > 0 ? Math.min(rawTop, Math.max(12, view.height - captionH - 14)) : rawTop;
 
       caption.style.transform = `translate(-50%, ${top}px)`;
 

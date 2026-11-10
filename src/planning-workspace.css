@@ -1429,15 +1429,53 @@ html.dark .planner-create-modal-actions {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .planner-hero {
+    padding: 16px 4px 10px;
+    margin: 0 auto 20px;
+  }
   .planner-hero-inner {
     flex-direction: column !important;
     align-items: flex-start !important;
+    gap: 18px !important;
   }
+  .planner-hero-text {
+    flex: none !important;
+    width: 100% !important;
+  }
+  .planner-events-section {
+    padding: 0 4px;
+    margin: 0 auto 44px;
+  }
+  .planner-events-head {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (max-width: 640px) {
   .planner-hero-actions,
   .planner-create-hero-btn {
     width: 100%;
     justify-content: center;
+  }
+  .planner-list {
+    gap: 12px;
+    margin: 16px 0 32px;
+  }
+  .planner-event {
+    padding: 16px;
+    gap: 12px;
+    border-radius: 16px;
+  }
+  .planner-event-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    border-radius: 12px;
+  }
+  .planner-event-info strong {
+    font-size: 16.5px;
   }
   .planner-create-dialog {
     padding: 24px 18px !important;
@@ -1666,13 +1704,6 @@ fieldset.plan-content[disabled] button {
   }
 }
 
-@media (max-width: 560px) {
-  .plan-content .plan-summary,
-  .plan-summary {
-    grid-template-columns: 1fr;
-  }
-}
-
 .plan-content .plan-summary-card,
 .plan-summary-card {
   display: flex;
@@ -1727,6 +1758,8 @@ fieldset.plan-content[disabled] button {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
 /* High-Contrast KPI Typography (Light Mode) */
@@ -2285,15 +2318,19 @@ fieldset.plan-content[disabled] button {
   .ww-picker-tabs button { padding: 5px 12px; }
   .ww-preset-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ww-ceremony-grid { grid-template-columns: 1fr; }
+  .ww-tool-columns,
+  .ww-task-board { grid-template-columns: 1fr; }
+  .ww-tool-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media(max-width: 700px) {
   .planner-mode .container { min-height: 100dvh; }
+  .planner-mode .connection-banner { margin: 72px 14px 12px; }
   .weddo-workspace { display: block; }
   .ww-sidebar {
     position: relative;
     height: auto;
-    padding: 12px 14px;
+    padding: 72px 14px 12px;
     border-inline-end: 0;
     border-bottom: 1px solid var(--ww-line);
   }
@@ -2308,37 +2345,108 @@ fieldset.plan-content[disabled] button {
   .ww-sidebar nav { display: flex; overflow-x: auto; gap: 4px; scrollbar-width: none; }
   .ww-sidebar nav::-webkit-scrollbar { display: none; }
   .ww-sidebar nav a { flex: none; font-size: 12.5px; min-height: 36px; padding: 4px 12px; }
-  .ww-editor { height: calc(100dvh - 118px); min-height: 460px; }
-  .ww-canvas-toolbar { left: 12px; right: 12px; max-width: none; transform: none; top: 12px; }
-  .ww-tool-rail { top: 72px; inset-inline-start: 12px; }
-  .ww-canvas-layer { padding: 84px 20px 64px; }
+  .ww-editor { height: calc(100dvh - 154px); min-height: 440px; }
+  .ww-canvas-toolbar {
+    left: 10px;
+    right: 10px;
+    max-width: none;
+    transform: none;
+    top: 10px;
+    gap: 4px;
+    padding: 5px 8px;
+    touch-action: pan-x;
+  }
+  .ww-canvas-toolbar button {
+    padding: 4px 10px;
+    font-size: 12.5px;
+  }
+  .ww-tool-rail { display: none; }
+  .ww-canvas-layer {
+    min-width: 100%;
+    padding: 62px 12px 58px;
+  }
   .ww-canvas-status {
-    max-width: calc(100% - 24px);
-    inset-inline-start: 12px;
-    bottom: 12px;
+    max-width: calc(100% - 20px);
+    inset-inline-start: 10px;
+    bottom: 10px;
     font-size: 11.5px;
     padding: 6px 12px;
   }
   .ww-inspector {
-    top: 68px;
-    bottom: 12px;
-    inset-inline-start: 12px;
-    inset-inline-end: 12px;
+    top: 62px;
+    bottom: 10px;
+    inset-inline-start: 10px;
+    inset-inline-end: 10px;
     width: auto;
     padding: 18px 16px;
   }
   .ww-preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0; }
   .ww-picker { padding: 20px 16px; max-height: 90dvh; }
-  .ww-page { padding: 18px 14px; }
-  .ww-page-heading { display: block; }
+  .ww-page { padding: 18px 14px 40px; }
+  .ww-page-heading { display: block; margin-bottom: 20px; }
   .ww-page-actions { margin-top: 14px; }
   .ww-form-grid { grid-template-columns: 1fr; }
+  .ww-field-pair { grid-template-columns: 1fr; }
+  .ww-tool-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ww-tool-stats > div,
+  .ww-tool-card { padding: 18px 16px; border-radius: 14px; }
   .ww-ceremony-controls { padding: 18px; }
   .planner-list { grid-template-columns: 1fr; }
-  .plan-sections { grid-template-columns: 1fr; }
+  .plan-sections { grid-template-columns: 1fr; gap: 16px; }
+  .plan-content .form-panel,
+  .plan-sections .form-panel { padding: 20px 16px; border-radius: 16px; }
   .planner-new { padding: 24px 18px; }
   .plan-presentation-heading { display: grid; grid-template-columns: 1fr; }
+  .plan-tabs-wrap { margin: 0 0 22px; }
   .plan-tabs a { padding: 7px 14px; font-size: 12.5px; }
+  .plan-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .plan-actions .button {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 12px;
+    justify-content: center;
+  }
+  .plan-inline-form label,
+  .ww-inline-form label {
+    flex: 1 1 100%;
+  }
+  .plan-inline-form .button,
+  .ww-inline-form .ww-primary {
+    width: 100%;
+    justify-content: center;
+  }
+  .plan-list-row,
+  .ww-tool-row,
+  .ww-task-row {
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .ww-guest-toolbar {
+    flex-direction: column;
+  }
+  .ww-chart-group {
+    grid-template-columns: 88px minmax(0, 1fr) 64px;
+    gap: 8px;
+    font-size: 12.5px;
+  }
+  .ww-inspector input,
+  .ww-inspector select,
+  .ww-ceremony-controls select,
+  .ww-form-grid input,
+  .ww-form-grid select,
+  .ww-tool-form input,
+  .ww-tool-form select,
+  .ww-inline-form input,
+  .ww-inline-form select,
+  .ww-guest-toolbar input,
+  .ww-guest-toolbar select {
+    font-size: 16px !important;
+  }
   fieldset.plan-content,
   div.plan-content,
   .plan-content {
@@ -2346,6 +2454,38 @@ fieldset.plan-content[disabled] button {
     max-width: 100% !important;
     margin-inline: 0 !important;
     padding: 16px 0 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .plan-content .plan-summary,
+  .plan-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .plan-content .plan-summary-card,
+  .plan-summary-card {
+    padding: 12px 10px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+  .plan-summary-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+  .plan-content .plan-summary-body small,
+  .plan-summary-body small {
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+  }
+  .plan-content .plan-summary-body strong,
+  .plan-summary-body strong {
+    font-size: 20px !important;
   }
 }
 

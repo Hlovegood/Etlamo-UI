@@ -317,24 +317,48 @@ html.dark .venue-view-toggle-btn.is-active {
   color: #070d09;
 }
 
+@media (max-width: 900px) {
+  .venue-circular-gallery-wrapper {
+    width: calc(100% + 2 * clamp(16px, 4vw, 28px));
+    margin-inline: calc(-1 * clamp(16px, 4vw, 28px));
+  }
+}
+
 @media (max-width: 768px) {
   .circular-gallery-mount {
-    height: clamp(440px, 60dvh, 560px);
-    min-height: 420px;
+    height: clamp(520px, 68dvh, 620px);
+    min-height: 500px;
   }
   .circular-gallery-caption {
-    width: min(94%, 38rem);
-    padding: 0.95rem 1.15rem;
+    width: min(calc(100% - 28px), 38rem);
+    padding: 0.9rem 1.1rem;
   }
   .circular-gallery-caption-text {
     font-size: 0.9rem;
+    line-height: 1.5;
   }
 }
 
 @media (max-width: 480px) {
   .circular-gallery-mount {
-    height: clamp(380px, 54dvh, 460px);
-    min-height: 360px;
+    height: clamp(490px, 68dvh, 560px);
+    min-height: 480px;
+  }
+  .circular-gallery-caption {
+    width: calc(100% - 24px);
+    padding: 0.85rem 1rem;
+  }
+  .circular-gallery-caption-text {
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+  .circular-gallery-cta-wrap {
+    margin-top: 0.65rem;
+  }
+  .circular-gallery-cta-wrap .button {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
   }
   .circular-gallery-close {
     width: 40px;
