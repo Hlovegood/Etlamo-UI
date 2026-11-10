@@ -233,22 +233,26 @@ html[data-theme="dark"] .cutout-card-pin .save-button {
   font-weight: var(--font-weight-regular, 400);
   margin: 0 0 8px;
   line-height: 1.25;
+  color: var(--text-main, #19140b);
 }
 
 .cutout-card-title a {
   text-decoration: none !important;
-  color: var(--text-main);
-  transition: opacity 0.15s ease;
+  color: var(--text-main, #19140b);
+  transition: opacity 0.15s ease, color 0.35s ease;
 }
 
 .cutout-card-title a:hover {
   opacity: 0.75;
 }
 
+html.dark .cutout-card-title,
+html[data-theme="dark"] .cutout-card-title,
+.dark .cutout-card-title,
 html.dark .cutout-card-title a,
 html[data-theme="dark"] .cutout-card-title a,
 .dark .cutout-card-title a {
-  color: var(--text-main, #fdfbf7);
+  color: var(--text-main, #f7eee3);
 }
 
 /* Reduced motion preference */

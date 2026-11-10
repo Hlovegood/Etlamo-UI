@@ -15,8 +15,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
   z-index: 990;
   overflow: hidden;
   pointer-events: none;
@@ -482,5 +483,39 @@ body.footer-focused .room-3d-controls {
     width: 100%;
     left: 0;
     right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .staggered-menu-header {
+    padding: 10px 14px;
+  }
+  .sm-logo-img {
+    height: 26px;
+  }
+  .sm-header-actions {
+    gap: 6px;
+    padding: 4px 10px 4px 6px;
+  }
+  [dir="rtl"] .sm-header-actions {
+    padding: 4px 6px 4px 10px;
+  }
+  .sm-header-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .sm-toggle {
+    padding: 7px 12px;
+    font-size: 12.5px;
+    gap: 0.35rem;
+  }
+  .staggered-menu-panel {
+    padding: 5.25em 1.35em 2em;
+  }
+  .sm-panel-item {
+    font-size: clamp(1.5rem, 6.2vw, 2.2rem);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 }

@@ -210,6 +210,7 @@ html[lang="ar"] .ww-brand {
   fill: #ffffff;
   stroke: var(--color-gold, #c5a880);
   stroke-width: 2.2px;
+  touch-action: none;
   filter: drop-shadow(0 3px 6px rgba(60, 38, 28, 0.08));
   transition: stroke 0.2s ease, filter 0.2s ease;
 }
@@ -284,6 +285,7 @@ html[lang="ar"] .ww-brand {
   user-select: none;
 }
 .planner-feature-body {
+  touch-action: none;
   transition: stroke 0.2s ease;
 }
 .planner-feature-stage {
@@ -414,6 +416,44 @@ html[lang="ar"] .ww-brand {
   font-size: 12.5px;
   font-weight: 500;
   box-shadow: 0 4px 14px -3px rgba(60, 38, 28, 0.08);
+  max-width: calc(100% - 36px);
+}
+.ww-canvas-status-pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--text-main, #19140b) !important;
+  color: var(--canvas-bg, #fcf8f2) !important;
+  border-color: var(--color-gold, #c5a880) !important;
+  z-index: 14;
+}
+.ww-canvas-status-pending button {
+  background: rgba(255, 255, 255, 0.16);
+  border: 0;
+  color: inherit;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  font-size: 16px;
+}
+.planner-guests [data-action="planner-tap-guest"] {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--ww-line);
+  background: var(--card-bg, #ffffff);
+  transition: all 0.15s ease;
+}
+.planner-guests [data-action="planner-tap-guest"].is-seating-selected {
+  background: var(--text-main, #19140b);
+  color: var(--canvas-bg, #fcf8f2);
+  border-color: var(--color-gold, #c5a880);
+  font-weight: 600;
 }
 .ww-canvas-surface > .form-error {
   position: absolute;
@@ -1394,13 +1434,29 @@ html.dark .planner-create-modal-actions {
     flex-direction: column !important;
     align-items: flex-start !important;
   }
+  .planner-hero-actions,
+  .planner-create-hero-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .planner-create-dialog {
+    padding: 24px 18px !important;
+    border-radius: 18px !important;
+  }
   .planner-create-modal-form .form-grid {
     grid-template-columns: 1fr !important;
   }
-  .planner-create-fab {
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
-    inset-inline-end: 20px !important;
-    padding: 12px 18px !important;
+  .planner-create-modal-form input,
+  .planner-create-modal-form select {
+    font-size: 16px !important;
+  }
+  .planner-create-modal-actions {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+  .planner-create-modal-actions .button {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 
@@ -2232,20 +2288,48 @@ fieldset.plan-content[disabled] button {
 }
 
 @media(max-width: 700px) {
-  .planner-mode .container { min-height: 100vh; }
+  .planner-mode .container { min-height: 100dvh; }
   .weddo-workspace { display: block; }
-  .ww-sidebar { position: relative; height: auto; padding: 14px 16px; }
-  .ww-brand { font-size: 24px; margin: 0 8px 8px; }
-  .ww-event-name, .ww-back { display: none; }
-  .ww-sidebar nav { display: flex; overflow-x: auto; scrollbar-width: none; }
+  .ww-sidebar {
+    position: relative;
+    height: auto;
+    padding: 12px 14px;
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--ww-line);
+  }
+  .ww-brand { font-size: 22px; margin: 0 6px 6px; }
+  .ww-event-name { display: none; }
+  .ww-back {
+    display: inline-flex;
+    margin: 0 4px 8px;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .ww-sidebar nav { display: flex; overflow-x: auto; gap: 4px; scrollbar-width: none; }
   .ww-sidebar nav::-webkit-scrollbar { display: none; }
-  .ww-sidebar nav a { flex: none; font-size: 12.5px; }
-  .ww-editor { height: calc(100vh - 92px); min-height: 500px; }
-  .ww-canvas-toolbar { left: 16px; right: 16px; max-width: none; transform: none; }
-  .ww-tool-rail { top: 82px; }
+  .ww-sidebar nav a { flex: none; font-size: 12.5px; min-height: 36px; padding: 4px 12px; }
+  .ww-editor { height: calc(100dvh - 118px); min-height: 460px; }
+  .ww-canvas-toolbar { left: 12px; right: 12px; max-width: none; transform: none; top: 12px; }
+  .ww-tool-rail { top: 72px; inset-inline-start: 12px; }
+  .ww-canvas-layer { padding: 84px 20px 64px; }
+  .ww-canvas-status {
+    max-width: calc(100% - 24px);
+    inset-inline-start: 12px;
+    bottom: 12px;
+    font-size: 11.5px;
+    padding: 6px 12px;
+  }
+  .ww-inspector {
+    top: 68px;
+    bottom: 12px;
+    inset-inline-start: 12px;
+    inset-inline-end: 12px;
+    width: auto;
+    padding: 18px 16px;
+  }
   .ww-preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0; }
-  .ww-picker { padding: 24px 18px; }
-  .ww-page { padding: 20px 16px; }
+  .ww-picker { padding: 20px 16px; max-height: 90dvh; }
+  .ww-page { padding: 18px 14px; }
   .ww-page-heading { display: block; }
   .ww-page-actions { margin-top: 14px; }
   .ww-form-grid { grid-template-columns: 1fr; }
@@ -2253,6 +2337,16 @@ fieldset.plan-content[disabled] button {
   .planner-list { grid-template-columns: 1fr; }
   .plan-sections { grid-template-columns: 1fr; }
   .planner-new { padding: 24px 18px; }
+  .plan-presentation-heading { display: grid; grid-template-columns: 1fr; }
+  .plan-tabs a { padding: 7px 14px; font-size: 12.5px; }
+  fieldset.plan-content,
+  div.plan-content,
+  .plan-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    padding: 16px 0 !important;
+  }
 }
 
 @media print {

@@ -104,10 +104,38 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
       viewport.prepend(renderer.domElement);
       observer=new ResizeObserver(resize);observer.observe(viewport);
       const signal=events.signal;
-      renderer.domElement.addEventListener('pointerdown',event=>{stopTour();cancelAnimationFrame(frame);pointer.active=true;pointer.x=event.clientX;pointer.y=event.clientY;renderer.domElement.setPointerCapture(event.pointerId);},{signal});
-      renderer.domElement.addEventListener('pointermove',event=>{if(!pointer.active)return;state.yaw+=(event.clientX-pointer.x)*.008;state.pitch=Math.max(.08,Math.min(1.54,state.pitch+(event.clientY-pointer.y)*.008));pointer.x=event.clientX;pointer.y=event.clientY;draw();},{signal});
-      renderer.domElement.addEventListener('pointerup',()=>{pointer.active=false;},{signal});
-      renderer.domElement.addEventListener('pointercancel',()=>{pointer.active=false;},{signal});
+      renderer.domElement.style.touchAction='none';
+      const pointers=new Map();let pinchDistance=0;
+      const twoFingerDist=()=>{const [a,b]=[...pointers.values()];return a&&b?Math.hypot(a.x-b.x,a.y-b.y):0;};
+      renderer.domElement.addEventListener('pointerdown',event=>{
+        stopTour();cancelAnimationFrame(frame);
+        pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+        if(pointers.size===1){pointer.active=true;pointer.x=event.clientX;pointer.y=event.clientY;}
+        else if(pointers.size===2){pointer.active=false;pinchDistance=twoFingerDist();}
+        renderer.domElement.setPointerCapture?.(event.pointerId);
+      },{signal});
+      renderer.domElement.addEventListener('pointermove',event=>{
+        if(pointers.has(event.pointerId))pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+        if(pointers.size===2){
+          const nextDist=twoFingerDist();
+          if(pinchDistance>0&&nextDist>0){
+            state.distance=Math.max(3,Math.min(100,state.distance+(pinchDistance-nextDist)*.1));
+            draw();
+          }
+          pinchDistance=nextDist;
+          return;
+        }
+        if(!pointer.active)return;
+        state.yaw+=(event.clientX-pointer.x)*.008;state.pitch=Math.max(.08,Math.min(1.54,state.pitch+(event.clientY-pointer.y)*.008));pointer.x=event.clientX;pointer.y=event.clientY;draw();
+      },{signal});
+      renderer.domElement.addEventListener('pointerup',event=>{
+        pointers.delete(event.pointerId);if(pointers.size<2)pinchDistance=0;
+        pointer.active=pointers.size===1;
+        if(pointer.active){const rem=[...pointers.values()][0];pointer.x=rem.x;pointer.y=rem.y;}
+      },{signal});
+      renderer.domElement.addEventListener('pointercancel',event=>{
+        pointers.delete(event.pointerId);if(pointers.size<2)pinchDistance=0;pointer.active=false;
+      },{signal});
       renderer.domElement.addEventListener('wheel',event=>{event.preventDefault();state.distance=Math.max(3,Math.min(100,state.distance+Math.sign(event.deltaY)*2));draw();},{passive:false,signal});
       status.hidden=true;loading.remove();resize();
     } catch(error) {

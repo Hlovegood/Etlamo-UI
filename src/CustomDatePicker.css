@@ -679,15 +679,25 @@ html.dark .custom-datepicker-icon svg,
 /* --------------------------------------------------------------------------
    Mobile Viewport Responsive Adjustments
    -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .custom-calendar-popup {
-    width: calc(100vw - 2rem);
-    inset-inline-start: 50%;
-    transform: translateX(calc(-50% * var(--dir-sign, 1)));
+    position: fixed;
+    top: 50%;
+    left: 16px;
+    right: 16px;
+    bottom: auto;
+    width: auto;
+    max-width: calc(100% - 32px);
+    max-height: 85dvh;
+    overflow-y: auto;
+    inset-inline-start: 16px;
+    inset-inline-end: 16px;
+    transform: translateY(-50%);
+    z-index: 2500;
   }
 
   [dir="rtl"] .custom-calendar-popup {
-    transform: translateX(50%);
+    transform: translateY(-50%);
   }
 
   .custom-cal-container {
@@ -695,7 +705,7 @@ html.dark .custom-datepicker-icon svg,
   }
 
   .custom-cal-day {
-    min-height: 34px;
-    font-size: 0.85rem;
+    min-height: 36px;
+    font-size: 0.88rem;
   }
 }

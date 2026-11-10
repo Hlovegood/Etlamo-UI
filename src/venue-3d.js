@@ -147,10 +147,46 @@ export function mountRoom3D(host,layout,{lang='en'}={}) {
       else{const empty=document.createElement('p');empty.textContent=lang==='ar'?'لم يتم تخصيص ضيوف لهذه الطاولة بعد.':'No guests assigned to this table yet.';info.append(empty);}
       draw();
     };
-    renderer.domElement.addEventListener('pointerdown',event=>{cancelAnimationFrame(animation);pointer.active=true;pointer.x=pointer.startX=event.clientX;pointer.y=pointer.startY=event.clientY;renderer.domElement.setPointerCapture(event.pointerId);},{signal});
-    renderer.domElement.addEventListener('pointermove',event=>{if(!pointer.active)return;const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;if(dx||dy){state.yaw+=dx*.008;state.pitch=Math.max(.18,Math.min(1.54,state.pitch+dy*.008));markStop('');}pointer.x=event.clientX;pointer.y=event.clientY;draw();},{signal});
-    renderer.domElement.addEventListener('pointerup',event=>{pointer.active=false;if(!guided||Math.hypot(event.clientX-pointer.startX,event.clientY-pointer.startY)>6)return;const rect=renderer.domElement.getBoundingClientRect();mouse.set((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);raycaster.setFromCamera(mouse,camera);const hit=raycaster.intersectObjects(tableBodies)[0];if(hit)selectTable(hit.object.userData.tableIndex);},{signal});
-    renderer.domElement.addEventListener('pointercancel',()=>{pointer.active=false;},{signal});
+    renderer.domElement.style.touchAction='none';
+    const pointers=new Map();let pinchDistance=0,wasPinching=false;
+    const twoFingerDist=()=>{const [a,b]=[...pointers.values()];return a&&b?Math.hypot(a.x-b.x,a.y-b.y):0;};
+    renderer.domElement.addEventListener('pointerdown',event=>{
+      cancelAnimationFrame(animation);
+      pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(pointers.size===1){wasPinching=false;pointer.active=true;pointer.x=pointer.startX=event.clientX;pointer.y=pointer.startY=event.clientY;}
+      else if(pointers.size===2){pointer.active=false;wasPinching=true;pinchDistance=twoFingerDist();}
+      renderer.domElement.setPointerCapture?.(event.pointerId);
+    },{signal});
+    renderer.domElement.addEventListener('pointermove',event=>{
+      if(pointers.has(event.pointerId))pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(pointers.size===2){
+        const nextDist=twoFingerDist();
+        if(pinchDistance>0&&nextDist>0){
+          markStop('');
+          state.distance=Math.max(4,Math.min(55,state.distance+(pinchDistance-nextDist)*.08));
+          draw();
+        }
+        pinchDistance=nextDist;
+        return;
+      }
+      if(!pointer.active)return;
+      const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;
+      if(dx||dy){state.yaw+=dx*.008;state.pitch=Math.max(.18,Math.min(1.54,state.pitch+dy*.008));markStop('');}
+      pointer.x=event.clientX;pointer.y=event.clientY;draw();
+    },{signal});
+    renderer.domElement.addEventListener('pointerup',event=>{
+      pointers.delete(event.pointerId);
+      if(pointers.size<2)pinchDistance=0;
+      const tapOk=!wasPinching&&pointer.active;
+      pointer.active=pointers.size===1;
+      if(pointer.active){const rem=[...pointers.values()][0];pointer.x=rem.x;pointer.y=rem.y;}
+      if(pointers.size===0)wasPinching=false;
+      if(!guided||!tapOk||Math.hypot(event.clientX-pointer.startX,event.clientY-pointer.startY)>12)return;
+      const rect=renderer.domElement.getBoundingClientRect();mouse.set((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);raycaster.setFromCamera(mouse,camera);const hit=raycaster.intersectObjects(tableBodies)[0];if(hit)selectTable(hit.object.userData.tableIndex);
+    },{signal});
+    renderer.domElement.addEventListener('pointercancel',event=>{
+      pointers.delete(event.pointerId);if(pointers.size<2)pinchDistance=0;pointer.active=false;if(pointers.size===0)wasPinching=false;
+    },{signal});
     renderer.domElement.addEventListener('wheel',event=>{event.preventDefault();cancelAnimationFrame(animation);markStop('');state.distance=Math.max(4,Math.min(55,state.distance+Math.sign(event.deltaY)*2));draw();},{passive:false,signal});
     host.addEventListener('click',event=>{const mood=event.target.closest('[data-scene-atmosphere]')?.dataset.sceneAtmosphere;if(mood&&atmospheres[mood]){setAtmosphere(mood);draw();return;}const stop=event.target.closest('[data-scene-stop]')?.dataset.sceneStop;if(stop){stopCamera(stop);return;}const view=event.target.closest('[data-scene-view]')?.dataset.sceneView;if(!view)return;if(view==='top'){state.yaw=0;state.pitch=1.45;state.distance=28;}else{state.yaw=.55;state.pitch=.58;state.distance=27;}draw();},{signal});
     host.addEventListener('change',event=>{if(event.target.matches('[data-scene-table]'))selectTable(event.target.value===''?-1:Number(event.target.value));},{signal});

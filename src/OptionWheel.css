@@ -58,3 +58,10 @@ html[lang="ar"] .option-wheel__item {
   font-weight: 400;
   letter-spacing: 0.02em;
 }
+
+@media (max-width: 768px) {
+  .option-wheel {
+    --ow-font-size: clamp(1.35rem, 5.5vw, 2.1rem);
+    --ow-inset: clamp(16px, 5vw, 32px);
+  }
+}

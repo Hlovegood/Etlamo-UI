@@ -457,6 +457,8 @@ export function createCircularGallery(container, options = {}) {
     items = DEFAULT_ITEMS,
     bend = 3,
     textColor = '#ffffff',
+    lightTextColor = '#19140b',
+    darkTextColor = '#eed8a6',
     borderRadius = 0.05,
     font = DEFAULT_FONT,
     fontUrl,
@@ -488,6 +490,8 @@ export function createCircularGallery(container, options = {}) {
     items: list,
     bend,
     textColor,
+    lightTextColor,
+    darkTextColor,
     borderRadius: clamp(borderRadius, 0, 0.5),
     scrollSpeed: Math.max(0, scrollSpeed),
     scrollEase: clamp(scrollEase, 0.001, 1),
@@ -516,7 +520,7 @@ export function createCircularGallery(container, options = {}) {
   container.setAttribute('role', 'region');
   container.setAttribute('aria-roledescription', 'carousel');
   container.setAttribute('aria-label', options.ariaLabel || 'Image gallery');
-  container.style.color = textColor;
+  /* theme color inherited via CSS */
   for (const [k, v] of Object.entries(style)) {
     container.style[k] = v;
   }
@@ -1253,7 +1257,7 @@ export function createCircularGallery(container, options = {}) {
 
           entry.el.style.fontSize = `${size}px`;
 
-          entry.el.style.color = s.textColor;
+          entry.el.style.removeProperty('color');
 
           entry.el.style.transform = `translate(${cssX}px, ${cssY}px) translate(-50%, -50%) rotate(${-card.angle}rad)`;
 
@@ -1277,7 +1281,7 @@ export function createCircularGallery(container, options = {}) {
 
       caption.style.opacity = String(ease(clamp((state.open - 0.5) / 0.5, 0, 1)));
 
-      caption.style.color = s.textColor;
+      caption.style.removeProperty('color');
 
       if (caption.dataset.font !== font) {
 
@@ -1960,6 +1964,16 @@ export function createCircularGallery(container, options = {}) {
 
     resizeObserver.observe(container);
 
+    const syncThemeColors = () => {
+      const darkActive = document.documentElement.classList.contains('dark') ||
+                         document.documentElement.getAttribute('data-theme') === 'dark';
+      settings.textColor = darkActive ? settings.darkTextColor : settings.lightTextColor;
+      wake();
+    };
+    syncThemeColors();
+    const themeObserver = new MutationObserver(syncThemeColors);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+
     const intersection = new IntersectionObserver(entries => {
       visible = entries.some(entry => entry.isIntersecting);
       if (visible) {
@@ -2056,6 +2070,7 @@ export function createCircularGallery(container, options = {}) {
         clearTimeout(snapTimer);
         engine = null;
         resizeObserver.disconnect();
+        themeObserver.disconnect();
         intersection.disconnect();
         window.removeEventListener('scroll', onWindowScroll);
         container.removeEventListener('pointerdown', onPointerDown);

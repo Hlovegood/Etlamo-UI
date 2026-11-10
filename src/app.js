@@ -42,7 +42,7 @@ function getTheme() {
 function toggleTheme(event) {
   toggleSmoothTheme(event);
 }
-const state = { isMenuOpen: false, compare:[], providers:{public:[],owned:[],admin:[],inquiries:[],vendorInquiries:[],error:false}, plans:{items:[],loaded:false,error:false,seat:null,scaleMode:false,scalePoints:[],picker:false,pickerCategory:'rect',inspector:'',zoom:1,gridVisible:true,ceremonyMode:'block',ceremonySeat:'',guestSelected:'',guestForm:false,createModal:false,suggestion:{planId:'',kind:'saved'},history:{planId:'',undo:[],redo:[]},members:{planId:'',items:[]},inquiries:{planId:'',items:[],options:[],error:false}}, operations:{path:'',loaded:false,error:false,items:[],history:[]}, lang: getLanguage(), filters: defaultFilters(), saved: getSaved(), draft: null, stage: 'details', busy:false, connectionError:false, vendor:{venues:[],requests:[],loaded:false,error:false}, admin:{venues:[],loaded:false,error:false}, adminFilter:'PENDING',team:{venueId:'',members:[],loaded:false,error:false},inbox:{items:[],loaded:false,error:false},security:{mail:[],loaded:false,error:false,result:null} };
+const state = { isMenuOpen: false, compare:[], providers:{public:[],owned:[],admin:[],inquiries:[],vendorInquiries:[],error:false}, plans:{items:[],loaded:false,error:false,seat:null,scaleMode:false,scalePoints:[],picker:false,pickerCategory:'rect',inspector:'',zoom:1,gridVisible:true,ceremonyMode:'block',ceremonySeat:'',guestSelected:'',seatingGuestPending:'',guestForm:false,createModal:false,suggestion:{planId:'',kind:'saved'},history:{planId:'',undo:[],redo:[]},members:{planId:'',items:[]},inquiries:{planId:'',items:[],options:[],error:false}}, operations:{path:'',loaded:false,error:false,items:[],history:[]}, lang: getLanguage(), filters: defaultFilters(), saved: getSaved(), draft: null, stage: 'details', busy:false, connectionError:false, vendor:{venues:[],requests:[],loaded:false,error:false}, admin:{venues:[],loaded:false,error:false}, adminFilter:'PENDING',team:{venueId:'',members:[],loaded:false,error:false},inbox:{items:[],loaded:false,error:false},security:{mail:[],loaded:false,error:false,result:null} };
 const t = key => copy[state.lang][key] || key;
 const local = value => value[state.lang];
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -394,7 +394,7 @@ function home() {
       </div>
       ${results.length ? `
         <div class="venue-circular-gallery-wrapper" style="border: none;">
-          <div class="circular-gallery-mount" id="venue-circular-gallery" style="height: 740px; min-height: 680px; position: relative; width: 100%; border: none;"></div>
+          <div class="circular-gallery-mount" id="venue-circular-gallery" style="position: relative; width: 100%; border: none;"></div>
         </div>
         <p class="fine-print">${t('priceNote')}</p>
       ` : empty('noResults','noResultsHelp','reset')}
@@ -761,7 +761,7 @@ function render(moveFocus = false) {
   else if(r.parts[0]==='services'){content=servicePage(r.path,r.params,{state,account:getAccount(),lang:state.lang,escape,local,option,areas,number});title=t('servicesNav');}
   else if(r.path==='/vendor/services'){content=vendorServicePage({state,account:getAccount(),lang:state.lang,escape,local,option,areas,number,editId:r.params.get('edit')});title=t('manageServices');}
   else if(r.path==='/admin/services'){content=adminServicePage({state,account:getAccount(),lang:state.lang,escape,local,number});title=t('reviewServices');}
-  else if(r.parts[0]==='plans' && (r.parts.length===1 || (r.parts.length===2 && /^[a-f0-9-]{36}$/.test(r.parts[1])))) {const suggestion=state.plans.suggestion.planId===r.parts[1]?state.plans.suggestion.kind:'saved';content=planningView({items:state.plans.items,plan:currentPlan(),loaded:state.plans.loaded,error:state.plans.error,account:getAccount(),lang:state.lang,escape,selectedSeat:state.plans.seat,scaleMode:state.plans.scaleMode,scalePoints:state.plans.scalePoints,view:r.params.get('view'),taskFilter:r.params.get('filter'),members:state.plans.members,inquiries:state.plans.inquiries,history:state.plans.history.planId===r.parts[1]?state.plans.history:null,suggestion,suggestedLayout:suggestion==='saved'?null:previewLayout(suggestion),picker:state.plans.picker,pickerCategory:state.plans.pickerCategory,inspector:state.plans.inspector,zoom:state.plans.zoom,gridVisible:state.plans.gridVisible,ceremonyMode:state.plans.ceremonyMode,ceremonySeat:state.plans.ceremonySeat,guestSelected:state.plans.guestSelected,guestForm:state.plans.guestForm,createModal:state.plans.createModal});title=t('planEvent');}
+  else if(r.parts[0]==='plans' && (r.parts.length===1 || (r.parts.length===2 && /^[a-f0-9-]{36}$/.test(r.parts[1])))) {const suggestion=state.plans.suggestion.planId===r.parts[1]?state.plans.suggestion.kind:'saved';content=planningView({items:state.plans.items,plan:currentPlan(),loaded:state.plans.loaded,error:state.plans.error,account:getAccount(),lang:state.lang,escape,selectedSeat:state.plans.seat,scaleMode:state.plans.scaleMode,scalePoints:state.plans.scalePoints,view:r.params.get('view'),taskFilter:r.params.get('filter'),members:state.plans.members,inquiries:state.plans.inquiries,history:state.plans.history.planId===r.parts[1]?state.plans.history:null,suggestion,suggestedLayout:suggestion==='saved'?null:previewLayout(suggestion),picker:state.plans.picker,pickerCategory:state.plans.pickerCategory,inspector:state.plans.inspector,zoom:state.plans.zoom,gridVisible:state.plans.gridVisible,ceremonyMode:state.plans.ceremonyMode,ceremonySeat:state.plans.ceremonySeat,guestSelected:state.plans.guestSelected,seatingGuestPending:state.plans.seatingGuestPending,guestForm:state.plans.guestForm,createModal:state.plans.createModal});title=t('planEvent');}
   else if(r.path==='/compare'){content=compareView(venues.filter(v=>state.compare.includes(v.id)),viewTools());title=t('compareTitle');}
   else if(r.path==='/support' || r.path==='/admin/support'){content=!getAccount() || (r.path==='/admin/support' && !getAccount().isAdmin)?supportView([],r.path==='/admin/support',viewTools()):operationContent(()=>supportView(state.operations.items,r.path==='/admin/support',viewTools()));title=t('support');}
   else if(r.parts[0]==='conversation' && /^[a-f0-9-]{36}$/.test(r.parts[1] || '')){content=operationContent(()=>conversationView(r.parts[1],state.operations.items,state.operations.history,viewTools()));title=t('conversation');}
@@ -1031,6 +1031,8 @@ function render(moveFocus = false) {
       items: galleryItems,
       bend: 2.5,
       textColor: isDark ? '#eed8a6' : '#19140b',
+      lightTextColor: '#19140b',
+      darkTextColor: '#eed8a6',
       borderRadius: 0.05,
       scrollEase: 0.05,
       scrollSpeed: 2,
@@ -1442,6 +1444,13 @@ app.addEventListener('click', async event => {
   }
   if(action==='planner-guest-form'){state.plans.guestForm=!state.plans.guestForm;state.plans.guestSelected='';render();document.querySelector('#guest-name')?.focus();return;}
   if(action==='planner-select-guest'){state.plans.guestSelected=button.dataset.id;state.plans.guestForm=false;render();return;}
+  if(action==='planner-tap-guest'){
+    const gid=button.dataset.guestId;if(!gid)return;
+    state.plans.seatingGuestPending=state.plans.seatingGuestPending===gid?'':gid;
+    if(state.plans.seatingGuestPending&&window.innerWidth<=800)state.plans.inspector='';
+    render();return;
+  }
+  if(action==='planner-clear-tap-guest'){state.plans.seatingGuestPending='';render();return;}
   if(action==='planner-ceremony-seat'){
     const plan=currentPlan(),key=button.dataset.seat;if(!plan||plan.access==='VIEW')return;
     if(state.plans.ceremonyMode==='block'){
@@ -1452,6 +1461,12 @@ app.addEventListener('click', async event => {
   }
   if(action==='select-seat') {
     if(currentPlan()?.access==='VIEW')return;
+    if(state.plans.seatingGuestPending){
+      const pendingId=state.plans.seatingGuestPending;
+      state.plans.seatingGuestPending='';
+      await assignSeat(button.dataset.table,Number(button.dataset.index),pendingId);
+      return;
+    }
     state.plans.seat={tableId:button.dataset.table,index:Number(button.dataset.index)};state.plans.inspector='seat';render();document.querySelector('#seat-guest')?.focus();return;
   }
   if(action==='planner-scale'){
@@ -1662,14 +1677,14 @@ app.addEventListener('keydown',async event=>{
   if(event.key==='Escape'&&state.isMenuOpen){state.isMenuOpen=false;closeDiscRevealNav();closeBubbleMenu();document.querySelector('[data-action="toggle-disc-nav"],[data-action="toggle-bubble-menu"]')?.focus();return;}
   if(event.key==='Escape'&&state.plans.picker){state.plans.picker=false;render();document.querySelector('[data-action="planner-open-picker"]')?.focus();return;}
   if(event.key==='Escape'&&state.plans.createModal){state.plans.createModal=false;render();document.querySelector('[data-action="planner-open-create"]')?.focus();return;}
-  if((event.key==='Enter' || event.key===' ') && event.target.matches?.('.planner-seat')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));return;}
+  if((event.key==='Enter' || event.key===' ') && event.target.matches?.('.planner-seat,[data-action="planner-tap-guest"]')){event.preventDefault();event.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));return;}
   if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key) || !event.target.matches?.('.planner-table,.planner-feature'))return;
   const plan=currentPlan();if(!plan||plan.access==='VIEW')return;
   event.preventDefault();const delta={ArrowUp:[0,-10],ArrowDown:[0,10],ArrowLeft:[-10,0],ArrowRight:[10,0]}[event.key];
   const kind=event.target.classList.contains('planner-feature')?'features':'tables',id=event.target.dataset[kind==='features'?'featureId':'tableId'];
   await savePlan({...plan,[kind]:plan[kind].map(item=>item.id===id?{...item,x:Math.max(kind==='features'?item.width/2:55,Math.min(1000-(kind==='features'?item.width/2:55),item.x+delta[0])),y:Math.max(kind==='features'?item.height/2:55,Math.min(700-(kind==='features'?item.height/2:55),item.y+delta[1]))}:item)});
 });
-window.addEventListener('hashchange', ()=>{closeStaggeredMenu(true);document.body.classList.remove('footer-focused', 'footer-ground-active');document.documentElement.classList.remove('footer-ground-active');state.isMenuOpen=false;state.security.result=null;state.plans.scaleMode=false;state.plans.scalePoints=[];navigate();});
+window.addEventListener('hashchange', ()=>{closeStaggeredMenu(true);document.body.classList.remove('footer-focused', 'footer-ground-active');document.documentElement.classList.remove('footer-ground-active');state.isMenuOpen=false;state.security.result=null;state.plans.scaleMode=false;state.plans.scalePoints=[];state.plans.seatingGuestPending='';navigate();});
 window.addEventListener('popstate', ()=>{closeStaggeredMenu(true);document.body.classList.remove('footer-focused', 'footer-ground-active');document.documentElement.classList.remove('footer-ground-active');state.isMenuOpen=false;});
 window.addEventListener('storage', event => { if (!event.key || event.key.startsWith('weddo.')) { state.saved = getSaved(); render(); } });
 const preloader = initPreloader({ duration: 1600 });

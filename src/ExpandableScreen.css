@@ -7,7 +7,7 @@
 .expandable-screen-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,6 +157,7 @@ html[lang="ar"] .expandable-screen-title {
   }
   .expandable-screen-card {
     max-height: 100vh;
+    max-height: 100dvh;
     height: 100%;
     border-radius: 0;
     border: none;

@@ -463,7 +463,7 @@ export function mountStaggeredMenu({ lang = 'ar' } = {}) {
     sound.tap();
     closeMenu();
   };
-  document.addEventListener('mousedown', onDocClick);
+  document.addEventListener('pointerdown', onDocClick);
 
   // Link click to close immediately to prevent transition race conditions
   const onNavClick = (e) => {
@@ -481,7 +481,7 @@ export function mountStaggeredMenu({ lang = 'ar' } = {}) {
   return () => {
     isOpen = false;
     isBusy = false;
-    document.removeEventListener('mousedown', onDocClick);
+    document.removeEventListener('pointerdown', onDocClick);
     panel.removeEventListener('click', onNavClick);
     if (openTimeline) { openTimeline.kill(); openTimeline = null; }
     if (closeTween) { closeTween.kill(); closeTween = null; }
