@@ -33,19 +33,26 @@ function disposeModel(model) {
 export function mountOriginalRoom3D(host,{lang='en'}={}) {
   const viewport=host.querySelector('.room-3d-canvas'),status=host.querySelector('.room-3d-status');
   const request=new AbortController();
-  let cancelled=false,renderer,observer,model,frame=0,tourTimer=0,active=0,auto=false,audioContext,muted=true,collapsed=false;
+  let cancelled=false,renderer,observer,model,frame=0,tourTimer=0,active=0,auto=false,audioContext,muted=true,collapsed=typeof window!=='undefined'&&window.innerWidth<=640;
   const events=new AbortController();
   const state={yaw:-.5,pitch:.34,distance:23,targetY:2.5},destination={...state},pointer={x:0,y:0,active:false};
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const pins=document.createElement('div'),panel=document.createElement('div'),dock=document.createElement('div'),loading=document.createElement('div');
-  pins.className='room-tour-pins';panel.className='room-tour-panel';panel.setAttribute('aria-live','polite');dock.className='room-tour-dock';loading.className='room-tour-loading';
+  const pins=document.createElement('div'),panel=document.createElement('div'),dock=document.createElement('div'),loading=document.createElement('div'),gestureHint=document.createElement('span');
+  pins.className='room-tour-pins';panel.className='room-tour-panel';panel.setAttribute('aria-live','polite');dock.className='room-tour-dock';loading.className='room-tour-loading';gestureHint.className='room-3d-gesture-hint';
   loading.textContent=lang==='ar'?'جاري تحميل مشهد الفرح…':'Loading wedding scene…';
-  viewport.append(pins,panel,dock,loading);
+  gestureHint.textContent=lang==='ar'?'اسحب للتجول · قرّب بإصبعين':'Drag to look · Pinch to zoom';
+  viewport.append(pins,panel,dock,loading,gestureHint);
   pins.innerHTML=chapters.map((chapter,index)=>`<button type="button" data-tour-chapter="${index}" aria-label="${lang==='ar'?chapter[1]:chapter[0]}" title="${lang==='ar'?chapter[1]:chapter[0]}">${String(index+1).padStart(2,'0')}</button>`).join('');
   const renderUI=()=>{
     const ch=chapters[active],ar=lang==='ar';
     const [detail,action]=chapterCopy[ar?'ar':'en'][active];
-    panel.innerHTML=`<span class="room-tour-count">${String(active+1).padStart(2,'0')} / 07</span><button class="room-tour-collapse" type="button" data-tour="collapse" aria-label="${collapsed?(ar?'توسيع':'Expand'):(ar?'طي':'Collapse')}" aria-expanded="${!collapsed}">${collapsed?'+':'−'}</button><strong>${ar?ch[1]:ch[0]}</strong>${collapsed?'':`<p>${detail}</p><a class="button" href="${ch[2]==='seating'?(location.hash.startsWith('#/plans/')?location.hash.replace(/\?view=.*/,'')+'?view=seating':'#/plans'):ch[2]}">${action} ↗</a>`}`;
+    panel.classList.toggle('is-collapsed',collapsed);
+    panel.setAttribute('data-collapsed',String(collapsed));
+    if(collapsed){
+      panel.innerHTML=`<span class="room-tour-count">${String(active+1).padStart(2,'0')} / 07</span><strong>${ar?ch[1]:ch[0]}</strong><button class="room-tour-collapse" type="button" data-tour="collapse" aria-label="${ar?'توسيع':'Expand'}" aria-expanded="false">+</button>`;
+    }else{
+      panel.innerHTML=`<span class="room-tour-count">${String(active+1).padStart(2,'0')} / 07</span><button class="room-tour-collapse" type="button" data-tour="collapse" aria-label="${ar?'طي':'Collapse'}" aria-expanded="true">−</button><strong>${ar?ch[1]:ch[0]}</strong><p>${detail}</p><a class="button" href="${ch[2]==='seating'?(location.hash.startsWith('#/plans/')?location.hash.replace(/\?view=.*/,'')+'?view=seating':'#/plans'):ch[2]}">${action} ↗</a>`;
+    }
     let steps=dock.querySelector('.room-tour-steps');
     if(!steps){
       dock.innerHTML=`<button type="button" data-tour="auto" aria-pressed="${auto}">${auto?(ar?'إيقاف':'Pause'):(ar?'تشغيل الجولة':'Play tour')}</button><button type="button" data-tour="prev" aria-label="${ar?'السابق':'Previous'}">‹</button><div class="room-tour-steps" role="group" aria-label="${ar?'محطات الجولة':'Tour chapters'}">${chapters.map((item,index)=>`<button type="button" data-tour-chapter="${index}" aria-label="${ar?item[1]:item[0]}" aria-current="${index===active?'step':'false'}" title="${ar?item[1]:item[0]}">${String(index+1).padStart(2,'0')}<span>${ar?item[1]:item[0]}</span></button>`).join('')}</div><button type="button" data-tour="next" aria-label="${ar?'التالي':'Next'}">›</button><button type="button" data-tour="reset">${ar?'إعادة ضبط':'Reset view'}</button><div class="room-tour-roles" role="group" aria-label="${ar?'الدور':'View by role'}">${[[0,ar?'عميل':'Couple'],[5,ar?'مورد':'Vendor'],[6,ar?'إدارة':'Admin']].map(([index,label])=>`<button type="button" data-tour-chapter="${index}" aria-label="${label}" aria-pressed="${active===index}">${label}</button>`).join('')}</div>`;
@@ -69,7 +76,11 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
     if(activeBtn){
       activeBtn.scrollIntoView({behavior:reduced?'auto':'smooth',inline:'center',block:'nearest'});
     }
-    host.querySelector('[data-scene-sound]')?.setAttribute('aria-pressed',String(!muted));
+    const soundBtn=host.querySelector('[data-scene-sound]');
+    if(soundBtn){
+      soundBtn.setAttribute('aria-pressed',String(!muted));
+      soundBtn.textContent=!muted?(ar?'🔊 الصوت مفعل':'🔊 Sound on'):(ar?'🔈 الصوت':'🔈 Sound');
+    }
   };
   renderUI();
   dock.addEventListener('wheel',event=>{
@@ -123,7 +134,7 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
   const select=index=>{active=(index+chapters.length)%chapters.length;renderUI();flyTo();chime();};
   const stopTour=()=>{auto=false;clearInterval(tourTimer);renderUI();};
   const toggleTour=()=>{if(auto){stopTour();return;}auto=true;renderUI();select(active);tourTimer=setInterval(()=>select(active+1),7500);};
-  host.addEventListener('click',event=>{const chapter=event.target.closest('[data-tour-chapter]');if(chapter){select(Number(chapter.dataset.tourChapter));return;}const tour=event.target.closest('[data-tour]')?.dataset.tour;if(tour==='collapse'){collapsed=!collapsed;renderUI();return;}if(tour==='auto'){toggleTour();return;}if(tour==='prev'||tour==='next'){select(active+(tour==='next'?1:-1));return;}if(tour==='reset'){flyTo();return;}if(event.target.closest('[data-scene-sound]')){muted=!muted;if(!muted){audioContext??=new (window.AudioContext||window.webkitAudioContext)();audioContext.resume();chime();}renderUI();return;}if(event.target.closest('[data-scene-fullscreen]')){if(document.fullscreenElement===host)document.exitFullscreen();else host.requestFullscreen?.();return;}const zoom=event.target.closest('[data-scene-zoom]')?.dataset.sceneZoom;if(zoom){state.distance=Math.max(3,Math.min(100,state.distance+(zoom==='in'?-4:4)));draw();return;}const mood=event.target.closest('[data-scene-atmosphere]')?.dataset.sceneAtmosphere;if(mood&&moods[mood]){setMood(mood);return;}const view=event.target.closest('[data-scene-view]')?.dataset.sceneView;if(view==='top'){state.yaw=0;state.pitch=1.54;state.distance=30;draw();}else if(view==='perspective')flyTo();},{signal:events.signal});
+  host.addEventListener('click',event=>{const chapter=event.target.closest('[data-tour-chapter]');if(chapter){select(Number(chapter.dataset.tourChapter));return;}const tour=event.target.closest('[data-tour]')?.dataset.tour;if(tour==='collapse'||(collapsed&&event.target.closest('.room-tour-panel')&&!event.target.closest('a'))){collapsed=!collapsed;renderUI();return;}if(tour==='auto'){toggleTour();return;}if(tour==='prev'||tour==='next'){select(active+(tour==='next'?1:-1));return;}if(tour==='reset'){flyTo();return;}if(event.target.closest('[data-scene-sound]')){muted=!muted;if(!muted){audioContext??=new (window.AudioContext||window.webkitAudioContext)();audioContext.resume();chime();}renderUI();return;}if(event.target.closest('[data-scene-fullscreen]')){if(document.fullscreenElement===host||document.webkitFullscreenElement===host){if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}else{if(host.requestFullscreen)host.requestFullscreen().catch(()=>{});else if(host.webkitRequestFullscreen)host.webkitRequestFullscreen();}return;}const zoom=event.target.closest('[data-scene-zoom]')?.dataset.sceneZoom;if(zoom){state.distance=Math.max(3,Math.min(100,state.distance+(zoom==='in'?-4:4)));draw();return;}const mood=event.target.closest('[data-scene-atmosphere]')?.dataset.sceneAtmosphere;if(mood&&moods[mood]){setMood(mood);return;}const view=event.target.closest('[data-scene-view]')?.dataset.sceneView;if(view==='top'){state.yaw=0;state.pitch=1.54;state.distance=30;draw();}else if(view==='perspective')flyTo();},{signal:events.signal});
   window.addEventListener('keydown',event=>{if(!host.isConnected||!renderer||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)||event.altKey||event.ctrlKey||event.metaKey)return;if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();select(active+(event.key==='ArrowRight'?1:-1));}else if(event.code==='Space'&&document.activeElement?.tagName!=='BUTTON'){event.preventDefault();toggleTour();}},{signal:events.signal});
 
   (async()=>{
@@ -167,6 +178,10 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
       const twoFingerDist=()=>{const [a,b]=[...pointers.values()];return a&&b?Math.hypot(a.x-b.x,a.y-b.y):0;};
       renderer.domElement.addEventListener('pointerdown',event=>{
         stopTour();cancelAnimationFrame(frame);
+        if(gestureHint&&!gestureHint.classList.contains('is-hidden')){
+          gestureHint.classList.add('is-hidden');
+          setTimeout(()=>gestureHint.remove(),600);
+        }
         pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
         if(pointers.size===1){pointer.active=true;pointer.x=event.clientX;pointer.y=event.clientY;}
         else if(pointers.size===2){pointer.active=false;pinchDistance=twoFingerDist();}
@@ -200,5 +215,5 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
       if(!cancelled){status.textContent=lang==='ar'?'تعذر فتح المشهد الأصلي. جرّب مرة أخرى أو استخدم عرض خطتك ثلاثي الأبعاد.':'Could not open the original scene. Try again or use your layout’s 3D view.';loading.textContent=status.textContent;}
     }
   })();
-  return ()=>{cancelled=true;request.abort();events.abort();clearInterval(tourTimer);cancelAnimationFrame(frame);observer?.disconnect();audioContext?.close();disposeModel(model);renderer?.dispose();renderer?.domElement.remove();pins.remove();panel.remove();dock.remove();loading.remove();};
+  return ()=>{cancelled=true;request.abort();events.abort();clearInterval(tourTimer);cancelAnimationFrame(frame);observer?.disconnect();audioContext?.close();disposeModel(model);renderer?.dispose();renderer?.domElement.remove();pins.remove();panel.remove();dock.remove();loading.remove();gestureHint.remove();};
 }

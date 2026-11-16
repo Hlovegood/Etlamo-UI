@@ -4286,29 +4286,52 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
 /* Floating Tour Chapter Panel on 3D Stage */
 .room-tour-panel {
   position: absolute !important;
-  top: 16px !important;
-  inset-inline-start: 16px !important;
+  top: 14px !important;
+  inset-inline-start: 14px !important;
   z-index: 10 !important;
-  display: grid !important;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 8px !important;
-  max-width: min(320px, 80%) !important;
-  padding: 16px !important;
+  max-width: min(320px, 85%) !important;
+  padding: 14px 16px !important;
   border: 1px solid rgba(238, 216, 166, 0.3) !important;
-  border-radius: 12px !important;
-  background: rgba(14, 13, 12, 0.92) !important;
+  border-radius: 14px !important;
+  background: rgba(14, 13, 12, 0.9) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
   color: #ffffff !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.room-tour-panel.is-collapsed {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 12px !important;
+  border-radius: 9999px !important;
+  width: auto !important;
+  max-width: calc(100% - 28px) !important;
+  cursor: pointer !important;
+}
+
+.room-tour-panel.is-collapsed strong {
+  font-size: 12.5px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 180px !important;
 }
 
 .room-tour-panel strong {
   color: #ffffff !important;
-  font-size: 15px;
+  font-size: 15px !important;
+  font-weight: 600 !important;
 }
 
 .room-tour-panel p {
   color: #d6ccbf !important;
-  font-size: 13px !important;
+  font-size: 12.5px !important;
   margin: 0 !important;
   line-height: 1.4 !important;
 }
@@ -4318,6 +4341,8 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   font-size: 11px;
   color: #eed8a6 !important;
   letter-spacing: 0.1em;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .room-tour-panel .button {
@@ -4328,26 +4353,47 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   padding: 6px 14px !important;
   min-height: 32px !important;
   font-weight: 600 !important;
+  width: 100% !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
 }
 
 .room-tour-collapse {
   position: absolute;
   top: 12px;
   inset-inline-end: 12px;
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.15);
+  width: 26px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  transition: all 0.2s ease;
 }
 
-/* 3D Pin Buttons on Canvas */
+.room-tour-panel.is-collapsed .room-tour-collapse {
+  position: static !important;
+  width: 22px !important;
+  height: 22px !important;
+  font-size: 12px !important;
+  border-radius: 50% !important;
+  flex: none !important;
+  margin-inline-start: auto !important;
+}
+
+.room-tour-collapse:hover,
+.room-tour-collapse:active {
+  background: rgba(238, 216, 166, 0.25);
+  border-color: #eed8a6;
+  color: #eed8a6;
+}
+
+/* 3D Pin Buttons on Canvas with expanded touch hit-area */
 .room-tour-pins button {
   position: absolute;
   width: 28px;
@@ -4358,6 +4404,79 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   border: 2px solid #eed8a6;
   font-family: var(--font-mono, monospace);
   font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  z-index: 5;
+  touch-action: manipulation;
+}
+
+.room-tour-pins button::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+
+.room-tour-pins button:hover,
+.room-tour-pins button:active {
+  background: #eed8a6;
+  color: #070d09;
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+/* 3D Loading & Interaction Guidance */
+.room-tour-loading {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 12 !important;
+  padding: 10px 22px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.88) !important;
+  border: 1px solid rgba(238, 216, 166, 0.3) !important;
+  color: #eed8a6 !important;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+}
+
+.room-3d-gesture-hint {
+  position: absolute !important;
+  top: 14px !important;
+  inset-inline-end: 14px !important;
+  z-index: 9 !important;
+  padding: 5px 12px !important;
+  border-radius: 9999px !important;
+  background: rgba(14, 13, 12, 0.78) !important;
+  border: 1px solid rgba(238, 216, 166, 0.22) !important;
+  color: #eed8a6 !important;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.02em !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  pointer-events: none !important;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  white-space: nowrap !important;
+}
+
+.room-3d-gesture-hint.is-hidden {
+  opacity: 0 !important;
+}
   font-weight: 700;
   cursor: pointer;
   transform: translate(-50%, -50%);
@@ -4466,11 +4585,12 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
   [dir="rtl"] .room-3d.room-3d-hero {
     grid-template-columns: 1fr !important;
     height: auto !important;
+    gap: 16px !important;
   }
   .room-3d:not(.room-3d-plan-hero) .room-3d-viewport-stage,
   .room-3d:not(.room-3d-plan-hero) .room-3d-viewport-stage .room-3d-canvas {
-    height: clamp(360px, 52dvh, 540px) !important;
-    min-height: 360px !important;
+    height: clamp(380px, 56dvh, 560px) !important;
+    min-height: 380px !important;
   }
   .room-3d-cockpit {
     height: auto !important;
@@ -4479,41 +4599,152 @@ html[lang="ar"] .room-3d-cockpit-header h2 {
 }
 
 @media (max-width: 640px) {
+  .container.container-3d-viewer {
+    padding-top: 10px !important;
+    padding-bottom: 24px !important;
+    padding-inline: 10px !important;
+  }
   .venue-3d-topbar {
-    gap: 10px;
+    gap: 8px !important;
+    padding-block: 2px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .venue-3d-topbar-start {
+    gap: 8px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .venue-3d-title-group {
+    gap: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+  }
+  .venue-3d-title {
+    font-size: 18px !important;
+  }
+  .venue-3d-badge {
+    font-size: 9.5px !important;
+    padding: 2px 8px !important;
+  }
+  .venue-3d-back {
+    font-size: 12px !important;
+    padding: 5px 12px !important;
+    flex-shrink: 0 !important;
   }
   .venue-3d-topbar-end {
-    margin-inline-start: 0;
-    width: 100%;
+    margin-inline-start: 0 !important;
+    width: 100% !important;
   }
   .venue-3d-cta {
-    width: 100%;
-    justify-content: center;
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 36px !important;
+    font-size: 13px !important;
+    padding: 6px 14px !important;
+  }
+  .room-3d,
+  .room-3d.room-3d-hero {
+    padding: 8px !important;
+    gap: 12px !important;
+    border-radius: 16px !important;
+    margin-bottom: 18px !important;
+  }
+  .room-3d:not(.room-3d-plan-hero) .room-3d-viewport-stage,
+  .room-3d:not(.room-3d-plan-hero) .room-3d-viewport-stage .room-3d-canvas {
+    height: clamp(380px, 58dvh, 540px) !important;
+    min-height: 380px !important;
+    border-radius: 12px !important;
   }
   .room-tour-panel {
-    max-width: calc(100% - 24px) !important;
+    max-width: calc(100% - 20px) !important;
     top: 10px !important;
     inset-inline-start: 10px !important;
     padding: 12px 14px !important;
   }
-  .room-tour-dock {
-    bottom: 10px !important;
-    left: 10px !important;
-    right: 10px !important;
-    padding: 6px 10px !important;
+  .room-tour-panel.is-collapsed {
+    padding: 5px 10px !important;
     gap: 6px !important;
+    max-width: calc(100% - 20px) !important;
+  }
+  .room-tour-panel.is-collapsed strong {
+    font-size: 11.5px !important;
+    max-width: 150px !important;
+  }
+  .room-3d-gesture-hint {
+    top: 10px !important;
+    inset-inline-end: 10px !important;
+    font-size: 9.5px !important;
+    padding: 4px 9px !important;
+  }
+  .room-tour-dock {
+    bottom: max(8px, env(safe-area-inset-bottom, 8px)) !important;
+    left: 8px !important;
+    right: 8px !important;
+    padding: 5px 8px !important;
+    gap: 5px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch !important;
     touch-action: pan-x !important;
   }
-  .room-tour-steps {
-    gap: 5px !important;
-    min-width: 120px !important;
-  }
   .room-tour-dock button {
-    padding: 4px 10px !important;
+    padding: 5px 9px !important;
+    min-height: 32px !important;
     font-size: 11px !important;
+  }
+  .room-tour-dock button:active {
+    transform: scale(0.95) !important;
+  }
+  .room-tour-steps {
+    gap: 4px !important;
+    min-width: 110px !important;
+  }
+  .room-tour-steps button {
+    padding: 5px 9px !important;
+    font-size: 11px !important;
+  }
+  .room-tour-roles button {
+    padding: 5px 8px !important;
+    font-size: 10.5px !important;
+  }
+  .room-3d-cockpit {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+    gap: 12px !important;
+  }
+  .room-3d-cockpit-header h2 {
+    font-size: 18px !important;
+    margin-bottom: 2px !important;
+  }
+  .room-3d-cockpit-header p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+  .room-3d-cockpit-kicker {
+    font-size: 9px !important;
+  }
+  .room-3d-cockpit-label {
+    font-size: 10px !important;
+  }
+  .room-3d-cockpit .room-3d-controls.room-3d-view-controls {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+  }
+  .room-3d-cockpit .room-3d-controls.room-3d-atmo-controls {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 5px !important;
+  }
+  .room-3d-cockpit .room-3d-controls .button {
+    min-height: 36px !important;
+    padding: 6px 3px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+  }
+  .room-3d-cockpit .room-3d-controls .button:active {
+    transform: scale(0.96) !important;
   }
 }
 

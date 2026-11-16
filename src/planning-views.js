@@ -139,7 +139,7 @@ export function originalRoomSection(lang) {
           <button class="button button-outline" type="button" data-scene-view="top">${w.top}</button>
           <button class="button button-outline" type="button" data-scene-zoom="in">${w.zoomIn}</button>
           <button class="button button-outline" type="button" data-scene-zoom="out">${w.zoomOut}</button>
-          <button class="button button-outline" type="button" data-scene-sound aria-pressed="false">${isAr?'الصوت':'Sound'}</button>
+          <button class="button button-outline" type="button" data-scene-sound aria-pressed="false">${isAr?'🔈 الصوت':'🔈 Sound'}</button>
           <button class="button button-outline" type="button" data-scene-fullscreen>${isAr?'ملء الشاشة':'Fullscreen'}</button>
         </div>
       </div>
