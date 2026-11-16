@@ -46,10 +46,68 @@ export function mountOriginalRoom3D(host,{lang='en'}={}) {
     const ch=chapters[active],ar=lang==='ar';
     const [detail,action]=chapterCopy[ar?'ar':'en'][active];
     panel.innerHTML=`<span class="room-tour-count">${String(active+1).padStart(2,'0')} / 07</span><button class="room-tour-collapse" type="button" data-tour="collapse" aria-label="${collapsed?(ar?'توسيع':'Expand'):(ar?'طي':'Collapse')}" aria-expanded="${!collapsed}">${collapsed?'+':'−'}</button><strong>${ar?ch[1]:ch[0]}</strong>${collapsed?'':`<p>${detail}</p><a class="button" href="${ch[2]==='seating'?(location.hash.startsWith('#/plans/')?location.hash.replace(/\?view=.*/,'')+'?view=seating':'#/plans'):ch[2]}">${action} ↗</a>`}`;
-    dock.innerHTML=`<button type="button" data-tour="auto" aria-pressed="${auto}">${auto?(ar?'إيقاف':'Pause'):(ar?'تشغيل الجولة':'Play tour')}</button><button type="button" data-tour="prev" aria-label="${ar?'السابق':'Previous'}">‹</button><div class="room-tour-steps" role="group" aria-label="${ar?'محطات الجولة':'Tour chapters'}">${chapters.map((item,index)=>`<button type="button" data-tour-chapter="${index}" aria-label="${ar?item[1]:item[0]}" aria-current="${index===active?'step':'false'}" title="${ar?item[1]:item[0]}">${String(index+1).padStart(2,'0')}<span>${ar?item[1]:item[0]}</span></button>`).join('')}</div><button type="button" data-tour="next" aria-label="${ar?'التالي':'Next'}">›</button><button type="button" data-tour="reset">${ar?'إعادة ضبط':'Reset view'}</button><div class="room-tour-roles" role="group" aria-label="${ar?'الدور':'View by role'}">${[[0,ar?'عميل':'Couple'],[5,ar?'مورد':'Vendor'],[6,ar?'إدارة':'Admin']].map(([index,label])=>`<button type="button" data-tour-chapter="${index}" aria-label="${label}" aria-pressed="${active===index}">${label}</button>`).join('')}</div>`;
+    let steps=dock.querySelector('.room-tour-steps');
+    if(!steps){
+      dock.innerHTML=`<button type="button" data-tour="auto" aria-pressed="${auto}">${auto?(ar?'إيقاف':'Pause'):(ar?'تشغيل الجولة':'Play tour')}</button><button type="button" data-tour="prev" aria-label="${ar?'السابق':'Previous'}">‹</button><div class="room-tour-steps" role="group" aria-label="${ar?'محطات الجولة':'Tour chapters'}">${chapters.map((item,index)=>`<button type="button" data-tour-chapter="${index}" aria-label="${ar?item[1]:item[0]}" aria-current="${index===active?'step':'false'}" title="${ar?item[1]:item[0]}">${String(index+1).padStart(2,'0')}<span>${ar?item[1]:item[0]}</span></button>`).join('')}</div><button type="button" data-tour="next" aria-label="${ar?'التالي':'Next'}">›</button><button type="button" data-tour="reset">${ar?'إعادة ضبط':'Reset view'}</button><div class="room-tour-roles" role="group" aria-label="${ar?'الدور':'View by role'}">${[[0,ar?'عميل':'Couple'],[5,ar?'مورد':'Vendor'],[6,ar?'إدارة':'Admin']].map(([index,label])=>`<button type="button" data-tour-chapter="${index}" aria-label="${label}" aria-pressed="${active===index}">${label}</button>`).join('')}</div>`;
+      steps=dock.querySelector('.room-tour-steps');
+    }else{
+      const autoBtn=dock.querySelector('[data-tour="auto"]');
+      if(autoBtn){
+        autoBtn.setAttribute('aria-pressed',String(auto));
+        autoBtn.textContent=auto?(ar?'إيقاف':'Pause'):(ar?'تشغيل الجولة':'Play tour');
+      }
+      steps.querySelectorAll('[data-tour-chapter]').forEach(btn=>{
+        const idx=Number(btn.dataset.tourChapter);
+        btn.setAttribute('aria-current',idx===active?'step':'false');
+      });
+      dock.querySelectorAll('.room-tour-roles [data-tour-chapter]').forEach(btn=>{
+        const idx=Number(btn.dataset.tourChapter);
+        btn.setAttribute('aria-pressed',String(active===idx));
+      });
+    }
+    const activeBtn=steps?.querySelector(`[data-tour-chapter="${active}"]`);
+    if(activeBtn){
+      activeBtn.scrollIntoView({behavior:reduced?'auto':'smooth',inline:'center',block:'nearest'});
+    }
     host.querySelector('[data-scene-sound]')?.setAttribute('aria-pressed',String(!muted));
   };
   renderUI();
+  dock.addEventListener('wheel',event=>{
+    const steps=dock.querySelector('.room-tour-steps');
+    const target=(steps&&steps.scrollWidth>steps.clientWidth)?steps:(dock.scrollWidth>dock.clientWidth?dock:null);
+    if(target&&Math.abs(event.deltaY)>=Math.abs(event.deltaX)){
+      event.preventDefault();
+      target.scrollLeft+=event.deltaY;
+    }
+  },{passive:false,signal:events.signal});
+  let isDown=false,startX=0,scrollStart=0,hasDragged=false,dragTarget=null;
+  dock.addEventListener('pointerdown',event=>{
+    if(event.pointerType==='touch')return;
+    const steps=dock.querySelector('.room-tour-steps');
+    dragTarget=(steps&&(steps===event.target||steps.contains(event.target)))?steps:dock;
+    if(dragTarget.scrollWidth<=dragTarget.clientWidth)return;
+    isDown=true;
+    hasDragged=false;
+    startX=event.clientX;
+    scrollStart=dragTarget.scrollLeft;
+  },{signal:events.signal});
+  window.addEventListener('pointermove',event=>{
+    if(!isDown||!dragTarget)return;
+    const dx=event.clientX-startX;
+    if(Math.abs(dx)>3)hasDragged=true;
+    dragTarget.scrollLeft=scrollStart-dx;
+  },{signal:events.signal});
+  window.addEventListener('pointerup',()=>{
+    isDown=false;
+    dragTarget=null;
+  },{signal:events.signal});
+  dock.addEventListener('click',event=>{
+    if(hasDragged){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      hasDragged=false;
+    }
+  },{capture:true,signal:events.signal});
   const scene=new THREE.Scene();scene.background=new THREE.Color(0x0e0d0c);
   const camera=new THREE.PerspectiveCamera(45,1,.1,300);
   const ambient=new THREE.HemisphereLight(0xfff3e2,0x241c18,1.7);scene.add(ambient);
