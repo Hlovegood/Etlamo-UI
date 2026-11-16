@@ -250,9 +250,13 @@ html.dark, html[data-theme="dark"], .dark {
 /* ==========================================================================
    Global Resets & BiDi Typography Rules
    ========================================================================== */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 html, body {
   overflow-x: clip;
+  overflow-x: hidden;
   transition: background-color 1740ms cubic-bezier(0.65, 0, 0.35, 1),
               color 1740ms cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -2862,9 +2866,11 @@ html[lang="ar"] .cookie-accept-btn {
 }
 
 @media (max-width: 800px) {
-  .container { padding: clamp(76px, 11vw, 96px) 16px 48px; }
+  .container {
+    padding: clamp(76px, 11vw, 96px) max(16px, env(safe-area-inset-right, 16px)) 48px max(16px, env(safe-area-inset-left, 16px));
+  }
   .header-inner { flex-wrap: wrap; gap: 12px; }
-  .header-inner nav { order: 3; width: 100%; justify-content: flex-start; overflow-x: auto; }
+  .header-inner nav { order: 3; width: 100%; justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .hero { grid-template-columns: 1fr; }
   .hero-picture { height: 220px; border-inline-start: 0; border-top: 1px solid var(--line); }
   .venue-grid { grid-template-columns: 1fr; }
@@ -2878,6 +2884,22 @@ html[lang="ar"] .cookie-accept-btn {
 }
 
 @media (max-width: 640px) {
+  .detail-heading {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .detail-heading .team-card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+  .detail-heading .team-card-actions .button {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
   .search-form {
     grid-template-columns: 1fr;
     gap: 0;
@@ -2894,20 +2916,26 @@ html[lang="ar"] .cookie-accept-btn {
   .search-button {
     margin-top: 12px;
     width: 100%;
+    min-height: 44px;
   }
   .category-tab-bar {
     gap: 6px;
     padding: 4px;
     max-width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     scrollbar-width: none;
   }
   .category-tab-bar::-webkit-scrollbar {
     display: none;
   }
   .category-tab {
-    padding: 6px 12px;
-    font-size: 11.5px;
+    padding: 8px 14px;
+    font-size: 12px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
     flex: none;
   }
   .form-grid,
@@ -2933,22 +2961,26 @@ html[lang="ar"] .cookie-accept-btn {
   }
   .service-filter .button {
     width: 100%;
+    min-height: 44px;
   }
   .compare-dock {
     width: calc(100% - 24px);
     max-width: 440px;
-    bottom: max(14px, env(safe-area-inset-bottom, 14px));
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
     padding: 8px 12px;
     gap: 8px;
     justify-content: space-between;
   }
   .compare-dock-cta {
-    padding: 6px 14px;
-    font-size: 12px;
+    padding: 8px 16px;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12.5px;
     white-space: nowrap;
   }
   .cookie-banner {
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 12px 16px max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
   }
   .cookie-banner-inner {
     flex-direction: column;
@@ -2957,6 +2989,7 @@ html[lang="ar"] .cookie-accept-btn {
   }
   .cookie-accept-btn {
     width: 100%;
+    min-height: 44px;
     text-align: center;
   }
   .toast {
@@ -2965,15 +2998,23 @@ html[lang="ar"] .cookie-accept-btn {
     text-align: center;
     padding: 10px 18px;
     font-size: 13px;
+    bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 14px));
   }
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 68px max(12px, env(safe-area-inset-right, 12px)) max(36px, calc(env(safe-area-inset-bottom, 0px) + 24px)) max(12px, env(safe-area-inset-left, 12px));
+  }
+  .page-title h1 {
+    font-size: clamp(24px, 7vw, 34px);
+  }
   .review-actions .button,
   .team-card-actions .button,
   .workspace-controls .button {
     width: 100%;
     justify-content: center;
+    min-height: 44px;
   }
   .photo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2982,6 +3023,9 @@ html[lang="ar"] .cookie-accept-btn {
 
 /* Prevent mobile Safari iOS automatic viewport zoom on input tap */
 @media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  select,
+  textarea,
   .form-field input,
   .form-field select,
   .form-field textarea,
@@ -2992,6 +3036,47 @@ html[lang="ar"] .cookie-accept-btn {
   .plan-inline-form input,
   .plan-inline-form select {
     font-size: 16px !important;
+  }
+}
+
+/* Tactile Touch Interactions & Physical Spring Feedback for Touchscreens */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  .button:active,
+  a.button:active,
+  .pill-btn:active,
+  .category-tab:active,
+  .venue-bookmark:active,
+  .save-button:active,
+  .drift-switch-btn:active,
+  .drift-cta-btn:active,
+  .sm-header-btn:active,
+  .sm-toggle:active,
+  .circular-gallery-close:active,
+  .expandable-screen-close:active,
+  .planner-create-close:active,
+  .hallway-btn:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.08s cubic-bezier(0.2, 0.8, 0.4, 1) !important;
+  }
+}
+
+/* Minimum 44x44px touch targets on coarse pointer devices */
+@media (pointer: coarse) {
+  .button,
+  a.button,
+  button.button {
+    min-height: 44px;
+  }
+  .save-button,
+  .venue-bookmark {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .category-tab {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 
@@ -3012,10 +3097,10 @@ fieldset.plan-content,
 div.plan-content,
 .plan-content {
   display: block !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
-  margin-inline: calc(50% - 50vw) !important;
-  padding: clamp(24px, 3vh, 44px) clamp(24px, 4.5vw, 64px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  padding: clamp(24px, 3vh, 44px) clamp(16px, 4vw, 48px) !important;
   border: none !important;
   outline: none !important;
   min-inline-size: auto !important;
@@ -3359,18 +3444,20 @@ html[data-theme="dark"] .planner-spotlight-art,
   background: var(--card-bg);
   margin-top: 20px;
   box-shadow: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 .compare-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 600px;
+  min-width: 580px;
   text-align: start;
 }
 .compare-table th, .compare-table td {
   padding: 16px 20px;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
-  min-width: 160px;
+  min-width: 150px;
   max-width: 320px;
   overflow-wrap: anywhere;
   text-align: start;
@@ -3381,11 +3468,27 @@ html[data-theme="dark"] .planner-spotlight-art,
   font-size: 16px;
   font-weight: 500;
 }
+.compare-table thead th:first-child,
+.compare-table tbody th[scope="row"] {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 2;
+  background: var(--card-bg);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+[dir="rtl"] .compare-table thead th:first-child,
+[dir="rtl"] .compare-table tbody th[scope="row"] {
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+}
+.compare-table thead th:first-child {
+  z-index: 3;
+  background: var(--color-chalk);
+}
 
 /* 7. Toast Notifications */
 .toast {
   position: fixed;
-  bottom: 24px;
+  bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px));
   left: 50%;
   transform: translateX(-50%);
   padding: 12px 28px;

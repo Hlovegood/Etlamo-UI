@@ -123,7 +123,7 @@
   z-index: 450;
   width: 100%;
   min-width: 220px;
-  max-width: min(380px, 92vw);
+  max-width: min(380px, calc(100vw - 32px));
   background: var(--canvas-bg, #fdfbf7);
   border: 1px solid rgba(60, 38, 28, 0.12);
   border-radius: 6px;
@@ -346,4 +346,15 @@ html.dark .custom-select-option.is-selected,
 html.dark .custom-select-option-check,
 [data-theme="dark"] .custom-select-option-check {
   color: #eed8a6 !important;
+}
+
+@media (pointer: coarse) {
+  .custom-select-trigger {
+    min-height: 48px;
+  }
+  .custom-select-option {
+    min-height: 42px;
+    padding: 10px 14px;
+    font-size: 14.5px;
+  }
 }
