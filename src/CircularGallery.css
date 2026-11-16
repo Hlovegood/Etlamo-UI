@@ -356,13 +356,13 @@ html.dark .venue-view-toggle-btn.is-active {
     margin-top: 0.65rem;
   }
   .circular-gallery-cta-wrap .button {
-    min-height: 44px;
+    min-height: 40px;
     padding: 8px 18px;
     font-size: 0.85rem;
   }
   .circular-gallery-close {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     top: 10px;
     right: 10px;
   }

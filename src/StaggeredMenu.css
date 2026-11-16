@@ -31,10 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: max(clamp(14px, 2.5vh, 24px), env(safe-area-inset-top, 14px));
-  padding-inline-start: max(clamp(20px, 4vw, 48px), env(safe-area-inset-left, 20px));
-  padding-inline-end: max(clamp(20px, 4vw, 48px), env(safe-area-inset-right, 20px));
-  padding-bottom: clamp(14px, 2.5vh, 24px);
+  padding: clamp(14px, 2.5vh, 24px) clamp(20px, 4vw, 48px);
   background: transparent;
   pointer-events: none;
   z-index: 1000;
@@ -491,9 +488,7 @@ body.footer-focused .room-3d-controls {
 
 @media (max-width: 640px) {
   .staggered-menu-header {
-    padding-top: max(10px, env(safe-area-inset-top, 10px));
-    padding-inline: max(12px, env(safe-area-inset-left, 12px)) max(12px, env(safe-area-inset-right, 12px));
-    padding-bottom: 10px;
+    padding: 10px 14px;
   }
   .sm-logo-img {
     height: 26px;
@@ -506,33 +501,21 @@ body.footer-focused .room-3d-controls {
     padding: 4px 6px 4px 10px;
   }
   .sm-header-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
   .sm-toggle {
-    padding: 8px 14px;
-    min-height: 36px;
+    padding: 7px 12px;
     font-size: 12.5px;
     gap: 0.35rem;
   }
   .staggered-menu-panel {
-    padding: calc(5.25em + env(safe-area-inset-top, 0px)) max(1.35em, env(safe-area-inset-left, 1.35em)) calc(2em + env(safe-area-inset-bottom, 0px)) max(1.35em, env(safe-area-inset-right, 1.35em));
+    padding: 5.25em 1.35em 2em;
   }
   .sm-panel-item {
     font-size: clamp(1.5rem, 6.2vw, 2.2rem);
     min-height: 44px;
     display: inline-flex;
     align-items: center;
-  }
-}
-
-@media (pointer: coarse) {
-  .sm-header-btn {
-    width: 40px;
-    height: 40px;
-  }
-  .sm-toggle {
-    min-height: 40px;
-    padding-inline: 14px;
   }
 }

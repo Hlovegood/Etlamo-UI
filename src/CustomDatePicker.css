@@ -705,17 +705,7 @@ html.dark .custom-datepicker-icon svg,
   }
 
   .custom-cal-day {
-    min-height: 40px;
+    min-height: 36px;
     font-size: 0.88rem;
-  }
-}
-
-@media (pointer: coarse) {
-  .custom-cal-day {
-    min-height: 40px;
-  }
-  .custom-cal-nav-btn {
-    min-width: 44px;
-    min-height: 44px;
   }
 }
